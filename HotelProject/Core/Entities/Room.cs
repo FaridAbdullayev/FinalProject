@@ -17,5 +17,8 @@ namespace Core.Entities
         public int MaxChildrenCount {  get; set; }
         public int MaxAdultsCount { get; set; }
         public BedType BedType { get; set; }
+        public int BranchId {  get; set; }
+        public Branch Branch { get; set; }
+        public List<RoomService> RoomServices { get; set; }
     }
 }

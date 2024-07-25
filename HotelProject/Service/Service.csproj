@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\UserDtos\" />
+    <Folder Include="Dtos\Slider\" />
+    <Folder Include="Dtos\Room\" />
+    <Folder Include="Dtos\OurStaff\" />
+    <Folder Include="Dtos\Service\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj" />
+  </ItemGroup>
+
+</Project>

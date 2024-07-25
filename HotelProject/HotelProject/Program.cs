@@ -1,3 +1,5 @@
+using Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,10 +13,10 @@ builder.Services.AddSwaggerGen();
 
 
 
-//builder.Services.AddDbContext<AppDbContext>(opt =>
-//{
-//    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
-//});
+builder.Services.AddDbContext<AppDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+});
 
 var app = builder.Build();
 

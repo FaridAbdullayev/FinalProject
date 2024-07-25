@@ -9,5 +9,6 @@ namespace Core.Entities
     public class Branch:AuditEntity
     {
         public string Name { get; set; }
+        public List<Room> Rooms { get; set;}
     }
 }
