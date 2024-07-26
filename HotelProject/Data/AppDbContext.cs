@@ -20,6 +20,7 @@ namespace Data
         public DbSet<RoomService> RoomServices { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Slider> Sliders { get; set; }
+        public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
 

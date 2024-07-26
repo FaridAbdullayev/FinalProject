@@ -113,10 +113,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -142,6 +138,31 @@ namespace Data.Migrations
                     b.HasIndex("BranchId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("Core.Entities.RoomImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomImages");
                 });
 
             modelBuilder.Entity("Core.Entities.RoomService", b =>
@@ -458,6 +479,17 @@ namespace Data.Migrations
                     b.Navigation("Branch");
                 });
 
+            modelBuilder.Entity("Core.Entities.RoomImage", b =>
+                {
+                    b.HasOne("Core.Entities.Room", "Room")
+                        .WithMany("Images")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Core.Entities.RoomService", b =>
                 {
                     b.HasOne("Core.Entities.Room", "Room")
@@ -535,6 +567,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Room", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("RoomServices");
                 });
 

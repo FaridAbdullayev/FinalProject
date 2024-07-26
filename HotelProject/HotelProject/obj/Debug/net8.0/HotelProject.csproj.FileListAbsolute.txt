@@ -148,3 +148,7 @@ C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\Service.pdb
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\Core.pdb
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\Data.pdb
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

@@ -11,7 +11,6 @@ namespace Core.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Image {  get; set; }
         public double Price { get; set; }
         public double Area { get; set; }
         public int MaxChildrenCount {  get; set; }
@@ -20,5 +19,6 @@ namespace Core.Entities
         public int BranchId {  get; set; }
         public Branch Branch { get; set; }
         public List<RoomService> RoomServices { get; set; }
+        public List<RoomImage> Images { get; set; }
     }
 }
