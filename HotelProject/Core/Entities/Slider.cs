@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class Slider:BaseEntity
+    public class Slider:AuditEntity
     {
         public string Image { get; set; }
         public string Description { get; set; }

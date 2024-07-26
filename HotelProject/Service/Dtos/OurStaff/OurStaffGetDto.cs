@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Service.Dtos.OurStaff
 {
-    internal class OurStaffGetDto
+    public class OurStaffGetDto
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Position { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

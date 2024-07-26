@@ -152,3 +152,4 @@ C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\FluentValidation.dll
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\HotelProject.staticwebassets.runtime.json

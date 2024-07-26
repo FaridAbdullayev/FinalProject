@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg",
+      "PackagePath": "staticwebassets\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg",
+      "PackagePath": "staticwebassets\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.HotelProject.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.HotelProject.props",
+      "PackagePath": "build\\HotelProject.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.HotelProject.props",
+      "PackagePath": "buildMultiTargeting\\HotelProject.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.HotelProject.props",
+      "PackagePath": "buildTransitive\\HotelProject.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

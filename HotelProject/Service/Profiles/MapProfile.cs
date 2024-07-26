@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Pustok.Helpers;
 using Service.Dtos.Branch;
+using Service.Dtos.OurStaff;
+using Service.Dtos.Service;
 using Service.Dtos.Slider;
 using System;
 using System.Collections.Generic;
@@ -35,7 +37,23 @@ namespace Service.Profiles
             CreateMap<Branch, BranchGetDto>();
             CreateMap<BranchCreateDto, Branch>();
             CreateMap<Branch,BranchListItemGetDto>();
-           
+
+
+            CreateMap<Core.Entities.Service, ServiceGetDto>();
+            CreateMap<ServiceCreateDto, Core.Entities.Service>();
+            CreateMap<Core.Entities.Service,ServiceListItemGetDto>();
+
+            CreateMap<OurStaff, OurStaffListItemGetDto>()
+             .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/staff/" + s.Image));
+            CreateMap<OurStaff, OurStaffGetDto>()
+               .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/staff/" + s.Image));
+
+
+            CreateMap<Slider, SliderListItemGetDto>()
+          .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/slider/" + s.Image));
+            CreateMap<Slider, SliderGetDto>()
+               .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/slider/" + s.Image));
+
         }
     }
 }

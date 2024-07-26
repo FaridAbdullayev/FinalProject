@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Service.Dtos.Slider
 {
-    internal class SliderGetDto
+    public class SliderGetDto
     {
+        public int Id { get; set; }
+        public string ImageUrl { get; set; }
+        public string Description { get; set; }
+        public int Order { get; set; }
     }
 }

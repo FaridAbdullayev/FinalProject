@@ -49,7 +49,7 @@ namespace HotelProject.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update(BranchUpdateDto branchUpdateDto, int id)
+        public ActionResult Update(int id,BranchUpdateDto branchUpdateDto)
         {
             _service.Update(branchUpdateDto, id);
             return NoContent();

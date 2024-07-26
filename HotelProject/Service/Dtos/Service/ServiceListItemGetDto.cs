@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Service.Dtos.Service
 {
-    internal class ServiceListItemGetDto
+    public class ServiceListItemGetDto
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

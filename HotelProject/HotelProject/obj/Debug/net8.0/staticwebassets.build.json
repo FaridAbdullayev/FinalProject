@@ -1,11 +1,58 @@
 {
   "Version": 1,
-  "Hash": "zDbV4LSV0oc8Ucfo4rWrOMePtPlcRzMzemihtJEsTmE=",
+  "Hash": "1P04XSRoBORm+CSrSUTzNsUGheaSS5Xa3qYAtm0Llso=",
   "Source": "HotelProject",
   "BasePath": "_content/HotelProject",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "HotelProject\\wwwroot",
+      "Source": "HotelProject",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/staff/1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/staff/3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg"
+    }
+  ]
 }
