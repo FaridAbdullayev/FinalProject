@@ -14,6 +14,7 @@ namespace Data.Configuration
         public void Configure(EntityTypeBuilder<RoomService> builder)
         {
             builder.HasKey(x => new { x.RoomId,x.ServiceId });
+            
             builder.HasOne(x=>x.Room).WithMany(z=>z.RoomServices).HasForeignKey(x=>x.RoomId);
             builder.HasOne(x => x.Service).WithMany(z => z.RoomServices).HasForeignKey(x => x.ServiceId);
         }

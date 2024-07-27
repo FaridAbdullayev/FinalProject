@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Pustok.Helpers;
 using Service.Dtos.Branch;
 using Service.Dtos.OurStaff;
+using Service.Dtos.Room;
 using Service.Dtos.Service;
 using Service.Dtos.Slider;
 using System;
@@ -54,6 +55,33 @@ namespace Service.Profiles
             CreateMap<Slider, SliderGetDto>()
                .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/slider/" + s.Image));
 
+
+
+
+
+            CreateMap<Room, RoomListItemGetDto>();
+
+            CreateMap<RoomImage, RoomImageGetDto>()
+             .ForMember(dest => dest.Image, s => s.MapFrom(s => baseUrl + "uploads/room/" + s.Image));
+
+            CreateMap<Room, RoomGetDto>()
+               .ForMember(dest => dest.ServiceIds,
+                opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()));
+
+
+            CreateMap<RoomService, RoomServiceGetDto>();
+
+
+            // CreateMap<RoomCreateDto, Room>()
+            //.ForMember(dest => dest.Images, opt => opt
+            //    .MapFrom(src => src.Images
+            //        .Select(x => new RoomImage
+            //        {
+            //            Image = FileManager.Save(x, _env.WebRootPath, "uploads/room"),
+            //            IsMain = true
+            //        }).ToList()
+            //    )
+            //);
         }
     }
 }

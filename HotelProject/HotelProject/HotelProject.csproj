@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\uploads\room\" />
     <Folder Include="wwwroot\uploads\slider\" />
     <Folder Include="wwwroot\uploads\staff\" />
   </ItemGroup>

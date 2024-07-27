@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class RoomImage:BaseEntity
+    public class RoomImage : BaseEntity
     {
         public string Image { get; set; }
         public bool IsMain { get; set; } = false;

@@ -71,6 +71,10 @@ builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<ISliderRepository, SliderRepository>();
 
 
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+
+
 
 //builder.Services.AddScoped<IAuthService, AuthService>();
 

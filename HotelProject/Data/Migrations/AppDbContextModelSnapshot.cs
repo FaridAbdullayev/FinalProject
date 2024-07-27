@@ -173,9 +173,6 @@ namespace Data.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("RoomId", "ServiceId");
 
                     b.HasIndex("ServiceId");
