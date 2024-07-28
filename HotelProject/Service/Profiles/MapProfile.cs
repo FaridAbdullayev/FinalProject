@@ -69,7 +69,6 @@ namespace Service.Profiles
                 opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()));
 
 
-            CreateMap<RoomService, RoomServiceGetDto>();
 
 
             // CreateMap<RoomCreateDto, Room>()
