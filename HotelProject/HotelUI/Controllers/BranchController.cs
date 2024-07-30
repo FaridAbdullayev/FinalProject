@@ -21,7 +21,7 @@ namespace HotelUI.Controllers
         {
             try
             {
-                return View(await _crudService.GetAllPaginated<BranchListItemDetailedGetResponse>("branches", page));
+                return View(await _crudService.GetAllPaginated<BranchListItemDetailGetResponse>("branches", page));
             }
             catch (HttpException e)
             {
