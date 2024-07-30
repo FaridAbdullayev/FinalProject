@@ -1,0 +1,52 @@
+﻿@using HotelUI.Models.OurStaff
+
+@model OurStaffCreateRequest
+@{
+    ViewData["Title"] = "Create";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Staff</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <form class="user" asp-action="create" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <input asp-for="Name" class="form-control" id="Name" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Position">Position</label>
+                    <input asp-for="Position" class="form-control" id="Position" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Position"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Description">Description</label>
+                    <input asp-for="Description" class="form-control" id="Description" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Description"></span>
+                </div>
+                <div class="form-group">
+                    <label for="imgInput">Image</label>
+                    <input asp-for="File" class="form-control imgInput" placeholder=" ">
+                    <div class="preview-box">
+                        <img width="200" class="previewImg" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="File"></span>
+                </div>
+                <button class="btn btn-outline-success" type="submit">
+                    Create
+                </button>
+                <a class="btn btn-outline-danger" asp-action="Index">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Html.Partial("_ValidationScriptsPartial");
+}
