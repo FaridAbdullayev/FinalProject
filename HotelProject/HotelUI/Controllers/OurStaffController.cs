@@ -60,15 +60,15 @@ namespace HotelUI.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var slider = await _crudService.Get<OurStaffGetResponse>("ourstaff/" + id);
+            var staff = await _crudService.Get<OurStaffGetResponse>("ourstaff/" + id);
 
             var data = new OurStaffUpdateRequest()
             {
-                Name = slider.Name,
-                Position = slider.Position,
-                Description = slider.Description,
+                Name = staff.Name,
+                Position = staff.Position,
+                Description = staff.Description,
             };
-            ViewBag.Image = slider.ImageUrl;
+            ViewBag.Image = staff.ImageUrl;
             return View(data);
         }
 

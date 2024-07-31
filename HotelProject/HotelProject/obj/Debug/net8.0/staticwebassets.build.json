@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Y8FPWrRb7RMmoXWJGjU4p/0DBpkXAz9KJ3NPI9oEr8c=",
+  "Hash": "ufQ/amsOJ/hoyHs2Ru1bz7s2bfPQgmIIcC4MkFK8r8E=",
   "Source": "HotelProject",
   "BasePath": "_content/HotelProject",
   "Mode": "Default",
@@ -188,12 +188,12 @@
       "OriginalItemSpec": "wwwroot\\uploads\\slider\\25368593-868e-4a4f-b299-8fb9e92ce047team-2.jpg"
     },
     {
-      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg",
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\slider\\81535435-3924-45f0-a8d9-c101be5e89e3blog9.jpg",
       "SourceId": "HotelProject",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
       "BasePath": "_content/HotelProject",
-      "RelativePath": "uploads/staff/1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg",
+      "RelativePath": "uploads/slider/81535435-3924-45f0-a8d9-c101be5e89e3blog9.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -204,7 +204,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg"
+      "OriginalItemSpec": "wwwroot\\uploads\\slider\\81535435-3924-45f0-a8d9-c101be5e89e3blog9.jpg"
     },
     {
       "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg",
@@ -224,6 +224,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\83c89571-5e14-4a7e-b58d-8327544e7d3eblog3.jpg",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/staff/83c89571-5e14-4a7e-b58d-8327544e7d3eblog3.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\staff\\83c89571-5e14-4a7e-b58d-8327544e7d3eblog3.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\9ea921a9-17b5-4b19-b119-405c2b1dd617blog2.jpg",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/staff/9ea921a9-17b5-4b19-b119-405c2b1dd617blog2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\staff\\9ea921a9-17b5-4b19-b119-405c2b1dd617blog2.jpg"
     }
   ]
 }

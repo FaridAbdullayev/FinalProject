@@ -37,12 +37,20 @@
       "PackagePath": "staticwebassets\\uploads\\slider\\25368593-868e-4a4f-b299-8fb9e92ce047team-2.jpg"
     },
     {
-      "Id": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg",
-      "PackagePath": "staticwebassets\\uploads\\staff\\1b192a3b-5981-43b5-93d3-6de3c3265b40team-3.jpg"
+      "Id": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\slider\\81535435-3924-45f0-a8d9-c101be5e89e3blog9.jpg",
+      "PackagePath": "staticwebassets\\uploads\\slider\\81535435-3924-45f0-a8d9-c101be5e89e3blog9.jpg"
     },
     {
       "Id": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg",
       "PackagePath": "staticwebassets\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\83c89571-5e14-4a7e-b58d-8327544e7d3eblog3.jpg",
+      "PackagePath": "staticwebassets\\uploads\\staff\\83c89571-5e14-4a7e-b58d-8327544e7d3eblog3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\9ea921a9-17b5-4b19-b119-405c2b1dd617blog2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\staff\\9ea921a9-17b5-4b19-b119-405c2b1dd617blog2.jpg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.HotelProject.Microsoft.AspNetCore.StaticWebAssets.props",
