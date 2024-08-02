@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Service.Dtos.UserDtos
 {
-    public class UserLoginDto
+    public class AdminPaginatedGetDto
     {
+        public string Id { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
     }
 }

@@ -471,6 +471,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsPasswordResetRequired")
+                        .HasColumnType("bit");
+
                     b.HasDiscriminator().HasValue("AppUser");
                 });
 

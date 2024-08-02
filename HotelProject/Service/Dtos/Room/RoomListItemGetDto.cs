@@ -16,5 +16,6 @@ namespace Service.Dtos.Room
         public int MaxChildrenCount { get; set; }
         public int MaxAdultsCount { get; set; }
         public string BedType { get; set; }
+        public int BranchId { get; set; }
     }
 }

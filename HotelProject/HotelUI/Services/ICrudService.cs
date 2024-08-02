@@ -1,6 +1,7 @@
 ﻿
 
 using HotelUI.Models;
+using HotelUI.Models.Admin;
 
 namespace HotelUI.Services
 {
@@ -15,5 +16,7 @@ namespace HotelUI.Services
 
         Task<CreateResponse> CreateFromForm<TRequest>(TRequest request, string path);
         Task UpdateFormForm<TRequest>(TRequest request, string path);
+
+        Task<CreateResponseForAdmin> CreateForAdmins<TRequest>(TRequest request, string path);
     }
 }

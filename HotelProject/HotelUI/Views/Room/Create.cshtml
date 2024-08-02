@@ -1,0 +1,102 @@
+﻿@using HotelUI.Models.Room
+
+@model RoomCreateRequest
+@{
+    ViewData["Title"] = "Create";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Room</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <form class="user" asp-action="create" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <input asp-for="Name" class="form-control" id="Name" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Price">Price</label>
+                    <input asp-for="Price" class="form-control" id="Price" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Price"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Description">Description</label>
+                    <input asp-for="Description" class="form-control" id="Description" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Description"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Area">Area</label>
+                    <input asp-for="Area" class="form-control" id="Area" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Area"></span>
+                </div>
+                <div class="form-group">
+                    <label for="MaxAdultsCount">MaxAdultsCount</label>
+                    <input asp-for="MaxAdultsCount" class="form-control" id="MaxAdultsCount" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="MaxAdultsCount"></span>
+                </div>
+                <div class="form-group">
+                    <label for="MaxChildrenCount">MaxChildrenCount</label>
+                    <input asp-for="MaxChildrenCount" class="form-control" id="MaxChildrenCount" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="MaxChildrenCount"></span>
+                </div>
+                <div class="form-group">
+                    <label for="BedType">BedType</label>
+                    <div class="d-flex">
+                        <div class="mr-3">
+                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType" id="king" value="0">
+                            <label class="form-check-label" for="king">King</label>
+                        </div>
+                        <div class="mr-3">
+                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType" id="queen" value="1">
+                            <label class="form-check-label" for="queen">Queen</label>
+                        </div>
+                        <div class="mr-3">
+                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType" id="double" value="2">
+                            <label class="form-check-label" for="double">Double</label>
+                        </div>
+                        <div>
+                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType " id="twin" value="3">
+                            <label class="form-check-label" for="twin">Twin</label>
+                        </div>
+                    </div>
+                    <span class="text-danger" asp-validation-for="BedType"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BranchId" class="control-label"></label>
+                    <select asp-for="BranchId" class="form-control" asp-items="@(new SelectList(ViewBag.Branches,"Id","Name"))"></select>
+                    <span class="text-danger" asp-validation-for="BranchId"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ServiceIds" class="control-label"></label>
+                    <select asp-for="ServiceIds" multiple  class="form-control" asp-items="@(new SelectList(ViewBag.Services,"Id","Name"))"></select>
+                    <span class="text-danger" asp-validation-for="ServiceIds"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="imgInput">ImageFiles</label>
+                    <input asp-for="Images" class="form-control imgInput" placeholder=" ">
+                    <div class="preview-box">
+                        <img width="200" class="previewImg" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Images"></span>
+                </div>
+                <button class="btn btn-outline-success" type="submit">
+                    Create
+                </button>
+                <a class="btn btn-outline-danger" asp-action="Index">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Html.Partial("_ValidationScriptsPartial");
+}

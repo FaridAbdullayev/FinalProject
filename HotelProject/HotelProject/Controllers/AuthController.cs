@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Service.Dtos;
 using Service.Dtos.UserDtos;
 using Service.Services.Interfaces;
 
@@ -55,7 +56,7 @@ namespace HotelProject.Controllers
 
 
         [HttpPost("login")]
-        public ActionResult Login(UserLoginDto loginDto)
+        public ActionResult Login(AdminLoginDto loginDto)
         {
             var token = _authService.Login(loginDto);
             return Ok(new { token });
@@ -66,7 +67,57 @@ namespace HotelProject.Controllers
         [HttpGet("profile")]
         public ActionResult Profile()
         {
-            return Ok(User.Identity.Name);
+            var userName = User.Identity.Name;
+
+
+            var user = _userManager.FindByNameAsync(userName).Result;
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            var userDto = new AdminGetDto
+            {
+                Id = user.Id,
+                UserName = user.UserName
+            };
+
+            return Ok(userDto);
+        }
+
+
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPost("createAdmin")]
+        public IActionResult Create(AdminCreateDto createDto)
+        {
+
+            return StatusCode(201, new { Id = _authService.Create(createDto) });
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPut("update/{id}")]
+        public IActionResult Update(string id, AdminUpdateDto updateDto)
+        {
+            _authService.Update(id, updateDto);
+            return NoContent();
+        }
+
+        [HttpPut("updatePassword")]
+        public async Task<IActionResult> UpdatePassword(AdminUpdateDto updatePasswordDto)
+        {
+
+            await _authService.UpdatePasswordAsync(updatePasswordDto);
+            return NoContent();
+
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpGet("adminAllByPage")]
+        public ActionResult<PaginatedList<AdminPaginatedGetDto>> GetAllByPage(string? search = null, int page = 1, int size = 10)
+        {
+            var paginatedAdmins = _authService.GetAllByPage(search, page, size);
+            return Ok(paginatedAdmins);
         }
     }
 }
