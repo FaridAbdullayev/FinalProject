@@ -24,35 +24,35 @@ namespace HotelProject.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("users")]
-        public async Task<IActionResult> CreateUser()
-        {
-            await _roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
-            await _roleManager.CreateAsync(new IdentityRole("Admin"));
-            await _roleManager.CreateAsync(new IdentityRole("Member"));
+        //[HttpGet("users")]
+        //public async Task<IActionResult> CreateUser()
+        //{
+        //    await _roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
+        //    await _roleManager.CreateAsync(new IdentityRole("Admin"));
+        //    await _roleManager.CreateAsync(new IdentityRole("Member"));
 
 
-            AppUser user1 = new AppUser
-            {
-                FullName = "SuperAdmin",
-                UserName = "superadmin",
-            };
+        //    AppUser user1 = new AppUser
+        //    {
+        //        FullName = "SuperAdmin",
+        //        UserName = "superadmin",
+        //    };
 
-            await _userManager.CreateAsync(user1, "SuperAdmin123");
+        //    await _userManager.CreateAsync(user1, "SuperAdmin123");
 
-            AppUser user2 = new AppUser
-            {
-                FullName = "Member",
-                UserName = "member",
-            };
+        //    AppUser user2 = new AppUser
+        //    {
+        //        FullName = "Member",
+        //        UserName = "member",
+        //    };
 
-            await _userManager.CreateAsync(user2, "Member123");
+        //    await _userManager.CreateAsync(user2, "Member123");
 
-            await _userManager.AddToRoleAsync(user1, "SuperAdmin");
-            await _userManager.AddToRoleAsync(user2, "Member");
+        //    await _userManager.AddToRoleAsync(user1, "SuperAdmin");
+        //    await _userManager.AddToRoleAsync(user2, "Member");
 
-            return Ok(user1.Id);
-        }
+        //    return Ok(user1.Id);
+        //}
 
 
         [HttpPost("login")]
@@ -63,7 +63,7 @@ namespace HotelProject.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("profile")]
         public ActionResult Profile()
         {
@@ -95,7 +95,7 @@ namespace HotelProject.Controllers
             return StatusCode(201, new { Id = _authService.Create(createDto) });
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPut("update/{id}")]
         public IActionResult Update(string id, AdminUpdateDto updateDto)
         {
@@ -112,7 +112,7 @@ namespace HotelProject.Controllers
 
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin")] 
         [HttpGet("adminAllByPage")]
         public ActionResult<PaginatedList<AdminPaginatedGetDto>> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {

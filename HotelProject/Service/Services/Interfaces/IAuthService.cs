@@ -14,7 +14,7 @@ namespace Service.Services.Interfaces
 
         string Create(AdminCreateDto createDto);
         PaginatedList<AdminPaginatedGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10);
-        List<AdminGetDto> GetAll(string? search = null);
+        //List<AdminGetDto> GetAll(string? search = null);
         void Update(string id, AdminUpdateDto updateDto);
         void Delete(string id);
         Task UpdatePasswordAsync(AdminUpdateDto updatePasswordDto);

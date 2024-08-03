@@ -24,7 +24,7 @@ namespace Service.Services
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public AuthService(UserManager<AppUser> userManager, IConfiguration configuration , IMapper mapper)
+        public AuthService(UserManager<AppUser> userManager, IConfiguration configuration, IMapper mapper)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -81,29 +81,29 @@ namespace Service.Services
             }
         }
 
-        public List<AdminGetDto> GetAll(string? search = null)
-        {
-            var users = _userManager.Users.ToList();
+        //public List<AdminGetDto> GetAll(string? search = null)
+        //{
+        //    var users = _userManager.Users.ToList();
 
-            var adminUsers = _mapper.Map<List<AdminGetDto>>(users);
+        //    var adminUsers = _mapper.Map<List<AdminGetDto>>(users);
 
-            var filteredAdminUsers = adminUsers.Where(adminUser =>
-            {
-                var user = users.FirstOrDefault(u => u.Id == adminUser.Id);
-                var roles = _userManager.GetRolesAsync(user).Result;
-                return roles.Contains("Admin");
-            }).ToList();
+        //    var filteredAdminUsers = adminUsers.Where(adminUser =>
+        //    {
+        //        var user = users.FirstOrDefault(u => u.Id == adminUser.Id);
+        //        var roles = _userManager.GetRolesAsync(user).Result;
+        //        return roles.Contains("Admin");
+        //    }).ToList();
 
 
-            if (!string.IsNullOrEmpty(search))
-            {
-                filteredAdminUsers = filteredAdminUsers
-                    .Where(u => u.UserName.Contains(search))
-                    .ToList();
-            }
+        //    if (!string.IsNullOrEmpty(search))
+        //    {
+        //        filteredAdminUsers = filteredAdminUsers
+        //            .Where(u => u.UserName.Contains(search))
+        //            .ToList();
+        //    }
 
-            return filteredAdminUsers;
-        }
+        //    return filteredAdminUsers;
+        //}
 
         public PaginatedList<AdminPaginatedGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
@@ -140,38 +140,8 @@ namespace Service.Services
         }
 
 
-        //public string Login(UserLoginDto loginDto)
-        //{
-        //    AppUser? user = _userManager.FindByNameAsync(loginDto.UserName).Result;
+       
 
-        //    if (user == null || !_userManager.CheckPasswordAsync(user, loginDto.Password).Result) throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect!");
-
-        //    List<Claim> claims = new List<Claim>();
-        //    claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
-        //    claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-        //    claims.Add(new Claim("FullName", user.FullName));
-
-        //    var roles = _userManager.GetRolesAsync(user).Result;
-
-        //    claims.AddRange(roles.Select(x => new Claim(ClaimTypes.Role, x)).ToList());
-
-        //    string secret = _configuration.GetSection("JWT:Secret").Value;
-
-        //    var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secret));
-        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        //    JwtSecurityToken token = new JwtSecurityToken(
-        //        claims: claims,
-        //        signingCredentials: creds,
-        //        issuer: _configuration.GetSection("JWT:Issuer").Value,
-        //        audience: _configuration.GetSection("JWT:Audience").Value,
-        //        expires: DateTime.Now.AddDays(3)
-        //        );
-
-        //    string tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
-
-        //    return tokenStr;
-        //}
 
 
         public SendingLoginDto Login(AdminLoginDto loginDto)
@@ -193,7 +163,10 @@ namespace Service.Services
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-            claims.Add(new Claim("FullName", user.FullName));
+            if(user.FullName != null)
+            {
+                claims.Add(new Claim("FullName", user.FullName));
+            }
 
             var roles = _userManager.GetRolesAsync(user).Result;
 
@@ -219,6 +192,7 @@ namespace Service.Services
 
         public void Update(string id, AdminUpdateDto updateDto)
         {
+
             var user = _userManager.FindByIdAsync(id).Result;
 
             if (user == null)
@@ -227,7 +201,7 @@ namespace Service.Services
             }
 
             var existingUser = _userManager.FindByNameAsync(updateDto.UserName).Result;
-            if (existingUser != null)
+            if (existingUser != null && existingUser.UserName != updateDto.UserName)
             {
                 throw new RestException(StatusCodes.Status400BadRequest, "UserName", "UserName already taken");
             }

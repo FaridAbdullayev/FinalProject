@@ -61,11 +61,11 @@ namespace HotelUI.Controllers
 
 
         public IActionResult ResetPassword()
-        {
-            if (Request.Cookies.ContainsKey("token"))
-            {
-                Response.Cookies.Delete("token");
-            }
+         {
+            //if (Request.Cookies.ContainsKey("token"))
+            //{
+            //    Response.Cookies.Delete("token");
+            //}
 
             var userName = TempData["ResetUserName"] as string;
             var token = TempData["Token"] as string;
@@ -92,7 +92,7 @@ namespace HotelUI.Controllers
             }
             try
             {
-                await _crudService.Update<ResetPasswordAdmin>(model, "updatePassword");
+                await _crudService.Update<ResetPasswordAdmin>(model, "Auth/updatePassword");
 
                 return RedirectToAction("Login");
             }
@@ -122,7 +122,7 @@ namespace HotelUI.Controllers
 
             try
             {
-                await _crudService.CreateForAdmins(createRequest, "createAdmin");
+                await _crudService.CreateForAdmins(createRequest, "Auth/createAdmin");
                 return RedirectToAction("ShowAdmin");
             }
             catch (ModelException e)
@@ -138,7 +138,7 @@ namespace HotelUI.Controllers
         {
             try
             {
-                var paginatedResponse = await _crudService.GetAllPaginated<AdminPaginatedGetResponse>("adminAllByPage", page);
+                var paginatedResponse = await _crudService.GetAllPaginated<AdminPaginatedGetResponse>("Auth/adminAllByPage", page);
 
                 return View(paginatedResponse);
 
@@ -164,7 +164,7 @@ namespace HotelUI.Controllers
 
         public async Task<IActionResult> Profile()
         {
-            var user = await _crudService.Get<AdminGetResponse>("profile");
+            var user = await _crudService.Get<AdminGetResponse>("Auth/profile");
 
             AdminProfileEditRequest adminProfile = new AdminProfileEditRequest
             {
@@ -181,7 +181,6 @@ namespace HotelUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(AdminProfileEditRequest editRequest, string id)
         {
-
             if (!ModelState.IsValid)
             {
                 TempData["ProfileUpdateError"] = "Please correct the errors and try again.";
@@ -190,7 +189,7 @@ namespace HotelUI.Controllers
 
             try
             {
-                await _crudService.Update<AdminProfileEditRequest>(editRequest, "update/" + id);
+                await _crudService.Update<AdminProfileEditRequest>(editRequest, "Auth/update/" + id);
 
                 if (Request.Cookies.ContainsKey("token"))
 

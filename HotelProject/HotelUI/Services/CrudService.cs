@@ -52,9 +52,6 @@ namespace HotelUI.Services
                 else { throw new HttpException(response.StatusCode);}
             }
         }
-
-
-
         public async Task<CreateResponse> Create<TRequest>(TRequest request, string path)
         {
             _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
@@ -105,7 +102,7 @@ namespace HotelUI.Services
                 }
             }
         }
-
+      
         public async Task Delete(string path)
         {
             _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);

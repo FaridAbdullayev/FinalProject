@@ -8,6 +8,7 @@ using Service.Dtos.OurStaff;
 using Service.Dtos.Room;
 using Service.Dtos.Service;
 using Service.Dtos.Slider;
+using Service.Dtos.UserDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,9 @@ namespace Service.Profiles
 
 
 
+            CreateMap<AppUser, AdminGetDto>();
 
+            CreateMap<AppUser, AdminPaginatedGetDto>();
             // CreateMap<RoomCreateDto, Room>()
             //.ForMember(dest => dest.Images, opt => opt
             //    .MapFrom(src => src.Images
