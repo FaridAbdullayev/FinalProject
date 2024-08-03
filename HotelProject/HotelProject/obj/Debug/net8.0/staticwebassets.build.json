@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "xv1uIaHR+9yQVQ9Lna2tYEues0h3q19DJJZeocLqw0A=",
+  "Hash": "BCZ4oYOMYuij2uVyd/zPAnwKIKclErNHhmcdyivBqpw=",
   "Source": "HotelProject",
   "BasePath": "_content/HotelProject",
   "Mode": "Default",
@@ -205,6 +205,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\room\\67fa6976-b51f-43a4-a112-8f4f42a93807blog7.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\room\\709e49b0-6e10-462c-acdb-5c5f20a80a8dblog1.jpg",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/room/709e49b0-6e10-462c-acdb-5c5f20a80a8dblog1.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\room\\709e49b0-6e10-462c-acdb-5c5f20a80a8dblog1.jpg"
     },
     {
       "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\room\\8820770d-6e7b-4fce-841e-e12dbe8ee59dteam-2.jpg",

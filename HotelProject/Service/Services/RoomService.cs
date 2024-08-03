@@ -70,7 +70,8 @@ namespace Service.Services
                 Area = createDto.Area,
                 MaxAdultsCount = createDto.MaxAdultsCount,
                 MaxChildrenCount = createDto.MaxChildrenCount,
-                BedType = createDto.BedType,
+                BedTypeId = createDto.BedTypeId,
+                //BedTypeId = createDto.BedType,
                 BranchId = createDto.BranchId,
                 RoomServices = roomCategories,
                 Images = new List<RoomImage>()

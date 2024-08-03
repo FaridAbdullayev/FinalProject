@@ -16,7 +16,7 @@ namespace Service.Dtos.Room
         public int MaxChildrenCount { get; set; }
         public int MaxAdultsCount { get; set; }
         public int BranchId {  get; set; }
-        public string BedType { get; set; }
+        public int BedTypeId { get; set; }
         public List<int> ServiceIds { get; set; } = new List<int>();
         public List<RoomImageGetDto> Images { get; set; } = new List<RoomImageGetDto>();
     }

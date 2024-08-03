@@ -10,7 +10,7 @@ namespace HotelUI.Models.Room
         public double Area { get; set; }
         public int MaxChildrenCount { get; set; }
         public int MaxAdultsCount { get; set; }
-        public int BedType { get; set; }
+        public int BedTypeId { get; set; }
         public int BranchId { get; set; }
         public List<IFormFile> Images { get; set; } = new List<IFormFile>();
         public List<int> ServiceIds { get; set; } = new List<int>();

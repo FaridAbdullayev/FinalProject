@@ -22,6 +22,7 @@ namespace Data
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<BedType> BedTypes { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

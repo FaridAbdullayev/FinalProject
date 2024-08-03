@@ -1,5 +1,4 @@
-﻿using Core.Entities.Enums;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace Service.Dtos.Room
         public double Area { get; set; }
         public int MaxChildrenCount { get; set; }
         public int MaxAdultsCount { get; set; }
-        public BedType BedType { get; set; }
+        public int BedTypeId { get; set; }
         public int BranchId { get; set; }
         public List<IFormFile> Images {  get; set; } = new List<IFormFile>();
         public List<int> ServiceIds { get; set; } = new List<int>();

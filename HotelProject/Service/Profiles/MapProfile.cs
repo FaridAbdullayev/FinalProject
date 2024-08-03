@@ -3,6 +3,7 @@ using Core.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Pustok.Helpers;
+using Service.Dtos.BedType;
 using Service.Dtos.Branch;
 using Service.Dtos.OurStaff;
 using Service.Dtos.Room;
@@ -39,6 +40,10 @@ namespace Service.Profiles
             CreateMap<Branch, BranchGetDto>();
             CreateMap<BranchCreateDto, Branch>();
             CreateMap<Branch,BranchListItemGetDto>();
+
+            CreateMap<BedType, BedTypeGetDto>();
+            CreateMap<BedTypeCreateDto, BedType>();
+            CreateMap<BedType, BedTypeListItemGetDto>();
 
 
             CreateMap<Core.Entities.Service, ServiceGetDto>();

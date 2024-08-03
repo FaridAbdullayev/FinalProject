@@ -19,6 +19,15 @@ namespace Data.Configuration
             builder.Property(x=>x.Area).IsRequired(true);
             builder.Property(x=>x.MaxChildrenCount).IsRequired(true);
             builder.Property(x=>x.MaxAdultsCount).IsRequired(true);
+
+            builder.HasOne(x => x.BedType)
+               .WithMany(x => x.Room)
+               .HasForeignKey(x => x.BedTypeId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Branch)
+                .WithMany(b => b.Rooms) 
+                .HasForeignKey(x => x.BranchId);
         }
     }
 }

@@ -46,26 +46,9 @@
                     <span class="text-danger" asp-validation-for="MaxChildrenCount"></span>
                 </div>
                 <div class="form-group">
-                    <label for="BedType">BedType</label>
-                    <div class="d-flex">
-                        <div class="mr-3">
-                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType" id="king" value="0">
-                            <label class="form-check-label" for="king">King</label>
-                        </div>
-                        <div class="mr-3">
-                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType" id="queen" value="1">
-                            <label class="form-check-label" for="queen">Queen</label>
-                        </div>
-                        <div class="mr-3">
-                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType" id="double" value="2">
-                            <label class="form-check-label" for="double">Double</label>
-                        </div>
-                        <div>
-                            <input asp-for="BedType" type="radio" class="form-check-input" name="BedType " id="twin" value="3">
-                            <label class="form-check-label" for="twin">Twin</label>
-                        </div>
-                    </div>
-                    <span class="text-danger" asp-validation-for="BedType"></span>
+                    <label asp-for="BedTypeId" class="control-label"></label>
+                    <select asp-for="BedTypeId" class="form-control" asp-items="@(new SelectList(ViewBag.BedType,"Id","Name"))"></select>
+                    <span class="text-danger" asp-validation-for="BedTypeId"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="BranchId" class="control-label"></label>

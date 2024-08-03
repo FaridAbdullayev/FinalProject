@@ -1,4 +1,5 @@
 ﻿using HotelUI.Exceptions;
+using HotelUI.Models.BedTypes;
 using HotelUI.Models.Branch;
 using HotelUI.Models.Room;
 using HotelUI.Models.ServiceModels;
@@ -46,11 +47,13 @@ namespace HotelUI.Controllers
 
             ViewBag.Branches = await GetBranches();
             ViewBag.Services = await GetService();
+            ViewBag.BedType = await GetBedType();
 
 
 
             if (ViewBag.Branches == null) return RedirectToAction("error", "home");
             if (ViewBag.Services == null) return RedirectToAction("error", "home");
+            if (ViewBag.BedType == null) return RedirectToAction("error", "home");
             return View();
         }
 
@@ -69,6 +72,7 @@ namespace HotelUI.Controllers
                 foreach (var item in e.Error.Errors) ModelState.AddModelError(item.Key, item.Message);
                 ViewBag.Branches = await _crudService.Get<List<BranchGetResponse>>("branches/all");
                 ViewBag.Services = await _crudService.Get<List<ServiceGetResponse>>("services/all");
+                ViewBag.BedType = await _crudService.Get<List<BedTypeGetResponse>>("beds/all");
                 return View();
             }
         }
@@ -85,9 +89,9 @@ namespace HotelUI.Controllers
                 Price = room.Price,
                 Description = room.Description,
                 BranchId = room.BranchId,
+                BedTypeId = room.BedTypeId,
                 MaxAdultsCount = room.MaxAdultsCount,
                 MaxChildrenCount = room.MaxChildrenCount,
-                BedType = room.BedType,
                 Area = room.Area,
                 ServiceIds = room.ServiceIds,
             };
@@ -96,6 +100,7 @@ namespace HotelUI.Controllers
             ViewBag.Images = room.Images;
             ViewBag.Branches = await GetBranches();
             ViewBag.Services = await GetService();
+            ViewBag.BedType = await GetBedType();
             return View(data);
         }
         [HttpPost]
@@ -113,7 +118,7 @@ namespace HotelUI.Controllers
                     BranchId = room.BranchId,
                     MaxAdultsCount = room.MaxAdultsCount,
                     MaxChildrenCount = room.MaxChildrenCount,
-                    BedType = room.BedType,
+                    BedTypeId = room.BedTypeId,
                     Area = room.Area,
                     ServiceIds = room.ServiceIds,
                 };
@@ -121,6 +126,7 @@ namespace HotelUI.Controllers
                 ViewBag.Images = room.Images;
                 ViewBag.Services = await GetService();
                 ViewBag.Branches = await GetBranches();
+                ViewBag.BedType = await GetBedType();
                 return View(data);
             }
             try
@@ -136,7 +142,7 @@ namespace HotelUI.Controllers
 
                 ViewBag.Branches = await _crudService.Get<List<BranchGetResponse>>("branches/all");
                 ViewBag.Services = await _crudService.Get<List<ServiceGetResponse>>("services/all");
-
+                ViewBag.BedType = await _crudService.Get<List<BedTypeGetResponse>>("beds/all");
                 return View();
             }
         }
@@ -180,6 +186,21 @@ namespace HotelUI.Controllers
                 {
                     var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
                     var data = JsonSerializer.Deserialize<List<ServiceGetResponse>>(await response.Content.ReadAsStringAsync(), options);
+
+                    return data;
+                }
+            }
+            return null;
+        }
+
+        private async Task<List<BedTypeGetResponse>> GetBedType()
+        {
+            using (var response = await _client.GetAsync("https://localhost:7119/api/beds/all"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+                    var data = JsonSerializer.Deserialize<List<BedTypeGetResponse>>(await response.Content.ReadAsStringAsync(), options);
 
                     return data;
                 }

@@ -22,6 +22,24 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Core.Entities.BedType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BedTypes");
+                });
+
             modelBuilder.Entity("Core.Entities.Branch", b =>
                 {
                     b.Property<int>("Id")
@@ -100,7 +118,7 @@ namespace Data.Migrations
                     b.Property<double>("Area")
                         .HasColumnType("float");
 
-                    b.Property<int>("BedType")
+                    b.Property<int>("BedTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("BranchId")
@@ -134,6 +152,8 @@ namespace Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BedTypeId");
 
                     b.HasIndex("BranchId");
 
@@ -479,11 +499,19 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Room", b =>
                 {
+                    b.HasOne("Core.Entities.BedType", "BedType")
+                        .WithMany("Room")
+                        .HasForeignKey("BedTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.Branch", "Branch")
                         .WithMany("Rooms")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BedType");
 
                     b.Navigation("Branch");
                 });
@@ -567,6 +595,11 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.BedType", b =>
+                {
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Core.Entities.Branch", b =>

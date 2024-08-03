@@ -28,8 +28,6 @@
                         <th scope="col">Area</th>
                         <th scope="col">MaxAdultsCount</th>
                         <th scope="col">MaxChildrenCount</th>
-                        <th scope="col">BedType</th>
-                        <th scope="col">Branch</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,7 +41,6 @@
                             <td>@item.Area</td>
                             <td>@item.MaxAdultsCount</td>
                             <td>@item.MaxChildrenCount</td>
-                            <td>@item.BedType</td>
                             <td>
                                 <a class="btn btn-warning" asp-action="edit" asp-route-id="@item.Id">Edit</a>
                                 <a class="btn btn-danger delete-btn" asp-action="delete" asp-route-id="@item.Id">Delete</a>

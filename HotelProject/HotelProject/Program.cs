@@ -113,6 +113,9 @@ builder.Services.AddScoped<ISliderRepository, SliderRepository>();
 builder.Services.AddScoped<IRoomService, Service.Services.RoomService>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
+builder.Services.AddScoped<IBedTypeService, BedTypeService>();
+builder.Services.AddScoped<IBedTypeRepository, BedTypeRepository>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddAuthentication(opt =>
