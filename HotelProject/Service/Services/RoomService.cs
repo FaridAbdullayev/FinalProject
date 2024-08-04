@@ -21,16 +21,18 @@ namespace Service.Services
         private readonly IRoomRepository _repo;
         public readonly IServiceRepository _serviceRepo;
         public readonly IBranchRepository _branchRepo;
+        public readonly IBedTypeRepository _bedTypeRepo;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
 
-        public RoomService(IRoomRepository roomRepository,IServiceRepository serviceRepository,IMapper mapper,IWebHostEnvironment webHostEnvironment ,IBranchRepository branchRepository)
+        public RoomService(IRoomRepository roomRepository,IServiceRepository serviceRepository,IMapper mapper,IWebHostEnvironment webHostEnvironment ,IBranchRepository branchRepository,IBedTypeRepository bedTypeRepository)
         {
             _env = webHostEnvironment;
             _repo = roomRepository;
             _serviceRepo = serviceRepository;
             _mapper = mapper;
             _branchRepo = branchRepository;
+            _bedTypeRepo = bedTypeRepository;
         }
 
 
@@ -71,7 +73,6 @@ namespace Service.Services
                 MaxAdultsCount = createDto.MaxAdultsCount,
                 MaxChildrenCount = createDto.MaxChildrenCount,
                 BedTypeId = createDto.BedTypeId,
-                //BedTypeId = createDto.BedType,
                 BranchId = createDto.BranchId,
                 RoomServices = roomCategories,
                 Images = new List<RoomImage>()
@@ -125,9 +126,79 @@ namespace Service.Services
             return _mapper.Map<RoomGetDto>(entity);
         }
 
-        public void Update(RoomUpdateDto updateDto, int Id)
+        public void Update(RoomUpdateDto updateDto, int id)
         {
-            throw new NotImplementedException();
+            List<Core.Entities.Service> service = new List<Core.Entities.Service>();
+
+            var serviceIds = updateDto.ServiceIds?.ToList();
+
+            if (serviceIds != null)
+            {
+                service = _serviceRepo.GetAll(x => serviceIds.Contains(x.Id)).ToList();
+            }
+            if (serviceIds == null || service.Count == 0)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "ServiceId", "One or more services not found by given Ids");
+            }
+
+
+            Room entity = _repo.Get(x => x.Id == id && !x.IsDeleted, "RoomServices","Images");
+
+            if (entity == null) throw new RestException(StatusCodes.Status404NotFound, "Room not found");
+
+
+            if (entity.Name != updateDto.Name && _repo.Exists(x => x.Name == updateDto.Name && !x.IsDeleted))
+                throw new RestException(StatusCodes.Status400BadRequest, "Name", "Room already taken");
+
+
+
+            Branch branch = _branchRepo.Get(x => x.Id == updateDto.BranchId && !x.IsDeleted);
+            if (branch == null)
+                throw new RestException(StatusCodes.Status404NotFound, "BranchId", "Branch not found");
+
+            BedType bed = _bedTypeRepo.Get(x => x.Id == updateDto.BedTypeId);
+
+            if(bed == null)
+                throw new RestException(StatusCodes.Status404NotFound, "BedTypeId", "BedType not found");
+
+
+
+
+            List<RoomImage> data = entity.Images.Where(x => updateDto.RoomImageIds.Contains(x.Id)).ToList();
+            List<RoomImage> removedImages = entity.Images.Where(x => !updateDto.RoomImageIds.Contains(x.Id)).ToList();
+
+            entity.Images = data;
+
+            foreach (var imgFile in updateDto.Images)
+            {
+                RoomImage bookImg = new RoomImage
+                {
+                    Image = FileManager.Save(imgFile, _env.WebRootPath, "uploads/room"),
+                };
+                entity.Images.Add(bookImg);
+            }
+
+
+            var roomService = updateDto.ServiceIds.Select(x => new Core.Entities.RoomService { ServiceId = x }).ToList();
+
+
+            entity.Name = updateDto.Name;
+            entity.Description = updateDto.Description;
+            entity.BranchId = updateDto.BranchId;
+            entity.Price = updateDto.Price;
+            entity.BedTypeId = updateDto.BedTypeId;
+            entity.UpdateAt = DateTime.Now;
+            entity.MaxAdultsCount = updateDto.MaxAdultsCount;
+            entity.MaxChildrenCount = updateDto.MaxChildrenCount;
+            entity.RoomServices = roomService;
+
+            foreach (var item in removedImages)
+            {
+                FileManager.Delete(_env.WebRootPath, "uploads/room", item.Image);
+            }
+
+
+            _repo.Save();
         }
     }
 }

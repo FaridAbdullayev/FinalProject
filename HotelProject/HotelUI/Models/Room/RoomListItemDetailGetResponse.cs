@@ -1,5 +1,4 @@
 ﻿
-using HotelUI.Models.Enums;
 
 namespace HotelUI.Models.Room
 {

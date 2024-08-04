@@ -26,8 +26,8 @@ namespace Service.Dtos.Room
     {
         public RoomCreateDtoValidator()
         {
-            //RuleFor(x => x.Name).NotEmpty().MaximumLength(50).MinimumLength(3);
-            //RuleFor(x => x.Description).NotEmpty().MaximumLength(50).MinimumLength(5);
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(50).MinimumLength(3);
+            RuleFor(x => x.Description).NotEmpty().MaximumLength(50).MinimumLength(3);
         }
     }
 }

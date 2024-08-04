@@ -23,7 +23,7 @@ namespace Service.Dtos.OurStaff
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(50).MinimumLength(3);
             RuleFor(x => x.Position).NotEmpty().MaximumLength(50).MinimumLength(3);
-            RuleFor(x => x.Description).NotEmpty().MinimumLength(3);
+            RuleFor(x => x.Description).NotEmpty().MaximumLength(50).MinimumLength(3);
 
             RuleFor(x => x).Custom((f, c) =>
             {

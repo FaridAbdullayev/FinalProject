@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,14 @@ namespace Service.Dtos.Room
         public List<IFormFile> Images { get; set; } = new List<IFormFile>();
         public List<int>? RoomImageIds { get; set; } = new List<int>();
         public List<int>? ServiceIds { get; set; } = new List<int>();
+    }
+
+    public class RoomUpdateDtoValidator : AbstractValidator<RoomUpdateDto>
+    {
+        public RoomUpdateDtoValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(50).MinimumLength(3);
+            RuleFor(x => x.Description).NotEmpty().MaximumLength(50).MinimumLength(5);
+        }
     }
 }
