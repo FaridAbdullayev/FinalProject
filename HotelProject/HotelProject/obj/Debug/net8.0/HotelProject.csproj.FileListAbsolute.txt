@@ -162,3 +162,7 @@ C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\Quartz.dll
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\Quartz.Extensions.DependencyInjection.dll
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\Quartz.Extensions.Hosting.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\MailKit.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\MimeKit.dll
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelProject\bin\Debug\net8.0\System.Formats.Asn1.dll

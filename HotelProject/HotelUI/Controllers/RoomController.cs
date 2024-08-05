@@ -1,4 +1,5 @@
 ﻿using HotelUI.Exceptions;
+using HotelUI.Filters;
 using HotelUI.Models.BedTypes;
 using HotelUI.Models.Branch;
 using HotelUI.Models.Room;
@@ -10,6 +11,7 @@ using System.Text.Json;
 
 namespace HotelUI.Controllers
 {
+    [ServiceFilter(typeof(AuthFilter))]
     public class RoomController : Controller
     {
         private HttpClient _client;

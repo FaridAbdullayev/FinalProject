@@ -19,6 +19,7 @@ using Microsoft.OpenApi.Models;
 using Core.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Service.Dtos.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -116,6 +117,14 @@ builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IBedTypeService, BedTypeService>();
 builder.Services.AddScoped<IBedTypeRepository, BedTypeRepository>();
 
+builder.Services.AddScoped<ISettingService, SettingService>();
+builder.Services.AddScoped<ISettingRepository, SettingRepository>();
+
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+
+
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddAuthentication(opt =>

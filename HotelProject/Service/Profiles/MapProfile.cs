@@ -8,8 +8,10 @@ using Service.Dtos.Branch;
 using Service.Dtos.OurStaff;
 using Service.Dtos.Room;
 using Service.Dtos.Service;
+using Service.Dtos.Setting;
 using Service.Dtos.Slider;
 using Service.Dtos.UserDtos;
+using Service.Dtos.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,10 +77,17 @@ namespace Service.Profiles
                 opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()));
 
 
+            CreateMap<Setting, SettingGetDto>();
+            CreateMap<Setting, SettingListItemGetDto>();
+
 
             CreateMap<AppUser, AdminGetDto>();
 
             CreateMap<AppUser, AdminPaginatedGetDto>();
+
+
+
+            CreateMap<ContactUserDto, Contact>();
             // CreateMap<RoomCreateDto, Room>()
             //.ForMember(dest => dest.Images, opt => opt
             //    .MapFrom(src => src.Images

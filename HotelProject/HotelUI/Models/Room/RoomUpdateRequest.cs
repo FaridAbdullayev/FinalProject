@@ -16,11 +16,11 @@ namespace HotelUI.Models.Room
         public string Description { get; set; }
         public double? Price { get; set; }
         public double? Area { get; set; }
-        [Range(2, int.MaxValue)]
-        public int MaxChildrenCount { get; set; }
+        [Range(1, 5)]
+        public int? MaxChildrenCount { get; set; }
 
-        [Range(2, int.MaxValue)]
-        public int MaxAdultsCount { get; set; }
+        [Range(1, 5)]
+        public int? MaxAdultsCount { get; set; }
         public int? BedTypeId { get; set; }
         public int? BranchId { get; set; }
         public List<IFormFile>? Images { get; set; } = new List<IFormFile>();

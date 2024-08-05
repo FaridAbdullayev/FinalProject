@@ -1,10 +1,12 @@
 ﻿using HotelUI.Exceptions;
+using HotelUI.Filters;
 using HotelUI.Models.OurStaff;
 using HotelUI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelUI.Controllers
 {
+    [ServiceFilter(typeof(AuthFilter))]
     public class OurStaffController : Controller
     {
         private HttpClient _client;

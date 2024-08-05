@@ -1,0 +1,35 @@
+﻿@using HotelUI.Models.Setting
+
+@model SettingUpdateRequest
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Branch</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <form class="user" asp-action="Edit" asp-route-key="@ViewBag.Key" method="post">
+                <div class="form-group">
+                    <label for="Value">Value</label>
+                    <input asp-for="Value" class="form-control" id="Value" placeholder="Enter No here..">
+                    <span class="text-danger" asp-validation-for="Value"></span>
+                </div>
+                <button class="btn btn-outline-success" type="submit">
+                    Edit
+                </button>
+                <a class="btn btn-outline-danger" asp-action="Index">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Html.Partial("_ValidationScriptsPartial");
+}
+

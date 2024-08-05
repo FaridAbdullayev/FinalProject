@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
 using Service.Dtos.UserDtos;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
+using static Service.Exceptions.ResetException;
 
 namespace HotelProject.Controllers
 {
@@ -119,5 +121,80 @@ namespace HotelProject.Controllers
             var paginatedAdmins = _authService.GetAllByPage(search, page, size);
             return Ok(paginatedAdmins);
         }
+
+
+
+
+        [HttpPost("user/login")]
+        public async Task<IActionResult> LoginForUser([FromBody] MemberLoginDto loginDto)
+        {
+
+            var token = await _authService.MemberLogin(loginDto);
+
+
+            return Ok(new { Result = token });
+
+        }
+
+
+        [HttpPost("user/register")]
+        public ActionResult RegisterForUser([FromBody] MemberRegisterDto registerDto)
+        {
+
+            var Id = _authService.MemberRegister(registerDto);
+            return Ok(new { Result = Id });
+
+        }
+
+
+
+
+        //[HttpPost("user/verify")]
+        //public async Task<IActionResult> Verify([FromBody] MemberVerifyDto verifyDto)
+        //{
+        //    try
+        //    {
+        //        bool isValid = await _authService.VerifyEmailAndToken(verifyDto.Email, verifyDto.Token);
+        //        if (isValid)
+        //        {
+        //            return Ok("Email and token are valid. You can now reset your password.");
+        //        }
+        //        else
+        //        {
+        //            return BadRequest("Invalid email or token.");
+        //        }
+        //    }
+        //    catch (RestException ex)
+        //    {
+        //        return StatusCode(ex.Code, ex.Message);
+        //    }
+        //}
+
+
+        [HttpGet("user/verifyemail")]
+        public async Task<IActionResult> VerifyEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Invalid email verification request.");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return Ok("Email confirmed successfully!");
+            }
+
+            return BadRequest("Failed to confirm email.");
+        }
+
+
+
     }
 }

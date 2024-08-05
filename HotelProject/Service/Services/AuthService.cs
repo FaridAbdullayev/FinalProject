@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Core.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using Service.Dtos;
 using Service.Dtos.UserDtos;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,14 +27,17 @@ namespace Service.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly EmailService _emailService;
 
-        public AuthService(UserManager<AppUser> userManager, IConfiguration configuration, IMapper mapper)
+        public AuthService(UserManager<AppUser> userManager, IConfiguration configuration, IMapper mapper, SignInManager<AppUser> signInManager, EmailService emailService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _mapper = mapper;
+            _signInManager = signInManager;
+            _emailService = emailService;
         }
-
         public string Create(AdminCreateDto createDto)
         {
             var existingUser = _userManager.FindByNameAsync(createDto.UserName).Result;
@@ -63,7 +70,6 @@ namespace Service.Services
 
             return user.Id;
         }
-
         public void Delete(string id)
         {
             var user = _userManager.FindByIdAsync(id).Result;
@@ -80,31 +86,6 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status400BadRequest, "Failed to delete Admin user.");
             }
         }
-
-        //public List<AdminGetDto> GetAll(string? search = null)
-        //{
-        //    var users = _userManager.Users.ToList();
-
-        //    var adminUsers = _mapper.Map<List<AdminGetDto>>(users);
-
-        //    var filteredAdminUsers = adminUsers.Where(adminUser =>
-        //    {
-        //        var user = users.FirstOrDefault(u => u.Id == adminUser.Id);
-        //        var roles = _userManager.GetRolesAsync(user).Result;
-        //        return roles.Contains("Admin");
-        //    }).ToList();
-
-
-        //    if (!string.IsNullOrEmpty(search))
-        //    {
-        //        filteredAdminUsers = filteredAdminUsers
-        //            .Where(u => u.UserName.Contains(search))
-        //            .ToList();
-        //    }
-
-        //    return filteredAdminUsers;
-        //}
-
         public PaginatedList<AdminPaginatedGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
             var users = _userManager.Users.ToList();
@@ -138,12 +119,6 @@ namespace Service.Services
 
             return paginatedResult;
         }
-
-
-       
-
-
-
         public SendingLoginDto Login(AdminLoginDto loginDto)
         {
             AppUser? user = _userManager.FindByNameAsync(loginDto.UserName).Result;
@@ -163,7 +138,7 @@ namespace Service.Services
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-            if(user.FullName != null)
+            if (user.FullName != null)
             {
                 claims.Add(new Claim("FullName", user.FullName));
             }
@@ -189,6 +164,8 @@ namespace Service.Services
 
             return new SendingLoginDto { Token = tokenStr, PasswordResetRequired = false };
         }
+
+
 
         public void Update(string id, AdminUpdateDto updateDto)
         {
@@ -275,6 +252,145 @@ namespace Service.Services
                 var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update user: {errors}");
             }
+        }
+
+
+
+        private async Task<string> GenerateJwtToken(AppUser user)
+        {
+            var claims = new List<Claim>
+        {
+        new Claim(ClaimTypes.NameIdentifier, user.Id),
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim("FullName", user.FullName)
+         };
+
+
+            var roles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+
+            var secret = _configuration.GetSection("JWT:Secret").Value;
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration.GetSection("JWT:Issuer").Value,
+                audience: _configuration.GetSection("JWT:Audience").Value,
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        public async Task<string> MemberLogin(MemberLoginDto memberLoginDto)
+        {
+            var user = await _userManager.FindByEmailAsync(memberLoginDto.Email);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, memberLoginDto.Password))
+            {
+                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Email incorrect!");
+            }
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                throw new RestException(StatusCodes.Status401Unauthorized, "Email", "Email not confirmed.");
+            }
+
+
+            var token = await GenerateJwtToken(user);
+
+            return token;
+        }
+
+
+        public async Task<string> MemberRegister(MemberRegisterDto register)
+        {
+            if (register.Password != register.ConfirmPassword)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Password and ConfirmPassword do not match.");
+            }
+
+
+            if (_userManager.Users.Any(u => u.Email.ToLower() == register.Email.ToLower()))
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Email is already taken.");
+            }
+
+
+            if (_userManager.Users.Any(u => u.UserName.ToLower() == register.UserName.ToLower()))
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "UserName is already taken.");
+            }
+
+
+            var appUser = new AppUser
+            {
+                UserName = register.UserName,
+                Email = register.Email,
+                FullName = register.FullName,
+                IsPasswordResetRequired = false
+            };
+
+
+            var result = await _userManager.CreateAsync(appUser, register.Password);
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to register user: {errors}");
+            }
+
+
+            var roleResult = await _userManager.AddToRoleAsync(appUser, "member");
+            if (!roleResult.Succeeded)
+            {
+                var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to assign role: {errors}");
+            }
+
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+
+
+            var url = $"{_configuration["AppSettings:AppBaseUrl"]}/api/auth/user/verifyemail?userId={appUser.Id}&token={Uri.EscapeDataString(token)}";
+
+            var subject = "Email Verification";
+
+
+            var emailbody = $"<h1><a href=\"{url}\"> Emailinizi tesdiqleyin</a></h1>";
+
+
+            _emailService.Send(appUser.Email, subject, emailbody);
+
+            return appUser.Id;
+        }
+
+        public Task<string> ForgetPassword(MemberForgetPasswordDto forgetPasswordDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ResetPassword(MemberResetPasswordDto resetPasswordDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> VerifyEmailAndToken(string email, string token)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Email is not confirmed.");
+            }
+            var decodedToken = Uri.UnescapeDataString(token);
+            var result = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword", decodedToken);
+            if (!result)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Invalid token.");
+            }
+
+            return true;
         }
     }
 }

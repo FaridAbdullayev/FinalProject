@@ -15,10 +15,10 @@ namespace HotelUI.Models.Room
         public string Description { get; set; }
         public double Price { get; set; }
         public double Area { get; set; }
-        [Range(2, int.MaxValue, ErrorMessage = "MaxChildrenCount must be at least 2.")]
+        [Range(1,5)]
         public int MaxChildrenCount { get; set; }
 
-        [Range(2, int.MaxValue, ErrorMessage = "MaxAdultsCount must be at least 2.")]
+        [Range(1,5)]
         public int MaxAdultsCount { get; set; }
         public int BedTypeId { get; set; }
         public int BranchId { get; set; }
