@@ -127,10 +127,8 @@ namespace Service.Services
             {
                 throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect!");
             }
-
             if (user.IsPasswordResetRequired)
             {
-
                 string resetToken = _userManager.GeneratePasswordResetTokenAsync(user).Result;
                 return new SendingLoginDto { Token = resetToken, PasswordResetRequired = true };
             }

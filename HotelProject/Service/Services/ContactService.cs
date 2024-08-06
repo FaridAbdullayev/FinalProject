@@ -8,6 +8,7 @@ using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,27 +28,41 @@ namespace Service.Services
             _mapper = mapper;
             _userManager = userManager;
         }
+
         public async Task ContactMessage(ContactUserDto contact)
         {
-            var user = await _userManager.FindByEmailAsync(contact.Email);
+            Contact contactEntity;
 
-
-
-            if (user != null || await _userManager.IsInRoleAsync(user, "member"))
+            if (string.IsNullOrEmpty(contact.AppUserId))
             {
-                Contact contact1 = _mapper.Map<Contact>(contact);
-
-
-                contact.AppUserId = user.Id;
-                contact.CreatedAt = DateTime.UtcNow;
-
-                _contact.Add(contact1);
-                _contact.Save();
+                contactEntity = new Contact
+                {
+                    FullName = contact.FullName,
+                    Email = contact.Email,
+                    Message = contact.Message,
+                    Subject = contact.Subject,
+                    CreatedAt = DateTime.UtcNow
+                };
             }
             else
             {
-                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect!");
+                var user = await _userManager.FindByIdAsync(contact.AppUserId);
+
+                if (user != null && await _userManager.IsInRoleAsync(user, "member"))
+                {
+                    contactEntity = _mapper.Map<Contact>(contact);
+                    contactEntity.AppUserId = user.Id;
+                }
+                else
+                {
+                    throw new RestException(StatusCodes.Status400BadRequest, "AppUserId", "User not found");
+                }
             }
+
+            _contact.Add(contactEntity);
+            _contact.Save();
         }
     }
+
 }
+
