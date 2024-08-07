@@ -1,0 +1,15 @@
+﻿@using HotelUI.Models.Contact
+@model AdminAndIUserInteraction
+<div class="content-wrapper">
+    <form asp-action="ContactMessageAdmin" method="post">
+        <div>
+            <label>Subject:</label>
+            <input asp-for="Subject" />
+        </div>
+        <div>
+            <label>Message:</label>
+            <textarea asp-for="Message"></textarea>
+        </div>
+        <button type="submit">Send</button>
+    </form>
+    </div>

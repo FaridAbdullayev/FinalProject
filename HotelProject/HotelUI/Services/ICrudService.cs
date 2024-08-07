@@ -2,6 +2,7 @@
 
 using HotelUI.Models;
 using HotelUI.Models.Admin;
+using HotelUI.Models.Contact;
 
 namespace HotelUI.Services
 {
@@ -18,5 +19,7 @@ namespace HotelUI.Services
         Task UpdateFormForm<TRequest>(TRequest request, string path);
 
         Task<CreateResponseForAdmin> CreateForAdmins<TRequest>(TRequest request, string path);
+
+        Task SendMessageToUser(AdminAndIUserInteraction interaction);
     }
 }

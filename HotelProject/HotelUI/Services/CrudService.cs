@@ -6,6 +6,7 @@ using System.Text;
 using HotelUI.Models;
 using HotelUI.Exceptions;
 using HotelUI.Models.Admin;
+using HotelUI.Models.Contact;
 
 
 
@@ -255,6 +256,24 @@ namespace HotelUI.Services
                 {
                     ErrorResponse errorResponse = JsonSerializer.Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync(), options);
                     throw new HttpException(response.StatusCode, errorResponse.Message);
+                }
+            }
+        }
+
+
+        public async Task SendMessageToUser(AdminAndIUserInteraction interaction)
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+            var jsonContent = JsonSerializer.Serialize(interaction);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            using (var response = await _client.PostAsync(baseUrl + "contacts/admin/message", content))
+            {
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpException(response.StatusCode);
                 }
             }
         }

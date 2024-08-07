@@ -8,6 +8,7 @@ namespace Service.Dtos.Contact
 {
     public class ContactGetDto
     {
+        public int Id { get; set; }
         public string AppUserId { get; set; }
         public string FullName { get; set; }
         public string Message { get; set; }

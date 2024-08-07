@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Data.Repositories;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Service.Dtos;
+using Service.Dtos.BedType;
+using Service.Dtos.Branch;
+using Service.Dtos.Contact;
 using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
@@ -21,12 +26,15 @@ namespace Service.Services
         private readonly IContactRepository _contact;
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
+        private readonly EmailService _emailService;
 
-        public ContactService(IContactRepository contact, IMapper mapper, UserManager<AppUser> userManager)
+        public ContactService(IContactRepository contact, IMapper mapper, UserManager<AppUser> userManager, EmailService emailservice)
         {
             _contact = contact;
             _mapper = mapper;
             _userManager = userManager;
+            _emailService = emailservice;
+
         }
 
         public async Task<Contact> ContactMessage(ContactUserDto contact)
@@ -78,5 +86,48 @@ namespace Service.Services
 
             return contactEntity;
         }
+
+        public async Task ContactMessageAdmin(AdminAndIUserInteraction contact)
+        {
+            Contact userContact = _contact.Get(x=>x.Id == contact.Id);
+
+            if (userContact == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "Contact not found");
+            }
+
+            string email;
+            if (!string.IsNullOrEmpty(userContact.AppUserId))
+            {
+                var user = await _userManager.FindByIdAsync(userContact.AppUserId);
+                if (user == null)
+                {
+                    throw new RestException(StatusCodes.Status404NotFound, "User", "User not found");
+                }
+                email = user.Email;
+            }
+            else
+            {
+                email = userContact.Email;
+            }
+
+            _emailService.Send(email, contact.Subject, contact.Message);
+        }
+
+
+        public List<ContactListItemGetDto> GetAll()
+        {
+            return _mapper.Map<List<ContactListItemGetDto>>(_contact.GetAll(x=>true)).ToList();
+        }
+
+        public PaginatedList<ContactGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
+        {
+            var query = _contact.GetAll(x => x.Email.Contains(search) || search == null);
+            var paginated = PaginatedList<Contact>.Create(query, page, size);
+            return new PaginatedList<ContactGetDto>(_mapper.Map<List<ContactGetDto>>(paginated.Items), paginated.TotalPages, page, size);
+        }
+
+
+
     }
 }
