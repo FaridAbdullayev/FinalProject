@@ -59,5 +59,6 @@ namespace Data.Repositories
 
             return query.Any(predicate);
         }
+
     }
 }

@@ -1,15 +1,19 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Data.Repositories;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Pustok.Helpers;
 using Service.Dtos;
 using Service.Dtos.Room;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static Service.Exceptions.ResetException;
@@ -200,5 +204,44 @@ namespace Service.Services
 
             _repo.Save();
         }
+        public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
+        {
+            var allRooms = await _repo.GetAll(x => true)
+                .Include(r => r.RoomServices)
+                .Include(r => r.Branch)
+                .Include(r => r.Images)
+                .ToListAsync();
+
+            var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate); // Assuming this method exists and fetches reserved room IDs based on date
+
+            var filteredRooms = allRooms
+                .Where(r => !reservedRoomIds.Contains(r.Id))
+                .Where(r => !criteriaDto.BranchId.HasValue || r.BranchId == criteriaDto.BranchId.Value) // Filter by branch
+                .Where(r => !criteriaDto.ServiceIds.Any() || r.RoomServices.Any(rs => criteriaDto.ServiceIds.Contains(rs.ServiceId))) // Filter by services
+                .ToList();
+
+            foreach (var room in filteredRooms)
+            {
+                room.Price = CalculateRoomPrice(room, criteriaDto.StartDate, criteriaDto.EndDate);
+            }
+
+            return _mapper.Map<List<RoomGetDto>>(filteredRooms);
+        }
+        public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
+        {
+            
+            return new List<int>();
+        }
+        public double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate)
+        {
+            var numberOfDays = (endDate - startDate).TotalDays;
+            return room.Price * numberOfDays;
+        }
+
+
+
+      
+
+        
     }
 }

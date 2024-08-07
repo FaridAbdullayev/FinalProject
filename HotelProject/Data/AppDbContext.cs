@@ -24,6 +24,7 @@ namespace Data
         public DbSet<Setting> Settings { get; set; }
         public DbSet<BedType> BedTypes { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Service.Dtos.Room;
+using Service.Dtos.Users;
+using Core.Entities;
 
 namespace Service.Services.Interfaces
 {
@@ -17,5 +19,12 @@ namespace Service.Services.Interfaces
         void Delete(int id);
         List<RoomListItemGetDto> GetAll();
         PaginatedList<RoomGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10);
+
+        Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto);
+
+        List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate);
+        double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate);
+
+        //Task<bool> ReserveRoomAsync(ReservationsDto reservationDto, string userId);
     }
 }

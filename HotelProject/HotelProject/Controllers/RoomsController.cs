@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
 using Service.Dtos.Room;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 
 namespace HotelProject.Controllers
@@ -55,6 +56,14 @@ namespace HotelProject.Controllers
         {
             _repo.Update(UpdateDto, id);
             return NoContent();
+        }
+
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetFilteredRooms([FromQuery] RoomFilterCriteriaDto criteriaDto)
+        {
+            var roomDtos = await _repo.GetFilteredRoomsAsync(criteriaDto);
+            return Ok(roomDtos);
         }
     }
 }
