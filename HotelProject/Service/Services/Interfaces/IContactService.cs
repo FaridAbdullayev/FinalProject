@@ -11,6 +11,6 @@ namespace Service.Services.Interfaces
 {
     public interface IContactService
     {
-        Task ContactMessage(ContactUserDto contact);
+        Task<Contact> ContactMessage(ContactUserDto contact);
     }
 }

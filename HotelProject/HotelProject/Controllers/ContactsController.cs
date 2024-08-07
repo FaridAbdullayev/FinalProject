@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Service.Dtos.Branch;
 using Service.Dtos.Users;
 using Service.Services.Interfaces;
+using System.Threading.Tasks;
+using static Service.Exceptions.ResetException;
 
 namespace HotelProject.Controllers
 {
@@ -16,10 +17,19 @@ namespace HotelProject.Controllers
         {
             _service = contact;
         }
+
         [HttpPost("")]
-        public ActionResult Create(ContactUserDto createDto)
+        public async Task<ActionResult> Create(ContactUserDto createDto)
         {
-            return StatusCode(201, new { id = _service.ContactMessage(createDto) });
+            try
+            {
+                var contact = await _service.ContactMessage(createDto);
+                return StatusCode(201, new { id = contact.Id });
+            }
+            catch (RestException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
     }
 }

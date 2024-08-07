@@ -29,12 +29,18 @@ namespace Service.Services
             _userManager = userManager;
         }
 
-        public async Task ContactMessage(ContactUserDto contact)
+        public async Task<Contact> ContactMessage(ContactUserDto contact)
         {
             Contact contactEntity;
 
             if (string.IsNullOrEmpty(contact.AppUserId))
             {
+                // For non-logged-in users
+                if (string.IsNullOrEmpty(contact.FullName) || string.IsNullOrEmpty(contact.Email))
+                {
+                    throw new RestException(StatusCodes.Status400BadRequest, "ContactUserDto", "FullName and Email are required for non-logged-in users");
+                }
+
                 contactEntity = new Contact
                 {
                     FullName = contact.FullName,
@@ -46,23 +52,31 @@ namespace Service.Services
             }
             else
             {
+                // For logged-in users
                 var user = await _userManager.FindByIdAsync(contact.AppUserId);
 
                 if (user != null && await _userManager.IsInRoleAsync(user, "member"))
                 {
-                    contactEntity = _mapper.Map<Contact>(contact);
-                    contactEntity.AppUserId = user.Id;
+                    contactEntity = new Contact
+                    {
+                        FullName = user.FullName,
+                        Email = user.Email,
+                        AppUserId = contact.AppUserId,
+                        Message = contact.Message,
+                        Subject = contact.Subject,
+                        CreatedAt = DateTime.UtcNow
+                    };
                 }
                 else
                 {
-                    throw new RestException(StatusCodes.Status400BadRequest, "AppUserId", "User not found");
+                    throw new RestException(StatusCodes.Status400BadRequest, "AppUserId", "User not found or not in member role");
                 }
             }
 
             _contact.Add(contactEntity);
             _contact.Save();
+
+            return contactEntity;
         }
     }
-
 }
-
