@@ -23,7 +23,7 @@ namespace Service.Services.Interfaces
         Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto);
 
         List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate);
-        double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate);
+        //double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate);
 
         //Task<bool> ReserveRoomAsync(ReservationsDto reservationDto, string userId);
     }

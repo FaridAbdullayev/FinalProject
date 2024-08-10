@@ -4,6 +4,7 @@ using Data.Repositories;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pustok.Helpers;
 using Service.Dtos;
@@ -28,8 +29,9 @@ namespace Service.Services
         public readonly IBedTypeRepository _bedTypeRepo;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<AppUser> _userManager;
 
-        public RoomService(IRoomRepository roomRepository,IServiceRepository serviceRepository,IMapper mapper,IWebHostEnvironment webHostEnvironment ,IBranchRepository branchRepository,IBedTypeRepository bedTypeRepository)
+        public RoomService(IRoomRepository roomRepository, IServiceRepository serviceRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment, IBranchRepository branchRepository, IBedTypeRepository bedTypeRepository, UserManager<AppUser> userManager)
         {
             _env = webHostEnvironment;
             _repo = roomRepository;
@@ -37,6 +39,7 @@ namespace Service.Services
             _mapper = mapper;
             _branchRepo = branchRepository;
             _bedTypeRepo = bedTypeRepository;
+            _userManager = userManager;
         }
 
 
@@ -97,12 +100,12 @@ namespace Service.Services
         }
 
 
-        
+
         public void Delete(int id)
         {
-            Room entity = _repo.Get(x=>x.Id == id && !x.IsDeleted);
+            Room entity = _repo.Get(x => x.Id == id && !x.IsDeleted);
 
-            if(entity == null) throw new RestException(StatusCodes.Status404NotFound, "Room not found");
+            if (entity == null) throw new RestException(StatusCodes.Status404NotFound, "Room not found");
 
             entity.IsDeleted = true;
             entity.UpdateAt = DateTime.Now;
@@ -146,7 +149,7 @@ namespace Service.Services
             }
 
 
-            Room entity = _repo.Get(x => x.Id == id && !x.IsDeleted, "RoomServices","Images");
+            Room entity = _repo.Get(x => x.Id == id && !x.IsDeleted, "RoomServices", "Images");
 
             if (entity == null) throw new RestException(StatusCodes.Status404NotFound, "Room not found");
 
@@ -162,7 +165,7 @@ namespace Service.Services
 
             BedType bed = _bedTypeRepo.Get(x => x.Id == updateDto.BedTypeId);
 
-            if(bed == null)
+            if (bed == null)
                 throw new RestException(StatusCodes.Status404NotFound, "BedTypeId", "BedType not found");
 
 
@@ -204,43 +207,53 @@ namespace Service.Services
 
             _repo.Save();
         }
+
         public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
         {
+            if (criteriaDto.StartDate < DateTime.Today)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "StartDate", "StartDate cannot be null or in the past.");
+            }
+
+            if (criteriaDto.EndDate < criteriaDto.StartDate)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "EndDate", "EndDate cannot be null or less than start date.");
+            }
+
+            if (criteriaDto.AdultsCount == null || criteriaDto.ChildrenCount == null)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Occupancy", "AdultsCount and ChildrenCount cannot be null.");
+            }
+
             var allRooms = await _repo.GetAll(x => true)
                 .Include(r => r.RoomServices)
                 .Include(r => r.Branch)
                 .Include(r => r.Images)
                 .ToListAsync();
 
-            var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate); // Assuming this method exists and fetches reserved room IDs based on date
+            var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate);
 
             var filteredRooms = allRooms
                 .Where(r => !reservedRoomIds.Contains(r.Id))
-                .Where(r => !criteriaDto.BranchId.HasValue || r.BranchId == criteriaDto.BranchId.Value) // Filter by branch
-                .Where(r => !criteriaDto.ServiceIds.Any() || r.RoomServices.Any(rs => criteriaDto.ServiceIds.Contains(rs.ServiceId))) // Filter by services
+                .Where(r => !criteriaDto.BranchId.HasValue || r.BranchId == criteriaDto.BranchId.Value)
+                .Where(r => criteriaDto.ServiceIds == null || !criteriaDto.ServiceIds.Any() || r.RoomServices.Any(rs => criteriaDto.ServiceIds.Contains(rs.ServiceId)))
+                .Where(r => (!criteriaDto.MinPrice.HasValue || r.Price >= criteriaDto.MinPrice.Value) &&
+                            (!criteriaDto.MaxPrice.HasValue || r.Price <= criteriaDto.MaxPrice.Value))
+                .Where(r => r.MaxAdultsCount >= criteriaDto.AdultsCount.Value &&
+                            r.MaxChildrenCount >= criteriaDto.ChildrenCount.Value)
                 .ToList();
-
-            foreach (var room in filteredRooms)
-            {
-                room.Price = CalculateRoomPrice(room, criteriaDto.StartDate, criteriaDto.EndDate);
-            }
 
             return _mapper.Map<List<RoomGetDto>>(filteredRooms);
         }
         public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
         {
-            
             return new List<int>();
         }
-        public double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate)
-        {
-            var numberOfDays = (endDate - startDate).TotalDays;
-            return room.Price * numberOfDays;
-        }
-
-
-
-      
+        //public double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate)
+        //{
+        //    var numberOfDays = (endDate - startDate).TotalDays;
+        //    return room.Price * numberOfDays;
+        //}
 
         
     }
