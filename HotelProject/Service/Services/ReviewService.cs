@@ -1,12 +1,18 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.Entities.Enum;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Service.Dtos;
+using Service.Dtos.Contact;
+using Service.Dtos.Review;
 using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +67,40 @@ namespace Service.Services
             return roomReview.Id;
         }
 
+
+        public List<ReviewListItemGetDto> GetAll()
+        {
+            return _mapper.Map<List<ReviewListItemGetDto>>(_repo.GetAll(x => true)).ToList();
+        }
+
+        public PaginatedList<ReviewGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
+        {
+            var query = _repo.GetAll(x => x.Text.Contains(search) || search == null);
+            var paginated = PaginatedList<RoomReview>.Create(query, page, size);
+            return new PaginatedList<ReviewGetDto>(_mapper.Map<List<ReviewGetDto>>(paginated.Items), paginated.TotalPages, page, size);
+        }
+
+
+        public void UpdateOrderStatus(int id, ReviewStatus newStatus)
+        {
+            var review = _repo.Get(o => o.Id == id);
+
+            if (review == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "Review not found");
+            }
+
+
+            if (review.Status == newStatus)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, $"Review is already {newStatus}");
+            }
+
+
+            review.Status = newStatus;
+
+            _repo.Save();
+        }
         //public async Task<int> MemberReview(MemberRoomReviewDto review,string userId)
         //{
         //    var room = _roomRepository.Get(x => x.Id == review.RoomId && !x.IsDeleted);

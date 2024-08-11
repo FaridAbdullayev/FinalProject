@@ -7,6 +7,7 @@ using Service.Dtos.BedType;
 using Service.Dtos.Branch;
 using Service.Dtos.Contact;
 using Service.Dtos.OurStaff;
+using Service.Dtos.Review;
 using Service.Dtos.Room;
 using Service.Dtos.Service;
 using Service.Dtos.Setting;
@@ -91,6 +92,10 @@ namespace Service.Profiles
             CreateMap<ContactUserDto, Contact>();
             CreateMap<Contact, ContactGetDto>();
             CreateMap<Contact, ContactListItemGetDto>();
+
+
+            CreateMap<RoomReview, ReviewGetDto>();
+            CreateMap<RoomReview, ReviewListItemGetDto>();
 
             // CreateMap<RoomCreateDto, Room>()
             //.ForMember(dest => dest.Images, opt => opt
