@@ -2,10 +2,9 @@
 {
     public class ReviewListItemDetailGetResponse
     {
-
-        public string? FullName { get; set; }
-        public int RoomId { get; set; }
-        public string Text { get; set; }
+        public int Id { get; set; }
+        public string RoomName { get; set; }
+        public string? UserName { get; set; }
         public string Status { get; set; }
         public byte Rate { get; set; }
         public DateTime CreatedAt { get; set; }

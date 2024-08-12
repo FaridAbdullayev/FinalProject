@@ -33,6 +33,27 @@ namespace Service.Services
             _roomRepository = roomRepository;
             _userManager = userManager;
         }
+
+        public void UpdateOrderStatus(int id, ReviewStatus newStatus)
+        {
+            var review = _repo.Get(o => o.Id == id);
+
+            if (review == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "Review not found");
+            }
+
+
+            if (review.Status == newStatus)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, $"Review is already {newStatus}");
+            }
+
+
+            review.Status = newStatus;
+
+            _repo.Save();
+        }
         public async Task<int> MemberReview(MemberRoomReviewDto review, string userId)
         {
             var room = _roomRepository.Get(x => x.Id == review.RoomId && !x.IsDeleted);
@@ -70,64 +91,29 @@ namespace Service.Services
 
         public List<ReviewListItemGetDto> GetAll()
         {
-            return _mapper.Map<List<ReviewListItemGetDto>>(_repo.GetAll(x => true)).ToList();
+            return _mapper.Map<List<ReviewListItemGetDto>>(_repo.GetAll(x => true,"AppUser","Room")).ToList();
         }
 
         public PaginatedList<ReviewGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
-            var query = _repo.GetAll(x => x.Text.Contains(search) || search == null);
+            var query = _repo.GetAll(x => x.Text.Contains(search) || search == null, "AppUser","Room");
             var paginated = PaginatedList<RoomReview>.Create(query, page, size);
             return new PaginatedList<ReviewGetDto>(_mapper.Map<List<ReviewGetDto>>(paginated.Items), paginated.TotalPages, page, size);
         }
 
 
-        public void UpdateOrderStatus(int id, ReviewStatus newStatus)
+        public ReviewDetailDto GetById(int id)
         {
-            var review = _repo.Get(o => o.Id == id);
+            var review = _repo.Get(x => x.Id == id);
 
             if (review == null)
             {
                 throw new RestException(StatusCodes.Status404NotFound, "Review not found");
             }
-
-
-            if (review.Status == newStatus)
+            return new ReviewDetailDto
             {
-                throw new RestException(StatusCodes.Status400BadRequest, $"Review is already {newStatus}");
-            }
-
-
-            review.Status = newStatus;
-
-            _repo.Save();
+                Text = review.Text
+            };
         }
-        //public async Task<int> MemberReview(MemberRoomReviewDto review,string userId)
-        //{
-        //    var room = _roomRepository.Get(x => x.Id == review.RoomId && !x.IsDeleted);
-        //    if (room == null)
-        //    {
-        //        throw new RestException(StatusCodes.Status404NotFound, "RoomId", "Room not found by given RoomId");
-        //    }
-
-        //    var user = await _userManager.FindByIdAsync(userId);
-        //    if (user == null)
-        //    {
-        //        throw new RestException(StatusCodes.Status404NotFound, "UserId", "User not found by given UserId");
-        //    }
-
-        //    var roomreview = new RoomReview
-        //    {
-        //        RoomId = review.RoomId,
-        //        Text = review.Text,
-        //        AppUserId = userId,
-        //        Rate = review.Rate,
-        //    };
-
-        //    _repo.Add(roomreview);
-        //    _repo.Save();
-
-        //    return roomreview.Id;
-        //}
-
     }
 }

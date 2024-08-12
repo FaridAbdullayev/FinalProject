@@ -21,5 +21,6 @@ namespace Service.Services.Interfaces
         List<ReviewListItemGetDto> GetAll();
 
         void UpdateOrderStatus(int id, ReviewStatus newStatus);
+        ReviewDetailDto GetById(int id);
     }
 }

@@ -8,8 +8,10 @@ namespace Service.Dtos.Review
 {
     public class ReviewGetDto
     {
-        public string? FullName { get; set; }
-        public int RoomId { get; set; }
+
+        public int Id { get; set; }
+        public string? UserName { get; set; }
+        public string RoomName { get; set; }
         public string Text { get; set; }
         public string Status { get; set; }
         public byte Rate { get; set; }

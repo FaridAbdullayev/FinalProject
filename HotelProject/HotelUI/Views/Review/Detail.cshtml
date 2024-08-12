@@ -1,0 +1,63 @@
+﻿@using HotelUI.Models.Review
+@model ReviewGetResponse
+
+<div class="content-wrapper">
+    <h1 class="page-heading">Review Detail</h1>
+    <div class="review-container">
+        <div class="review-text">
+            <h2 class="section-title">Review Text:</h2>
+            <p>@Model.Text</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .content-wrapper {
+        padding: 15px;
+        background-color: #f4f4f4;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .page-heading {
+        font-size: 20px;
+        color: #333;
+        text-align: center;
+    }
+
+    .review-container {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .review-header {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .section-title {
+        font-size: 14px;
+        color: #555;
+        margin: 0;
+        font-weight: normal;
+    }
+
+    .review-username, .review-roomname {
+        font-size: 16px;
+        color: #333;
+        margin: 5px 0 0;
+    }
+
+    .review-text {
+        font-size: 16px;
+        color: #333;
+    }
+
+        .review-text p {
+            margin: 0;
+        }
+</style>

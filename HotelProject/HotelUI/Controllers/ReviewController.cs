@@ -35,5 +35,53 @@ namespace HotelUI.Controllers
                 return RedirectToAction("error", "home");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Accept(int id)
+        {
+            try
+            {
+                await _crudService.Status($"reviews/reviewsAccepted/{id}");
+                return RedirectToAction("Index");
+            }
+            catch (HttpException e)
+            {
+                return StatusCode((int)e.Status);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id)
+        {
+            try
+            {
+                await _crudService.Status($"reviews/reviewsRejected/{id}");
+                return RedirectToAction("Index");
+            }
+            catch (HttpException e)
+            {
+                return StatusCode((int)e.Status);
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            try
+            {
+                var reviewDetails = await _crudService.Get<ReviewGetResponse>($"reviews/detail/{id}");
+                return View(reviewDetails);
+            }
+            catch (HttpException ex)
+            {
+                if (ex.Status == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+                return RedirectToAction("Error", "Home");
+            }
+        }
     }
+
 }
+

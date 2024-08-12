@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace Service.Profiles
 {
-    public class MapProfile:Profile
+    public class MapProfile : Profile
     {
         private readonly IHttpContextAccessor _context;
         private readonly IWebHostEnvironment _env;
@@ -43,7 +43,7 @@ namespace Service.Profiles
 
             CreateMap<Branch, BranchGetDto>();
             CreateMap<BranchCreateDto, Branch>();
-            CreateMap<Branch,BranchListItemGetDto>();
+            CreateMap<Branch, BranchListItemGetDto>();
 
             CreateMap<BedType, BedTypeGetDto>();
             CreateMap<BedTypeCreateDto, BedType>();
@@ -52,7 +52,7 @@ namespace Service.Profiles
 
             CreateMap<Core.Entities.Service, ServiceGetDto>();
             CreateMap<ServiceCreateDto, Core.Entities.Service>();
-            CreateMap<Core.Entities.Service,ServiceListItemGetDto>();
+            CreateMap<Core.Entities.Service, ServiceListItemGetDto>();
 
             CreateMap<OurStaff, OurStaffListItemGetDto>()
              .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/staff/" + s.Image));
@@ -94,9 +94,16 @@ namespace Service.Profiles
             CreateMap<Contact, ContactListItemGetDto>();
 
 
-            CreateMap<RoomReview, ReviewGetDto>();
-            CreateMap<RoomReview, ReviewListItemGetDto>();
+            CreateMap<RoomReview, ReviewGetDto>()
+             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
+             .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name));
+            CreateMap<RoomReview, ReviewListItemGetDto>()
+             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
+                 .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name)); ;
 
+
+            CreateMap<RoomReview, ReviewDetailDto>();
+         
             // CreateMap<RoomCreateDto, Room>()
             //.ForMember(dest => dest.Images, opt => opt
             //    .MapFrom(src => src.Images

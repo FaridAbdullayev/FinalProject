@@ -44,9 +44,15 @@ namespace HotelProject.Controllers
         }
 
         [HttpGet("all")]
-        public ActionResult<List<ReviewListItemGetDto>> GetAllBedType()
+        public ActionResult<List<ReviewListItemGetDto>> GetAllReviews()
         {
             return Ok(_service.GetAll());
+        }
+
+        [HttpGet("detail/{id}")]
+        public IActionResult GetReviewById(int id)
+        {
+            return StatusCode(200, _service.GetById(id));
         }
 
         [HttpPut("reviewsAccepted/{id}")]

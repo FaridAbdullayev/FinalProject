@@ -7,6 +7,7 @@ using HotelUI.Models;
 using HotelUI.Exceptions;
 using HotelUI.Models.Admin;
 using HotelUI.Models.Contact;
+using Microsoft.VisualBasic;
 
 
 
@@ -277,5 +278,39 @@ namespace HotelUI.Services
                 }
             }
         }
+
+
+        public async Task Status(string path)
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+            using (HttpResponseMessage response = await _client.PutAsync(baseUrl + path, null))
+            {
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    throw new HttpException(response.StatusCode, errorResponse?.Message);
+                }
+            }
+        }
+
+
+        //public async Task UpdateReview(string endpoint)
+        //{
+        //    _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+        //    _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+        //    var jsonContent = JsonSerializer.Serialize(endpoint);
+        //    var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+        //    using (var response = await _client.PutAsync(endpoint, null);
+        //    {
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            throw new HttpException(response.StatusCode);
+        //        }
+        //    }
+        //}
     }
 }

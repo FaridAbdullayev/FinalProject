@@ -6,27 +6,22 @@
     int order = (Model.PageIndex - 1) * Model.PageSize;
 }
 
-
 <!-- Begin Page Content -->
 <div class="content-wrapper">
-    <h3 class="page-heading mb-4">Branches</h3>
+    <h3 class="page-heading mb-4">Reviews</h3>
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <a asp-action="create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            Create
-        </a>
-    </div>
     <div class="row">
         <div class="col-md-12 mx-auto">
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">FullName</th>
-                        <th scope="col">Text</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">RoomName</th>
                         <th scope="col">Rate</th>
                         <th scope="col">Status</th>
                         <th scope="col">CreatedAt</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,15 +29,25 @@
                     {
                         <tr>
                             <th scope="row">@(++order)</th>
-                            <td>@item.FullName</td>
-                            <td>@item.Text</td>
+                            <td>@item.UserName</td>
+                            <td>@item.RoomName</td>
                             <td>@item.Rate</td>
                             <td>@item.Status</td>
                             <td>@item.CreatedAt</td>
-                         @*    <td>
-                                <a class="btn btn-warning" asp-action="edit" asp-route-id="@item.Id">Edit</a>
-                                <a class="btn btn-danger delete-btn" asp-action="delete" asp-route-id="@item.Id">Delete</a>
-                            </td> *@
+                            <td>
+                                @if (item.Status == "Pending")
+                                {
+                                    <form method="post" asp-action="accept">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-success">Accept</button>
+                                    </form>
+                                    <form method="post" asp-action="reject">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                    </form>
+                                }
+                                <a class="btn btn-primary" asp-action="detail" asp-route-id="@item.Id">Detail</a>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -96,4 +101,3 @@
 @section scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }
-

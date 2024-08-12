@@ -21,5 +21,7 @@ namespace HotelUI.Services
         Task<CreateResponseForAdmin> CreateForAdmins<TRequest>(TRequest request, string path);
 
         Task SendMessageToUser(AdminAndIUserInteraction interaction);
+
+        Task Status(string path);
     }
 }
