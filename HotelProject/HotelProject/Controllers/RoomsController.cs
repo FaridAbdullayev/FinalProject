@@ -58,7 +58,6 @@ namespace HotelProject.Controllers
             return NoContent();
         }
 
-
         [HttpGet("filter")]
         public async Task<IActionResult> GetFilteredRooms([FromQuery] RoomFilterCriteriaDto criteriaDto)
         {

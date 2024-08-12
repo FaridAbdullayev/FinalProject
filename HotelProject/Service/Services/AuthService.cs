@@ -390,5 +390,50 @@ namespace Service.Services
 
             return true;
         }
+
+
+        public async Task UpdateProfile(MemberProfileEditDto profileEditDto)
+        {
+            var user = await _userManager.FindByEmailAsync(profileEditDto.Email);
+            if (user == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "UserName", "User not found.");
+            }
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is not confirmed.");
+            }
+
+            user.UserName = profileEditDto.UserName;
+            user.FullName = profileEditDto.FullName;
+
+            if (_userManager.Users.Any(x => x.Id != user.Id && x.NormalizedEmail == profileEditDto.Email.ToUpper()))
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is already taken.");
+            }
+
+            if (!string.IsNullOrEmpty(profileEditDto.NewPassword))
+            {
+                if (string.IsNullOrEmpty(profileEditDto.CurrentPassword))
+                {
+                    throw new RestException(StatusCodes.Status400BadRequest, "CurrentPassword", "Current password is required.");
+                }
+
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, profileEditDto.CurrentPassword, profileEditDto.NewPassword);
+                if (!changePasswordResult.Succeeded)
+                {
+                    var errors = string.Join(", ", changePasswordResult.Errors.Select(e => e.Description));
+                    throw new RestException(StatusCodes.Status400BadRequest, $"Failed to change password: {errors}");
+                }
+            }
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
+                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update profile: {errors}");
+            }
+        }
     }
 }

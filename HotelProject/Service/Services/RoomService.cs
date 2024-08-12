@@ -30,8 +30,9 @@ namespace Service.Services
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IReservationRepository _reservationRepo;
 
-        public RoomService(IRoomRepository roomRepository, IServiceRepository serviceRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment, IBranchRepository branchRepository, IBedTypeRepository bedTypeRepository, UserManager<AppUser> userManager)
+        public RoomService(IRoomRepository roomRepository, IServiceRepository serviceRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment, IBranchRepository branchRepository, IBedTypeRepository bedTypeRepository, UserManager<AppUser> userManager, IReservationRepository reservationRepo)
         {
             _env = webHostEnvironment;
             _repo = roomRepository;
@@ -40,7 +41,52 @@ namespace Service.Services
             _branchRepo = branchRepository;
             _bedTypeRepo = bedTypeRepository;
             _userManager = userManager;
+            _reservationRepo = reservationRepo;
+
         }
+        public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
+        {
+            if (criteriaDto.StartDate < DateTime.Today)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "StartDate", "StartDate cannot be in the past.");
+            }
+            if (criteriaDto.EndDate <= criteriaDto.StartDate)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "EndDate", "EndDate cannot be earlier than or equal to StartDate.");
+            }
+            if (criteriaDto.MaxAdultsCount <= 0)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "AdultsCount", "AdultsCount must be greater than zero.");
+            }
+            if (criteriaDto.MaxChildrenCount < 0)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "ChildrenCount", "ChildrenCount cannot be negative.");
+            }
+
+            var allRooms = _repo.GetAll(x => true, "RoomServices", "Branch", "Images").ToList();
+
+            var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate);
+
+            var filteredRooms = allRooms
+                .Where(r => !reservedRoomIds.Contains(r.Id)) // Rezervasyon yapılmamış odalar
+                .Where(r => !criteriaDto.BranchId.HasValue || r.BranchId == criteriaDto.BranchId.Value)
+                .Where(r => criteriaDto.ServiceIds == null || !criteriaDto.ServiceIds.Any() || r.RoomServices.Any(rs => criteriaDto.ServiceIds.Contains(rs.ServiceId)))
+                .Where(r => (!criteriaDto.MinPrice.HasValue || r.Price >= criteriaDto.MinPrice.Value) &&
+                            (!criteriaDto.MaxPrice.HasValue || r.Price <= criteriaDto.MaxPrice.Value))
+                .Where(r => r.MaxAdultsCount == criteriaDto.MaxAdultsCount && r.MaxChildrenCount == criteriaDto.MaxChildrenCount)
+                .ToList();
+
+            return _mapper.Map<List<RoomGetDto>>(filteredRooms);
+        }
+
+        public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
+        {
+            return _reservationRepo.GetAll(reservation =>
+                reservation.StartDate < endDate && reservation.EndDate > startDate)
+                .Select(reservation => reservation.RoomId)
+                .ToList();
+        }
+
 
 
         public int Create(RoomCreateDto createDto)
@@ -208,53 +254,13 @@ namespace Service.Services
             _repo.Save();
         }
 
-        public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
-        {
-            if (criteriaDto.StartDate < DateTime.Today)
-            {
-                throw new RestException(StatusCodes.Status404NotFound, "StartDate", "StartDate cannot be null or in the past.");
-            }
 
-            if (criteriaDto.EndDate < criteriaDto.StartDate)
-            {
-                throw new RestException(StatusCodes.Status404NotFound, "EndDate", "EndDate cannot be null or less than start date.");
-            }
-
-            if (criteriaDto.AdultsCount == null || criteriaDto.ChildrenCount == null)
-            {
-                throw new RestException(StatusCodes.Status400BadRequest, "Occupancy", "AdultsCount and ChildrenCount cannot be null.");
-            }
-
-            var allRooms = await _repo.GetAll(x => true)
-                .Include(r => r.RoomServices)
-                .Include(r => r.Branch)
-                .Include(r => r.Images)
-                .ToListAsync();
-
-            var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate);
-
-            var filteredRooms = allRooms
-                .Where(r => !reservedRoomIds.Contains(r.Id))
-                .Where(r => !criteriaDto.BranchId.HasValue || r.BranchId == criteriaDto.BranchId.Value)
-                .Where(r => criteriaDto.ServiceIds == null || !criteriaDto.ServiceIds.Any() || r.RoomServices.Any(rs => criteriaDto.ServiceIds.Contains(rs.ServiceId)))
-                .Where(r => (!criteriaDto.MinPrice.HasValue || r.Price >= criteriaDto.MinPrice.Value) &&
-                            (!criteriaDto.MaxPrice.HasValue || r.Price <= criteriaDto.MaxPrice.Value))
-                .Where(r => r.MaxAdultsCount >= criteriaDto.AdultsCount.Value &&
-                            r.MaxChildrenCount >= criteriaDto.ChildrenCount.Value)
-                .ToList();
-
-            return _mapper.Map<List<RoomGetDto>>(filteredRooms);
-        }
-        public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
-        {
-            return new List<int>();
-        }
         //public double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate)
         //{
         //    var numberOfDays = (endDate - startDate).TotalDays;
         //    return room.Price * numberOfDays;
         //}
 
-        
+
     }
 }

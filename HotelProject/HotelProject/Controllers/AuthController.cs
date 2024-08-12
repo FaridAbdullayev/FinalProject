@@ -195,6 +195,12 @@ namespace HotelProject.Controllers
         }
 
 
-
+        [Authorize(Roles = "Member")]
+        [HttpPost("user/profile/update")]
+        public async Task<IActionResult> UpdateProfile([FromBody] MemberProfileEditDto profileEditDto)
+        {
+            await _authService.UpdateProfile(profileEditDto);
+            return Ok(new { message = "Profile updated successfully!" });
+        }
     }
 }

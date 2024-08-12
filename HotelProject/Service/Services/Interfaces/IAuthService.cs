@@ -29,5 +29,7 @@ namespace Service.Services.Interfaces
         Task ResetPassword(MemberResetPasswordDto resetPasswordDto);
 
         Task<bool> VerifyEmailAndToken(string email, string token);
+        Task UpdateProfile(MemberProfileEditDto profileEditDto);
+
     }
 }

@@ -49,7 +49,7 @@ namespace Service.Services
                                                          r.EndDate > reservationsDto.StartDate)
                                            .Any();
 
-            if (existingReservation)
+            if (existingReservation) 
             {
                 throw new RestException(StatusCodes.Status400BadRequest, "RoomId", "The room is already reserved for the selected dates.");
             }
