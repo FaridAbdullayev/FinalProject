@@ -129,6 +129,9 @@ builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IRoomReviewRepository, RoomReviewRepository>();
 
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRepository,OrderRepository >();
+
 
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

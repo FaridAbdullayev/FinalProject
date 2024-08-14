@@ -113,7 +113,6 @@ namespace HotelProject.Controllers
             return NoContent();
 
         }
-
         [Authorize(Roles = "SuperAdmin")] 
         [HttpGet("adminAllByPage")]
         public ActionResult<PaginatedList<AdminPaginatedGetDto>> GetAllByPage(string? search = null, int page = 1, int size = 10)
@@ -121,10 +120,6 @@ namespace HotelProject.Controllers
             var paginatedAdmins = _authService.GetAllByPage(search, page, size);
             return Ok(paginatedAdmins);
         }
-
-
-
-
         [HttpPost("user/login")]
         public async Task<IActionResult> LoginForUser([FromBody] MemberLoginDto loginDto)
         {
@@ -135,8 +130,6 @@ namespace HotelProject.Controllers
             return Ok(new { Result = token });
 
         }
-
-
         [HttpPost("user/register")]
         public ActionResult RegisterForUser([FromBody] MemberRegisterDto registerDto)
         {
@@ -145,32 +138,26 @@ namespace HotelProject.Controllers
             return Ok(new { Result = Id });
 
         }
-
-
-
-
-        //[HttpPost("user/verify")]
-        //public async Task<IActionResult> Verify([FromBody] MemberVerifyDto verifyDto)
-        //{
-        //    try
-        //    {
-        //        bool isValid = await _authService.VerifyEmailAndToken(verifyDto.Email, verifyDto.Token);
-        //        if (isValid)
-        //        {
-        //            return Ok("Email and token are valid. You can now reset your password.");
-        //        }
-        //        else
-        //        {
-        //            return BadRequest("Invalid email or token.");
-        //        }
-        //    }
-        //    catch (RestException ex)
-        //    {
-        //        return StatusCode(ex.Code, ex.Message);
-        //    }
-        //}
-
-
+        [HttpPost("user/verify")]
+        public async Task<IActionResult> Verify([FromBody] MemberVerifyDto verifyDto)
+        {
+            try
+            {
+                bool isValid = await _authService.VerifyEmailAndToken(verifyDto.Email, verifyDto.Token);
+                if (isValid)
+                {
+                    return Ok("Email and token are valid. You can now reset your password.");
+                }
+                else
+                {
+                    return BadRequest("Invalid email or token.");
+                }
+            }
+            catch (RestException ex)
+            {
+                return StatusCode(ex.Code, ex.Message);
+            }
+        }
         [HttpGet("user/verifyemail")]
         public async Task<IActionResult> VerifyEmail(string userId, string token)
         {
@@ -193,14 +180,38 @@ namespace HotelProject.Controllers
 
             return BadRequest("Failed to confirm email.");
         }
-
-
         [Authorize(Roles = "Member")]
         [HttpPost("user/profile/update")]
         public async Task<IActionResult> UpdateProfile([FromBody] MemberProfileEditDto profileEditDto)
         {
             await _authService.UpdateProfile(profileEditDto);
             return Ok(new { message = "Profile updated successfully!" });
+        }
+        [HttpPost("user/forgetpassword")]
+        public async Task<IActionResult> ForgetPassword([FromBody] MemberForgetPasswordDto forgetPasswordDto)
+        {
+            try
+            {
+                var resetUrl = await _authService.ForgetPassword(forgetPasswordDto);
+                return Ok(new { Message = "Password reset link has been sent to your email.", ResetUrl = resetUrl });
+            }
+            catch (RestException ex)
+            {
+                return StatusCode(ex.Code, ex.Message);
+            }
+        }
+        [HttpPost("user/resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] MemberResetPasswordDto resetPasswordDto)
+        {
+            try
+            {
+                await _authService.ResetPassword(resetPasswordDto);
+                return Ok("Password has been reset successfully. Please log in with your new password.");
+            }
+            catch (RestException ex)
+            {
+                return StatusCode(ex.Code, ex.Message);
+            }
         }
     }
 }

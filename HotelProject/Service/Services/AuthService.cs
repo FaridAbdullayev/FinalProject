@@ -69,7 +69,7 @@ namespace Service.Services
 
 
             return user.Id;
-        }
+        }//
         public void Delete(string id)
         {
             var user = _userManager.FindByIdAsync(id).Result;
@@ -85,7 +85,7 @@ namespace Service.Services
             {
                 throw new RestException(StatusCodes.Status400BadRequest, "Failed to delete Admin user.");
             }
-        }
+        }//
         public PaginatedList<AdminPaginatedGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
             var users = _userManager.Users.ToList();
@@ -118,7 +118,7 @@ namespace Service.Services
             var paginatedResult = PaginatedList<AdminPaginatedGetDto>.Create(filteredAdminUsers.AsQueryable(), page, size);
 
             return paginatedResult;
-        }
+        }//
         public SendingLoginDto Login(AdminLoginDto loginDto)
         {
             AppUser? user = _userManager.FindByNameAsync(loginDto.UserName).Result;
@@ -161,10 +161,7 @@ namespace Service.Services
             string tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
 
             return new SendingLoginDto { Token = tokenStr, PasswordResetRequired = false };
-        }
-
-
-
+        }//
         public void Update(string id, AdminUpdateDto updateDto)
         {
 
@@ -215,8 +212,7 @@ namespace Service.Services
                 var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update user: {errors}");
             }
-        }
-
+        }//
         public async Task UpdatePasswordAsync(AdminUpdateDto updatePasswordDto)
         {
             var user = await _userManager.FindByNameAsync(updatePasswordDto.UserName);
@@ -250,10 +246,7 @@ namespace Service.Services
                 var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update user: {errors}");
             }
-        }
-
-
-
+        }//
         private async Task<string> GenerateJwtToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -282,7 +275,7 @@ namespace Service.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        }//
         public async Task<string> MemberLogin(MemberLoginDto memberLoginDto)
         {
             var user = await _userManager.FindByEmailAsync(memberLoginDto.Email);
@@ -300,9 +293,7 @@ namespace Service.Services
             var token = await GenerateJwtToken(user);
 
             return token;
-        }
-
-
+        }//
         public async Task<string> MemberRegister(MemberRegisterDto register)
         {
             if (register.Password != register.ConfirmPassword)
@@ -362,18 +353,50 @@ namespace Service.Services
             _emailService.Send(appUser.Email, subject, emailbody);
 
             return appUser.Id;
-        }
-
-        public Task<string> ForgetPassword(MemberForgetPasswordDto forgetPasswordDto)
+        }//
+        public async Task<string> ForgetPassword(MemberForgetPasswordDto forgetPasswordDto)
         {
-            throw new NotImplementedException();
-        }
+            var user = await _userManager.FindByEmailAsync(forgetPasswordDto.Email);
+            if (user == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "User not found.");
+            }
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "Email is not confirmed.");
+            }
 
-        public Task ResetPassword(MemberResetPasswordDto resetPasswordDto)
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetUrl = $"{_configuration["AppSettings:AppBaseUrl"]}/api/auth/user/resetpassword?email={user.Email}&token={Uri.EscapeDataString(token)}";
+
+            var subject = "Reset Password Link";
+
+            var body = $"<h1>Reset <a href=\"{resetUrl}\">password</a></h1>";
+            _emailService.Send(user.Email, subject, body);
+
+            return resetUrl;
+        }//
+        public async Task ResetPassword(MemberResetPasswordDto resetPasswordDto)
         {
-            throw new NotImplementedException();
-        }
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if (user == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "User not found.");
+            }
 
+            if (resetPasswordDto.NewPassword != resetPasswordDto.ConfirmNewPassword)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "New password and confirm password do not match.");
+            }
+
+            var decodedToken = Uri.UnescapeDataString(resetPasswordDto.Token);
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, resetPasswordDto.NewPassword);
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to reset password: {errors}");
+            }
+        }//
         public async Task<bool> VerifyEmailAndToken(string email, string token)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -389,9 +412,7 @@ namespace Service.Services
             }
 
             return true;
-        }
-
-
+        }// 
         public async Task UpdateProfile(MemberProfileEditDto profileEditDto)
         {
             var user = await _userManager.FindByEmailAsync(profileEditDto.Email);
@@ -434,6 +455,6 @@ namespace Service.Services
                 var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update profile: {errors}");
             }
-        }
+        }//
     }
 }

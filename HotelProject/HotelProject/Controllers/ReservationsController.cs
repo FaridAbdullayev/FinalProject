@@ -20,7 +20,7 @@ namespace HotelProject.Controllers
         }
 
         [HttpPost("")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Member")]
         public async Task<IActionResult> CreateReservation([FromBody] ReservationsDto reservationsDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
