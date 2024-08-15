@@ -367,7 +367,7 @@ namespace Service.Services
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetUrl = $"{_configuration["AppSettings:AppBaseUrl"]}/api/auth/user/resetpassword?email={user.Email}&token={Uri.EscapeDataString(token)}";
+            var resetUrl = $"{_configuration["AppSettings:AppBaseUrl"]}/api/Auth/user/resetpassword?email={user.Email}&token={Uri.EscapeDataString(token)}";
 
             var subject = "Reset Password Link";
 

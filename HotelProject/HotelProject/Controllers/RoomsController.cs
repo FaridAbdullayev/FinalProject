@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hangfire.MemoryStorage.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
 using Service.Dtos.Room;
@@ -63,6 +64,14 @@ namespace HotelProject.Controllers
         {
             var roomDtos = await _repo.GetFilteredRoomsAsync(criteriaDto);
             return Ok(roomDtos);
+        }
+
+
+        [HttpGet("PreReservationInfo")]
+        public IActionResult GetRoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut, int adultsCount, int childrenCount)
+        {
+            RoomPreReservationInfoDto info = _repo.RoomPreReservationInfo(roomId, checkIn, checkOut, adultsCount, childrenCount);
+            return StatusCode(200, info);
         }
     }
 }

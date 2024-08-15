@@ -102,39 +102,6 @@ namespace Data.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("Core.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("ReservationId");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("Core.Entities.OurStaff", b =>
                 {
                     b.Property<int>("Id")
@@ -639,25 +606,6 @@ namespace Data.Migrations
                         .HasForeignKey("AppUserId");
 
                     b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("Core.Entities.Order", b =>
-                {
-                    b.HasOne("Core.Entities.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Core.Entities.Reservation", b =>

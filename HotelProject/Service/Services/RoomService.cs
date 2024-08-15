@@ -32,6 +32,10 @@ namespace Service.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly IReservationRepository _reservationRepo;
 
+
+     
+
+
         public RoomService(IRoomRepository roomRepository, IServiceRepository serviceRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment, IBranchRepository branchRepository, IBedTypeRepository bedTypeRepository, UserManager<AppUser> userManager, IReservationRepository reservationRepo)
         {
             _env = webHostEnvironment;
@@ -42,8 +46,38 @@ namespace Service.Services
             _bedTypeRepo = bedTypeRepository;
             _userManager = userManager;
             _reservationRepo = reservationRepo;
-
         }
+
+
+        public RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut, int adultsCount, int childrenCount)
+        {
+            Room room = _repo.Get(x => x.Id == roomId && !x.IsDeleted);
+
+            if (room == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "Room not found");
+            }
+
+            int nights = (checkOut - checkIn).Days;
+
+            double totalPrice = room.Price * nights;
+
+            int branchId = room.BranchId;
+
+            RoomPreReservationInfoDto info = new RoomPreReservationInfoDto
+            {
+                BranchId = branchId,
+                CheckIn = checkIn,
+                CheckOut = checkOut,
+                Nights = nights,
+                ChildrenCount = childrenCount,
+                AdultsCount = adultsCount,
+                TotalPrice = totalPrice
+            };
+
+            return info;
+        }
+
         public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
         {
             if (criteriaDto.StartDate < DateTime.Today)
@@ -78,7 +112,6 @@ namespace Service.Services
 
             return _mapper.Map<List<RoomGetDto>>(filteredRooms);
         }
-
         public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
         {
             return _reservationRepo.GetAll(reservation =>
@@ -86,9 +119,6 @@ namespace Service.Services
                 .Select(reservation => reservation.RoomId)
                 .ToList();
         }
-
-
-
         public int Create(RoomCreateDto createDto)
         {
             List<Core.Entities.Service> services = new List<Core.Entities.Service>();
@@ -144,9 +174,6 @@ namespace Service.Services
             return room.Id;
 
         }
-
-
-
         public void Delete(int id)
         {
             Room entity = _repo.Get(x => x.Id == id && !x.IsDeleted);
@@ -255,6 +282,8 @@ namespace Service.Services
         }
 
 
+
+      
         //public double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate)
         //{
         //    var numberOfDays = (endDate - startDate).TotalDays;
