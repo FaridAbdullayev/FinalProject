@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.Entities.Enum;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -66,6 +67,53 @@ namespace Service.Services
             _repo.Save();
 
             return reservation.Id;
+        }
+
+
+        public async Task<List<MemberReservationGetDto>> GetUserReservationsAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "UserId", "User not found by given UserId");
+            }
+
+            var reservations = _repo.GetAll(r => r.AppUserId == userId)
+                                    .Include(r => r.Room) // Oda bilgilerini de dahil etmek için
+                                    .ToList();
+
+            // Rezervasyonları Dto'ya dönüştürün
+            var reservationDtos = reservations.Select(r => new MemberReservationGetDto
+            {
+                Id = r.Id,
+                RoomId = r.RoomId,
+                StartDate = r.StartDate,
+                EndDate = r.EndDate,
+                //RoomName = r.Room.Name,
+                TotalPrice = CalculateTotalPrice(r.StartDate, r.EndDate, r.Room.Price) 
+            }).ToList();
+
+            return reservationDtos;
+        }
+
+        private double CalculateTotalPrice(DateTime startDate, DateTime endDate, double roomPrice)
+        {
+            int nights = (endDate - startDate).Days;
+            return nights * roomPrice;
+        }
+
+
+        public async Task CancelReservationAsync(int reservationId, string userId)
+        {
+            var reservation = _repo.Get(r => r.Id == reservationId && r.AppUserId == userId);
+
+            if (reservation == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "ReservationId", "Reservation not found or you do not have permission to cancel this reservation.");
+            }
+
+            reservation.Status = OrderStatus.Canceled;
+            _repo.Save();
         }
 
     }

@@ -13,7 +13,6 @@ namespace HotelProject.Controllers
     public class RoomsController : ControllerBase
     {
         private readonly IRoomService _repo;
-
         public RoomsController(IRoomService room)
         {
             _repo = room;
@@ -23,14 +22,11 @@ namespace HotelProject.Controllers
         {
             return StatusCode(201, new { id = _repo.Create(createDto) });
         }
-
-
         [HttpGet("all")]
         public ActionResult<List<RoomListItemGetDto>> GetAll()
         {
             return Ok(_repo.GetAll());
         }
-
         [HttpGet("")]
         public ActionResult<PaginatedList<RoomGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
@@ -43,8 +39,6 @@ namespace HotelProject.Controllers
             var data = _repo.GetById(id);
             return StatusCode(200, data);
         }
-
-
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
@@ -59,7 +53,7 @@ namespace HotelProject.Controllers
             return NoContent();
         }
 
-        [HttpGet("filter")]
+        [HttpGet("filter/member")]
         public async Task<IActionResult> GetFilteredRooms([FromQuery] RoomFilterCriteriaDto criteriaDto)
         {
             var roomDtos = await _repo.GetFilteredRoomsAsync(criteriaDto);
@@ -67,7 +61,7 @@ namespace HotelProject.Controllers
         }
 
 
-        [HttpGet("PreReservationInfo")]
+        [HttpGet("PreReservationInfo/member")]
         public IActionResult GetRoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut, int adultsCount, int childrenCount)
         {
             RoomPreReservationInfoDto info = _repo.RoomPreReservationInfo(roomId, checkIn, checkOut, adultsCount, childrenCount);

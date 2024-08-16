@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Service.Dtos.Room;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,6 @@ namespace Service.Dtos.Users
         public int ChildrenCount { get; set; }
         public int AdultsCount { get; set; }
         public double TotalPrice { get; set; }
+        public List<RoomImageGetDto> Images { get; set; }
     }
 }

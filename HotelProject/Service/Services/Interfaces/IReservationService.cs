@@ -12,5 +12,9 @@ namespace Service.Services.Interfaces
     public interface IReservationService
     {
         Task<int> CreateReservationAsync(ReservationsDto reservationsDto, string userId);
+
+        Task<List<MemberReservationGetDto>> GetUserReservationsAsync(string userId);
+
+        Task CancelReservationAsync(int reservationId, string userId);
     }
 }

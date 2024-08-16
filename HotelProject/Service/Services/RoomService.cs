@@ -47,8 +47,6 @@ namespace Service.Services
             _userManager = userManager;
             _reservationRepo = reservationRepo;
         }
-
-
         public RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut, int adultsCount, int childrenCount)
         {
             Room room = _repo.Get(x => x.Id == roomId && !x.IsDeleted);
@@ -77,7 +75,6 @@ namespace Service.Services
 
             return info;
         }
-
         public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
         {
             if (criteriaDto.StartDate < DateTime.Today)
@@ -184,19 +181,16 @@ namespace Service.Services
             entity.UpdateAt = DateTime.Now;
             _repo.Save();
         }
-
         public List<RoomListItemGetDto> GetAll()
         {
             return _mapper.Map<List<RoomListItemGetDto>>(_repo.GetAll(x => !x.IsDeleted).ToList());
         }
-
         public PaginatedList<RoomGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
             var query = _repo.GetAll(x => !x.IsDeleted && (search == null || x.Name.Contains(search)));
             var paginated = PaginatedList<Room>.Create(query, page, size);
             return new PaginatedList<RoomGetDto>(_mapper.Map<List<RoomGetDto>>(paginated.Items), paginated.TotalPages, page, size);
         }
-
         public RoomGetDto GetById(int id)
         {
             Room entity = _repo.Get(x => x.Id == id && !x.IsDeleted, "Images", "RoomServices");
@@ -205,7 +199,6 @@ namespace Service.Services
 
             return _mapper.Map<RoomGetDto>(entity);
         }
-
         public void Update(RoomUpdateDto updateDto, int id)
         {
             List<Core.Entities.Service> service = new List<Core.Entities.Service>();
@@ -280,8 +273,6 @@ namespace Service.Services
 
             _repo.Save();
         }
-
-
 
       
         //public double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate)

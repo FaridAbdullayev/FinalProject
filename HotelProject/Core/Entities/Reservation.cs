@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace Core.Entities
         public DateTime EndDate { get; set; }
         public string AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }
