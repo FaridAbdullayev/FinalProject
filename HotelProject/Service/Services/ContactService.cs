@@ -126,8 +126,5 @@ namespace Service.Services
             var paginated = PaginatedList<Contact>.Create(query, page, size);
             return new PaginatedList<ContactGetDto>(_mapper.Map<List<ContactGetDto>>(paginated.Items), paginated.TotalPages, page, size);
         }
-
-
-
     }
 }

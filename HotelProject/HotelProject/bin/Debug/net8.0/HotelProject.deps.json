@@ -12,7 +12,7 @@
           "Hangfire.MemoryStorage": "1.8.1.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.7",
           "Microsoft.EntityFrameworkCore.Design": "8.0.7",
-          "Quartz.Extensions.Hosting": "3.11.0",
+          "Quartz.Extensions.Hosting": "3.13.0",
           "Service": "1.0.0",
           "Swashbuckle.AspNetCore": "6.4.0"
         },
@@ -829,41 +829,39 @@
           }
         }
       },
-      "Quartz/3.11.0": {
+      "Quartz/3.13.0": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "System.Configuration.ConfigurationManager": "6.0.1"
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.0"
         },
         "runtime": {
           "lib/net6.0/Quartz.dll": {
-            "assemblyVersion": "3.11.0.0",
-            "fileVersion": "3.11.0.0"
+            "assemblyVersion": "3.13.0.0",
+            "fileVersion": "3.13.0.0"
           }
         }
       },
-      "Quartz.Extensions.DependencyInjection/3.11.0": {
+      "Quartz.Extensions.DependencyInjection/3.13.0": {
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Options": "8.0.2",
-          "Quartz": "3.11.0"
+          "Quartz": "3.13.0"
         },
         "runtime": {
           "lib/net8.0/Quartz.Extensions.DependencyInjection.dll": {
-            "assemblyVersion": "3.11.0.0",
-            "fileVersion": "3.11.0.0"
+            "assemblyVersion": "3.13.0.0",
+            "fileVersion": "3.13.0.0"
           }
         }
       },
-      "Quartz.Extensions.Hosting/3.11.0": {
+      "Quartz.Extensions.Hosting/3.13.0": {
         "dependencies": {
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
-          "Quartz.Extensions.DependencyInjection": "3.11.0"
+          "Quartz.Extensions.DependencyInjection": "3.13.0"
         },
         "runtime": {
           "lib/net8.0/Quartz.Extensions.Hosting.dll": {
-            "assemblyVersion": "3.11.0.0",
-            "fileVersion": "3.11.0.0"
+            "assemblyVersion": "3.13.0.0",
+            "fileVersion": "3.13.0.0"
           }
         }
       },
@@ -1183,7 +1181,8 @@
           "AutoMapper": "13.0.1",
           "Data": "1.0.0",
           "FluentValidation.AspNetCore": "11.3.0",
-          "MailKit": "4.7.1.1"
+          "MailKit": "4.7.1.1",
+          "Quartz.Extensions.Hosting": "3.13.0"
         },
         "runtime": {
           "Service.dll": {}
@@ -1624,26 +1623,26 @@
       "path": "newtonsoft.json/11.0.1",
       "hashPath": "newtonsoft.json.11.0.1.nupkg.sha512"
     },
-    "Quartz/3.11.0": {
+    "Quartz/3.13.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dx8K/3C7P+o+tNI7LosOwoCWjT8aM/AojO+3IPlp4ArvgVcqf36pYu3Rqorcxc4kfklfHcFRrS9hQAIgp6TkGg==",
-      "path": "quartz/3.11.0",
-      "hashPath": "quartz.3.11.0.nupkg.sha512"
+      "sha512": "sha512-ddD1CPjWcDMbKdAhzuna3Ng23Sdv1YtuHbFMdAAFw0eBEj9jnadYkDWiKGo/c7BMnbI/ruuyd370sKVgdMCkDA==",
+      "path": "quartz/3.13.0",
+      "hashPath": "quartz.3.13.0.nupkg.sha512"
     },
-    "Quartz.Extensions.DependencyInjection/3.11.0": {
+    "Quartz.Extensions.DependencyInjection/3.13.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ypDN4U1q5kAwjlDV3vK0B/OzdlrrRkwXBOIvx3RtBMVnzb7ht7Px0pJYyegxypHHjQ/+vrrEGBNJlWoryo6zZg==",
-      "path": "quartz.extensions.dependencyinjection/3.11.0",
-      "hashPath": "quartz.extensions.dependencyinjection.3.11.0.nupkg.sha512"
+      "sha512": "sha512-H9+hAnJI/TNKF+Po++jEzLRNXOfqpr3N0CZzVsDcS1apGQ4ELU+6OdWoNVN2l+Se4yW8HApBb3NHDQL4mf4E9A==",
+      "path": "quartz.extensions.dependencyinjection/3.13.0",
+      "hashPath": "quartz.extensions.dependencyinjection.3.13.0.nupkg.sha512"
     },
-    "Quartz.Extensions.Hosting/3.11.0": {
+    "Quartz.Extensions.Hosting/3.13.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-tn5FgGIp0tEhHNO9dsSmSN3bhWlkT4KHMXR6wOd93eTre96+AjrpJehRJIl3ARyLwWNBN8vkUt+0sAwoMQFzLA==",
-      "path": "quartz.extensions.hosting/3.11.0",
-      "hashPath": "quartz.extensions.hosting.3.11.0.nupkg.sha512"
+      "sha512": "sha512-IEVjySmI5Jj3kcUUe4z+DXYJK0KggtQfHymwAps7W8qsb1adg6KpAgutBNz0OdD9WKjUf2dRiOM74pVXKj0hkQ==",
+      "path": "quartz.extensions.hosting/3.13.0",
+      "hashPath": "quartz.extensions.hosting.3.13.0.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/6.4.0": {
       "type": "package",

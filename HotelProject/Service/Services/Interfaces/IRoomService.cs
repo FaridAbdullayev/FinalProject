@@ -24,7 +24,7 @@ namespace Service.Services.Interfaces
 
         List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate);
 
-        RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut, int adultsCount, int childrenCount);
+        RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut);
         //double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate);
 
         //Task<bool> ReserveRoomAsync(ReservationsDto reservationDto, string userId);

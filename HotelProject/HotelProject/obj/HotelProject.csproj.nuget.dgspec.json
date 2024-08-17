@@ -200,7 +200,7 @@
             },
             "Quartz.Extensions.Hosting": {
               "target": "Package",
-              "version": "[3.11.0, )"
+              "version": "[3.13.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -281,6 +281,10 @@
             "MailKit": {
               "target": "Package",
               "version": "[4.7.1.1, )"
+            },
+            "Quartz.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[3.13.0, )"
             }
           },
           "imports": [

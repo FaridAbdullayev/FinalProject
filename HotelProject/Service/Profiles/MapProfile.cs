@@ -7,6 +7,7 @@ using Service.Dtos.BedType;
 using Service.Dtos.Branch;
 using Service.Dtos.Contact;
 using Service.Dtos.OurStaff;
+using Service.Dtos.Reservation;
 using Service.Dtos.Review;
 using Service.Dtos.Room;
 using Service.Dtos.Service;
@@ -103,7 +104,13 @@ namespace Service.Profiles
 
 
             CreateMap<RoomReview, ReviewDetailDto>();
-         
+
+
+
+            CreateMap<Reservation, ReservationGetDto>()
+                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
+                 .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name)); 
+
             // CreateMap<RoomCreateDto, Room>()
             //.ForMember(dest => dest.Images, opt => opt
             //    .MapFrom(src => src.Images

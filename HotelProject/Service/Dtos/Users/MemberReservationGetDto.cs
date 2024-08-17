@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace Service.Dtos.Users
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double TotalPrice { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

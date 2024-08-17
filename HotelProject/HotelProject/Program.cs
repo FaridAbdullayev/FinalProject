@@ -20,6 +20,8 @@ using Core.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Service.Dtos.Users;
+using Quartz;
+using Service.PrintJob;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -149,6 +151,18 @@ builder.Services.AddAuthentication(opt =>
 });
 
 
+builder.Services.AddQuartz(options =>
+{
+    var key = JobKey.Create(nameof(PrintJob));
+    options.AddJob<PrintJob>(key)
+           .AddTrigger(x => x.ForJob(key).WithCronSchedule("0 35 18 * * ?").StartNow());
+});
+
+builder.Services.AddQuartzHostedService(options =>
+{
+    options.WaitForJobsToComplete = true;
+    options.AwaitApplicationStarted = true;
+});
 
 //builder.Services.AddScoped<IAuthService, AuthService>();
 

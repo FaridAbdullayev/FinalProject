@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "//xX41BElE8FtDHf4bHvo9ZA5oBMwjI8NTbmRCG5SXtY90rAag0bfaFq/yWt/hLoXkHATacndiYi1iKrq/PN/Q==",
+  "dgSpecHash": "cY0CqiNH0FXMj0bOpmZbVAhOqR2fQnmRf3cB2iQHoa/3xSnPYl+TmORA9vFgTD13qHlIZ4kUGSJDV1RN2659+Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\HotelProject.csproj",
   "expectedPackageFiles": [
@@ -65,9 +65,9 @@
     "C:\\Users\\Farid\\.nuget\\packages\\mimekit\\4.7.1\\mimekit.4.7.1.nupkg.sha512",
     "C:\\Users\\Farid\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\Farid\\.nuget\\packages\\newtonsoft.json\\11.0.1\\newtonsoft.json.11.0.1.nupkg.sha512",
-    "C:\\Users\\Farid\\.nuget\\packages\\quartz\\3.11.0\\quartz.3.11.0.nupkg.sha512",
-    "C:\\Users\\Farid\\.nuget\\packages\\quartz.extensions.dependencyinjection\\3.11.0\\quartz.extensions.dependencyinjection.3.11.0.nupkg.sha512",
-    "C:\\Users\\Farid\\.nuget\\packages\\quartz.extensions.hosting\\3.11.0\\quartz.extensions.hosting.3.11.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\quartz\\3.13.0\\quartz.3.13.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\quartz.extensions.dependencyinjection\\3.13.0\\quartz.extensions.dependencyinjection.3.13.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\quartz.extensions.hosting\\3.13.0\\quartz.extensions.hosting.3.13.0.nupkg.sha512",
     "C:\\Users\\Farid\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\Farid\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\Farid\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

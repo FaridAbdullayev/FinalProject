@@ -16,6 +16,6 @@ namespace Service.Dtos.Users
         public int ChildrenCount { get; set; }
         public int AdultsCount { get; set; }
         public double TotalPrice { get; set; }
-        public List<RoomImageGetDto> Images { get; set; }
+        //public string Image { get; set; }
     }
 }

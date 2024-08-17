@@ -62,9 +62,9 @@ namespace HotelProject.Controllers
 
 
         [HttpGet("PreReservationInfo/member")]
-        public IActionResult GetRoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut, int adultsCount, int childrenCount)
+        public IActionResult GetRoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut)
         {
-            RoomPreReservationInfoDto info = _repo.RoomPreReservationInfo(roomId, checkIn, checkOut, adultsCount, childrenCount);
+            RoomPreReservationInfoDto info = _repo.RoomPreReservationInfo(roomId, checkIn, checkOut);
             return StatusCode(200, info);
         }
     }

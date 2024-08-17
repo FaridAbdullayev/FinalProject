@@ -15,6 +15,6 @@ namespace Core.Entities
         public DateTime EndDate { get; set; }
         public string AppUserId { get; set; }
         public AppUser AppUser { get; set; }
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.Pending;
     }
 }

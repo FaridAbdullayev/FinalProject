@@ -6,6 +6,10 @@ using Service.Services.Interfaces;
 using static Service.Exceptions.ResetException;
 using System.Security.Claims;
 using Service.Services;
+using Core.Entities;
+using Service.Dtos.Contact;
+using Service.Dtos;
+using Core.Entities.Enum;
 
 namespace HotelProject.Controllers
 {
@@ -22,7 +26,7 @@ namespace HotelProject.Controllers
             _context = httpContextAccessor;
         }
 
-        [HttpPost("")]
+        [HttpPost("member")]
         [Authorize(Roles ="Member")]
         public async Task<IActionResult> CreateReservation([FromBody] ReservationsDto reservationsDto)
         {
@@ -64,6 +68,28 @@ namespace HotelProject.Controllers
             await _reservation.CancelReservationAsync(reservationId, userId);
 
             return NoContent();
+        }
+
+        [HttpGet("")]
+        public ActionResult<PaginatedList<MemberReservationGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
+        {
+            return StatusCode(200, _reservation.GetAllByPage(search, page, size));
+        }
+
+        [HttpPut("reservationAccepted/{id}")]
+        public IActionResult AcceptReview(int id)
+        {
+
+            _reservation.UpdateReservationStatus(id, OrderStatus.Accepted);
+            return NoContent();
+        }
+        [HttpPut("reservationRejected/{id}")]
+        public IActionResult RejectOrder(int id)
+        {
+
+            _reservation.UpdateReservationStatus(id, OrderStatus.Rejected);
+            return NoContent();
+
         }
 
     }
