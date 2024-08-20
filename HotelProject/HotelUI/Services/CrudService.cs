@@ -11,6 +11,7 @@ using Microsoft.VisualBasic;
 using System.Net.Http;
 using HotelUI.Models.Reservation;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Options;
 
 
 
@@ -31,12 +32,12 @@ namespace HotelUI.Services
             _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
             _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
 
-            using(var response = await _client.GetAsync(baseUrl+path + "?page=" + page))
+            using (var response = await _client.GetAsync(baseUrl + path + "?page=" + page))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-                    return JsonSerializer.Deserialize<PaginatedResponse<TResponse>>(await response.Content.ReadAsStringAsync(),options);
+                    return JsonSerializer.Deserialize<PaginatedResponse<TResponse>>(await response.Content.ReadAsStringAsync(), options);
                 }
                 else throw new HttpException(response.StatusCode);
             }
@@ -54,7 +55,7 @@ namespace HotelUI.Services
                     var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
                     return JsonSerializer.Deserialize<TResponse>(await response.Content.ReadAsStringAsync(), options);
                 }
-                else { throw new HttpException(response.StatusCode);}
+                else { throw new HttpException(response.StatusCode); }
             }
         }
         public async Task<CreateResponse> Create<TRequest>(TRequest request, string path)
@@ -107,7 +108,7 @@ namespace HotelUI.Services
                 }
             }
         }
-      
+
         public async Task Delete(string path)
         {
             _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
@@ -187,7 +188,7 @@ namespace HotelUI.Services
             MultipartFormDataContent content = new MultipartFormDataContent();
             foreach (var prop in request.GetType().GetProperties())
             {
-                var val = prop.GetValue(request); 
+                var val = prop.GetValue(request);
 
                 if (val is IFormFile file)
                 {
@@ -204,7 +205,7 @@ namespace HotelUI.Services
                         content.Add(strContent, prop.Name, file2.FileName);
                     }
                 }
-                else if(val is List<int> numbers)
+                else if (val is List<int> numbers)
                 {
                     foreach (var item in numbers)
                     {
@@ -350,25 +351,45 @@ namespace HotelUI.Services
                 }
             }
         }
-        //public async Task<TResponse> GetOrdersPricePerYearAsync<TResponse>(string path)
-        //{
-        //    _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
-        //    _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
-        //    using (var response = await _client.GetAsync(baseUrl + path))
-        //    {
-        //        var json = await response.Content.ReadAsStringAsync();
 
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            return JsonSerializer.Deserialize<TResponse>(json);
-        //        }
-        //        else
-        //        {
-        //            throw new HttpException(response.StatusCode, json);
-        //        }
-        //    }
+        public async Task<int> GetTotalReservationsCountAsync(string path)
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
 
-        //}
+            using (var response = await _client.GetAsync(baseUrl + path))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<ReservationCountResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return result?.TotalReservations ?? 0;
+
+                }
+                else { throw new HttpException(response.StatusCode); }
+            }
+        }
+
+        public async Task<double> GetTotalPriceReservationsAsync(string path)
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+            using (var response = await _client.GetAsync(baseUrl + path))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<ReservationTotalPriceResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return result?.TotalPrice ?? 0;
+
+                }
+                else { throw new HttpException(response.StatusCode); }
+            }
+        }
+
+
+        
 
     }
 }

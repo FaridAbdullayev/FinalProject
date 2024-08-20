@@ -104,5 +104,21 @@ namespace HotelProject.Controllers
             //return Ok(monthlyIncome);
         }
 
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetTotalReservationsCount()
+        {
+            var count = await _reservation.GetTotalReservationsCountAsync();
+            return Ok(new { TotalReservations = count });
+        }
+
+
+        [HttpGet("total-price")]
+        public async Task<IActionResult> GetTotalReservationPrice()
+        {
+            double totalPrice = await _reservation.GetTotalReservationPriceAsync();
+            return Ok(new { TotalPrice = totalPrice });
+        }
+
     }
 }

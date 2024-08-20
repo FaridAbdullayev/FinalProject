@@ -27,6 +27,10 @@ namespace Service.Services.Interfaces
 
 
         Task<Dictionary<string, double>> GetCurrentYearMonthlyIncomeJsonAsync();
+
+        Task<int> GetTotalReservationsCountAsync();
+
+        Task<double> GetTotalReservationPriceAsync();
         //Task<List<MonthlyIncomeDto>> GetCurrentYearMonthlyIncomeAsync();
     }
 }

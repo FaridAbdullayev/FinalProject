@@ -49,34 +49,6 @@ namespace HotelUI.Controllers
             }
         }
 
-        //public async Task<IActionResult> GetCurrentYearMonthlyIncome()
-        //{
-        //    try
-        //    {
-        //        var monthlyIncome = await _crudService.GetAsyncBranchesIncome<List<MonthlyIncomeResponse>>("reservations/last-12-months-income");
-        //        return Ok(monthlyIncome);
-        //    }
-        //    catch (HttpException e)
-        //    {
-        //        if (e.Status == System.Net.HttpStatusCode.Unauthorized)
-        //        {
-        //            return RedirectToAction("login", "auth");
-        //        }
-        //        else
-        //        {
-        //            return RedirectToAction("error", "home");
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return RedirectToAction("error", "home");
-        //    }
-        ////}
-
-
-        //[HttpGet("api/admin/orders-price-per-year")]
-
-
 
 
         [HttpGet("api/current-year-monthly-income")]
@@ -99,6 +71,59 @@ namespace HotelUI.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+
+        [HttpGet("api/get-total-reservations")]
+        public async Task<IActionResult> GetTotalReservations()
+        {
+            try
+            {
+                int count = await _crudService.GetTotalReservationsCountAsync("reservations/count");
+                return Ok(new { TotalReservations = count });
+            }
+            catch (HttpException e)
+            {
+                if (e.Status == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("login", "auth");
+                }
+                else
+                {
+                    return RedirectToAction("error", "home");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("error", "home");
+            }
+        }
+
+
+        [HttpGet("api/get-totalPrice-reservations")]
+        public async Task<IActionResult> GetTotalPriceReservation()
+        {
+            try
+            {
+                double count = await _crudService.GetTotalPriceReservationsAsync("reservations/total-price");
+                return Ok(new { TotalPrice = count });
+            }
+            catch (HttpException e)
+            {
+                if (e.Status == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("login", "auth");
+                }
+                else
+                {
+                    return RedirectToAction("error", "home");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("error", "home");
             }
         }
     }

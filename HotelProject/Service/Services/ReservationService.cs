@@ -173,31 +173,18 @@ namespace Service.Services
             return result;
         }
 
+        public async Task<int> GetTotalReservationsCountAsync()
+        {
+            return await _repo.GetAll(x=> true).Where(x=>x.Status == OrderStatus.Accepted).CountAsync();
+        }
+        public async Task<double> GetTotalReservationPriceAsync()
+        {
+            var reservations = await _repo.GetAll(r => true, "Room").ToListAsync();
 
-        //public async Task<List<MonthlyIncomeDto>> GetCurrentYearMonthlyIncomeAsync()
-        //{
-        //    DateTime currentDate = DateTime.Now;
-        //    DateTime startOfYear = new DateTime(currentDate.Year, 1, 1);
-        //    DateTime endOfYear = new DateTime(currentDate.Year, 12, 31);
+            double totalPrice = reservations.Sum(r => (r.EndDate - r.StartDate).TotalDays * r.Room.Price);
 
-        //    // Bu yıl içerisindeki tüm rezervasyonları getir
-        //    var reservations = _repo.GetAll(r => r.StartDate >= startOfYear && r.EndDate <= endOfYear, "Room")
-        //                            .ToList();
+            return totalPrice;
+        }
 
-        //    // Aylık gelir hesaplama ve gruplama
-        //    var monthlyIncomes = Enumerable.Range(1, 12)
-        //        .Select(month => new MonthlyIncomeDto
-        //        {
-        //            Year = currentDate.Year,
-        //            Month = month,
-        //            TotalIncome = reservations
-        //                .Where(r => r.StartDate.Year == currentDate.Year && r.StartDate.Month == month)
-        //                .Sum(r => CalculateTotalPrice(r.StartDate, r.EndDate, r.Room.Price))
-        //        })
-        //        .OrderBy(m => m.Month)
-        //        .ToList();
-
-        //    return monthlyIncomes;
-        //}
     }
 }

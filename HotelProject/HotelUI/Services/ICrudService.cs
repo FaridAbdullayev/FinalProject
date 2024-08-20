@@ -28,5 +28,11 @@ namespace HotelUI.Services
         Task<TResponse> GetAsyncBranchesIncome<TResponse>(string endpoint);
 
         Task<Dictionary<string, int>> GetOrdersPricePerYearAsync();
+
+        Task<int> GetTotalReservationsCountAsync(string path);
+
+        Task<double> GetTotalPriceReservationsAsync(string path);
+
+
     }
 }
