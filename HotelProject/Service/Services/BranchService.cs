@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.Entities.Enum;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Service.Dtos;
 using Service.Dtos.Branch;
 using Service.Services.Interfaces;
@@ -84,5 +87,43 @@ namespace Service.Services
             entity.UpdateAt = DateTime.Now;
             _branchRepository.Save();
         }
+
+
+
+        private double CalculateTotalPrice(Reservation reservation)
+        {
+            var nights = (reservation.EndDate - reservation.StartDate).TotalDays;
+            if (nights <= 0) return 0;
+
+            double ratePerNight = reservation.Room.Price;
+            return nights * ratePerNight;
+        }
+
+        public List<BranchIncome> GetBranchIncomes()
+        {
+            var branches = _branchRepository.GetAll(x => !x.IsDeleted)
+                .Include(b => b.Rooms)
+                    .ThenInclude(r => r.Reservations)
+                .ToList(); 
+
+            var branchGelirleri = branches.Select(branch => new BranchIncome
+            {
+                BranchId = branch.Id,
+                BranchName = branch.Name,
+                Income = branch.Rooms.SelectMany(room => room.Reservations
+                    .Where(r => r.Status == OrderStatus.Accepted))
+                    .Sum(rezervasyon => CalculateTotalPrice(rezervasyon))
+            }).ToList();
+
+            return branchGelirleri;
+        }
+        public BranchIncome GetBranchWithMostIncome()
+        {
+            var branchIncomes = GetBranchIncomes();
+            return branchIncomes.OrderByDescending(x => x.Income).FirstOrDefault();
+        }
+
+
+       
     }
 }

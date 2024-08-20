@@ -1,44 +1,44 @@
-﻿form {
+﻿/*form {
     background-color: #f8f9fa;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     margin: 0 auto;
-}
+}*/
 
 /* Etiketler için stil */
-.form-label {
+/*.form-label {
     font-weight: bold;
     margin-bottom: 8px;
     display: block;
-}
+}*/
 
 /* Giriş alanları için stil */
-.form-control {
+/*.form-control {
     border-radius: 4px;
     border: 1px solid #ced4da;
     transition: border-color 0.3s;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
-}
+}*/
 
     /* Odaklanıldığında giriş alanı sınır rengi */
-    .form-control:focus {
+    /*.form-control:focus {
         border-color: #80bdff;
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         outline: none;
-    }
+    }*/
 
 /* Hata mesajları için stil */
-.text-danger {
+/*.text-danger {
     font-size: 0.875em;
     margin-top: 5px;
-}
+}*/
 
 /* Buton stili */
-.btn-primary {
+/*.btn-primary {
     background-color: #007bff;
     border-color: #007bff;
     padding: 10px 15px;
@@ -55,10 +55,10 @@
     .btn-primary:hover {
         background-color: #0056b3;
         border-color: #004085;
-    }
+    }*/
 
 /* Başlık ve genel sayfa düzeni */
-h1 {
+/*h1 {
     font-size: 2em;
     font-weight: bold;
     margin-bottom: 20px;
@@ -68,4 +68,17 @@ h1 {
 
 .container {
     margin-top: 50px;
-}
+}*/
+
+/*
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}*/
+
+/*#branch-income-chart {
+    display: block;
+    margin: 0 auto;
+}*/

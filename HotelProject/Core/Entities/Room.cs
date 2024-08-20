@@ -21,5 +21,6 @@ namespace Core.Entities
         public Branch Branch { get; set; }
         public List<RoomService> RoomServices { get; set; }
         public List<RoomImage> Images { get; set; }
+        public List<Reservation> Reservations { get; set; }
     }
 }

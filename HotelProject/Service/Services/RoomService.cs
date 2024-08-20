@@ -31,9 +31,6 @@ namespace Service.Services
         private readonly IWebHostEnvironment _env;
         private readonly UserManager<AppUser> _userManager;
         private readonly IReservationRepository _reservationRepo;
-     
-
-
         public RoomService(IRoomRepository roomRepository, IServiceRepository serviceRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment, IBranchRepository branchRepository, IBedTypeRepository bedTypeRepository, UserManager<AppUser> userManager, IReservationRepository reservationRepo)
         {
             _env = webHostEnvironment;
@@ -45,8 +42,6 @@ namespace Service.Services
             _userManager = userManager;
             _reservationRepo = reservationRepo;
         }
-
-
         public RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut)
         {
             Room room = _repo.Get(x => x.Id == roomId && !x.IsDeleted);
@@ -62,6 +57,8 @@ namespace Service.Services
 
             int branchId = room.BranchId;
 
+            //var selectedImage = room.Images.FirstOrDefault(x=>x.IsMain == true);
+
             RoomPreReservationInfoDto info = new RoomPreReservationInfoDto
             {
                 BranchId = branchId,
@@ -71,39 +68,11 @@ namespace Service.Services
                 TotalPrice = totalPrice,
                 AdultsCount = room.MaxAdultsCount,
                 ChildrenCount = room.MaxChildrenCount,
+                //Image = selectedImage.Image
             };
 
             return info;
         }
-
-        //public RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut, int adultsCount, int childrenCount)
-        //{
-        //    Room room = _repo.Get(x => x.Id == roomId && !x.IsDeleted);
-
-        //    if (room == null)
-        //    {
-        //        throw new RestException(StatusCodes.Status404NotFound, "Room not found");
-        //    }
-
-        //    int nights = (checkOut - checkIn).Days;
-
-        //    double totalPrice = room.Price * nights;
-
-        //    int branchId = room.BranchId;
-
-        //    RoomPreReservationInfoDto info = new RoomPreReservationInfoDto
-        //    {
-        //        BranchId = branchId,
-        //        CheckIn = checkIn,
-        //        CheckOut = checkOut,
-        //        Nights = nights,
-        //        ChildrenCount = childrenCount,
-        //        AdultsCount = adultsCount,
-        //        TotalPrice = totalPrice
-        //    };
-
-        //    return info;
-        //}
         public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
         {
             if (criteriaDto.StartDate < DateTime.Today)
@@ -302,14 +271,5 @@ namespace Service.Services
 
             _repo.Save();
         }
-
-      
-        //public double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate)
-        //{
-        //    var numberOfDays = (endDate - startDate).TotalDays;
-        //    return room.Price * numberOfDays;
-        //}
-
-
     }
 }

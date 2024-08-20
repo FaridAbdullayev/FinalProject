@@ -16,5 +16,9 @@ namespace Service.Services.Interfaces
         void Delete(int id);
         List<BranchListItemGetDto> GetAll();
         PaginatedList<BranchGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10);
+
+        List<BranchIncome> GetBranchIncomes();
+
+        BranchIncome GetBranchWithMostIncome();
     }
 }

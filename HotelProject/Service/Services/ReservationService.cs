@@ -5,6 +5,7 @@ using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Service.Dtos;
 using Service.Dtos.Contact;
@@ -30,7 +31,6 @@ namespace Service.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly EmailService _emailService;
-
         public ReservationService(IReservationRepository repo, UserManager<AppUser> userManager, IRoomRepository roomRepo, IMapper mapper, EmailService emailService)
         {
             _repo = repo;
@@ -76,8 +76,6 @@ namespace Service.Services
 
             return reservation.Id;
         }
-
-
         public async Task<List<MemberReservationGetDto>> GetUserReservationsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -104,14 +102,11 @@ namespace Service.Services
 
             return reservationDtos;
         }
-
         private double CalculateTotalPrice(DateTime startDate, DateTime endDate, double roomPrice)
         {
             int nights = (endDate - startDate).Days;
             return nights * roomPrice;
         }
-
-
         public async Task CancelReservationAsync(int reservationId, string userId)
         {
             var reservation = _repo.Get(r => r.Id == reservationId && r.AppUserId == userId);
@@ -124,18 +119,15 @@ namespace Service.Services
             reservation.Status = OrderStatus.Canceled;
             _repo.Save();
         }
-
         public PaginatedList<ReservationGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
             var query = _repo.GetAll(x=>true,"AppUser","Room");
             var paginated = PaginatedList<Reservation>.Create(query, page, size);
             return new PaginatedList<ReservationGetDto>(_mapper.Map<List<ReservationGetDto>>(paginated.Items), paginated.TotalPages, page, size);
         }
-
         public async Task UpdateReservationStatus(int id, OrderStatus newStatus)
         {
-            // Rezervasyonu veritabanından al
-            Reservation reserv = _repo.Get(o => o.Id == id);
+            Reservation reserv = _repo.Get(o => o.Id == id,"AppUser");
 
             if (reserv == null)
             {
@@ -148,21 +140,64 @@ namespace Service.Services
             }
 
             reserv.Status = newStatus;
-
-            ////var user = await _userManager.FindByIdAsync(reserv.AppUserId);
-
-            ////if (user == null)
-            ////{
-            ////    throw new RestException(StatusCodes.Status404NotFound, "User not found");
-            ////}
-
-            //string subject = newStatus == OrderStatus.Accepted ? "Rezervasyonunuz Kabul Edildi" : "Rezervasyonunuz Reddedildi";
-            //string body = "Admin";
-
-            //_emailService.Send(reserv.AppUser.Email, subject, body);
-
+            string subject = "Admin";
+            string body = newStatus == OrderStatus.Accepted ? "Rezervasyonunuz Qəbul Edildi" : "Rezervasyonunuz Rəddedildi";
+            _emailService.Send(reserv.AppUser?.Email, subject, body);
             _repo.Save();
         }
+        public async Task<Dictionary<string, double>> GetCurrentYearMonthlyIncomeJsonAsync()
+        {
+            DateTime currentDate = DateTime.Now;
+            DateTime startOfYear = new DateTime(currentDate.Year, 1, 1);
+            DateTime endOfYear = new DateTime(currentDate.Year, 12, 31);
 
+            var reservations = await _repo.GetAll(r => r.StartDate >= startOfYear && r.EndDate <= endOfYear, "Room")
+                                          .ToListAsync();
+
+            var monthlyIncomes = Enumerable.Range(1, 12)
+                .Select(month => new
+                {
+                    MonthName = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }[month - 1],
+                    TotalIncome = reservations
+                        .Where(r => r.StartDate.Year == currentDate.Year && r.StartDate.Month == month)
+                        .Sum(r => CalculateTotalPrice(r.StartDate, r.EndDate, r.Room.Price))
+                })
+                .OrderBy(m => Array.IndexOf(new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }, m.MonthName))
+                .ToList();
+
+            var result = monthlyIncomes.ToDictionary(
+                m => m.MonthName,
+                m => m.TotalIncome
+            );
+
+            return result;
+        }
+
+
+        //public async Task<List<MonthlyIncomeDto>> GetCurrentYearMonthlyIncomeAsync()
+        //{
+        //    DateTime currentDate = DateTime.Now;
+        //    DateTime startOfYear = new DateTime(currentDate.Year, 1, 1);
+        //    DateTime endOfYear = new DateTime(currentDate.Year, 12, 31);
+
+        //    // Bu yıl içerisindeki tüm rezervasyonları getir
+        //    var reservations = _repo.GetAll(r => r.StartDate >= startOfYear && r.EndDate <= endOfYear, "Room")
+        //                            .ToList();
+
+        //    // Aylık gelir hesaplama ve gruplama
+        //    var monthlyIncomes = Enumerable.Range(1, 12)
+        //        .Select(month => new MonthlyIncomeDto
+        //        {
+        //            Year = currentDate.Year,
+        //            Month = month,
+        //            TotalIncome = reservations
+        //                .Where(r => r.StartDate.Year == currentDate.Year && r.StartDate.Month == month)
+        //                .Sum(r => CalculateTotalPrice(r.StartDate, r.EndDate, r.Room.Price))
+        //        })
+        //        .OrderBy(m => m.Month)
+        //        .ToList();
+
+        //    return monthlyIncomes;
+        //}
     }
 }

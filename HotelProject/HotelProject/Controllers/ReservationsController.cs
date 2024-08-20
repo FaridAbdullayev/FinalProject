@@ -10,6 +10,7 @@ using Core.Entities;
 using Service.Dtos.Contact;
 using Service.Dtos;
 using Core.Entities.Enum;
+using Service.Dtos.Reservation;
 
 namespace HotelProject.Controllers
 {
@@ -20,14 +21,14 @@ namespace HotelProject.Controllers
         private readonly IReservationService _reservation;
         private readonly IHttpContextAccessor _context;
 
-        public ReservationsController(IReservationService reservationService,IHttpContextAccessor httpContextAccessor)
+        public ReservationsController(IReservationService reservationService, IHttpContextAccessor httpContextAccessor)
         {
             _reservation = reservationService;
             _context = httpContextAccessor;
         }
 
         [HttpPost("member")]
-        [Authorize(Roles ="Member")]
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> CreateReservation([FromBody] ReservationsDto reservationsDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -90,6 +91,17 @@ namespace HotelProject.Controllers
             _reservation.UpdateReservationStatus(id, OrderStatus.Rejected);
             return NoContent();
 
+        }
+
+
+
+        [HttpGet("last-12-months-income")]
+        public async Task<IActionResult> GetLast12MonthsIncome()
+        {
+            var count = await _reservation.GetCurrentYearMonthlyIncomeJsonAsync();
+            return Ok(count);
+            //var monthlyIncome = await _reservation.GetCurrentYearMonthlyIncomeAsync();
+            //return Ok(monthlyIncome);
         }
 
     }

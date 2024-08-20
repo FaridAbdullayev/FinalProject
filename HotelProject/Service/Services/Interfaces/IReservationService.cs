@@ -24,5 +24,9 @@ namespace Service.Services.Interfaces
         PaginatedList<ReservationGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10);
 
         Task UpdateReservationStatus(int id, OrderStatus newStatus);
+
+
+        Task<Dictionary<string, double>> GetCurrentYearMonthlyIncomeJsonAsync();
+        //Task<List<MonthlyIncomeDto>> GetCurrentYearMonthlyIncomeAsync();
     }
 }

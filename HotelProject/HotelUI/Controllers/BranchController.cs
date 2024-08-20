@@ -3,6 +3,7 @@ using HotelUI.Filters;
 using HotelUI.Models.Branch;
 using HotelUI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HotelUI.Controllers
 {
@@ -96,6 +97,9 @@ namespace HotelUI.Controllers
                 return StatusCode((int)e.Status);
             }
         }
+
+
+       
 
     }
 }

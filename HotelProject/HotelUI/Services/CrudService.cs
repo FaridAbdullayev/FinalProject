@@ -8,6 +8,9 @@ using HotelUI.Exceptions;
 using HotelUI.Models.Admin;
 using HotelUI.Models.Contact;
 using Microsoft.VisualBasic;
+using System.Net.Http;
+using HotelUI.Models.Reservation;
+using System.Net.Http.Headers;
 
 
 
@@ -296,21 +299,76 @@ namespace HotelUI.Services
         }
 
 
-        //public async Task UpdateReview(string endpoint)
+        public async Task<TResponse> GetAsyncBranchesIncome<TResponse>(string endpoint)
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+            using (var response = await _client.GetAsync(baseUrl + endpoint))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    return JsonSerializer.Deserialize<TResponse>(await response.Content.ReadAsStringAsync(), options);
+                }
+                else
+                {
+                    throw new HttpException(response.StatusCode);
+                }
+            }
+        }
+
+
+
+        public async Task<Dictionary<string, int>> GetOrdersPricePerYearAsync()
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+            using (var response = await _client.GetAsync(baseUrl + "reservations/last-12-months-income"))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        // JSON verisini Dictionary olarak deserialize et
+                        return JsonSerializer.Deserialize<Dictionary<string, int>>(json);
+                    }
+                    catch (JsonException ex)
+                    {
+                        // JSON deseralize hatasını logla
+                        Console.WriteLine($"JSON Deserialization Error: {ex.Message}");
+                        throw;
+                    }
+                }
+                else
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new HttpException(response.StatusCode, errorMessage);
+                }
+            }
+        }
+        //public async Task<TResponse> GetOrdersPricePerYearAsync<TResponse>(string path)
         //{
         //    _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
         //    _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
-
-        //    var jsonContent = JsonSerializer.Serialize(endpoint);
-        //    var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-        //    using (var response = await _client.PutAsync(endpoint, null);
+        //    using (var response = await _client.GetAsync(baseUrl + path))
         //    {
-        //        if (!response.IsSuccessStatusCode)
+        //        var json = await response.Content.ReadAsStringAsync();
+
+        //        if (response.IsSuccessStatusCode)
         //        {
-        //            throw new HttpException(response.StatusCode);
+        //            return JsonSerializer.Deserialize<TResponse>(json);
+        //        }
+        //        else
+        //        {
+        //            throw new HttpException(response.StatusCode, json);
         //        }
         //    }
+
         //}
+
     }
 }

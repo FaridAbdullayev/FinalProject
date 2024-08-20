@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
 using Service.Dtos.Branch;
+using Service.Services;
 using Service.Services.Interfaces;
 
 namespace HotelProject.Controllers
@@ -16,6 +17,11 @@ namespace HotelProject.Controllers
         {
             _service = branchService;
         }
+
+
+      
+
+
         [HttpPost("")]
         public ActionResult Create(BranchCreateDto createDto)
         {
@@ -54,6 +60,44 @@ namespace HotelProject.Controllers
             _service.Update(branchUpdateDto, id);
             return NoContent();
         }
+
+        [HttpGet("incomes")]
+        public async Task<ActionResult<List<BranchIncome>>> GetBranchIncomes()
+        {
+            try
+            {
+                var incomes = _service.GetBranchIncomes();
+                return Ok(incomes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        // GET: api/branch/most-income
+        [HttpGet("most-income")]
+        public async Task<ActionResult<BranchIncome>> GetBranchWithMostIncome()
+        {
+            try
+            {
+                var branchWithMostIncome = _service.GetBranchWithMostIncome();
+                if (branchWithMostIncome == null)
+                {
+                    return NotFound("No branches found.");
+                }
+                return Ok(branchWithMostIncome);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+
+     
 
     }
 }

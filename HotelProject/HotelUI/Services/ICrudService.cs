@@ -3,6 +3,7 @@
 using HotelUI.Models;
 using HotelUI.Models.Admin;
 using HotelUI.Models.Contact;
+using HotelUI.Models.Reservation;
 
 namespace HotelUI.Services
 {
@@ -23,5 +24,9 @@ namespace HotelUI.Services
         Task SendMessageToUser(AdminAndIUserInteraction interaction);
 
         Task Status(string path);
+
+        Task<TResponse> GetAsyncBranchesIncome<TResponse>(string endpoint);
+
+        Task<Dictionary<string, int>> GetOrdersPricePerYearAsync();
     }
 }
