@@ -3,10 +3,12 @@ using Core.Entities;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Pustok.Helpers;
 using Service.Dtos;
 using Service.Dtos.OurStaff;
 using Service.Dtos.Service;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,11 @@ namespace Service.Services
             _serviceRepository = serviceRepository;
             _mapper = mapper;
             _env = webHostEnvironment;
+        }
+
+        public async Task<int> OurStaffCount()
+        {
+            return await _serviceRepository.GetAll(x => x.IsDeleted == false).CountAsync();
         }
         public int Create(OurStaffCreateDto createDto)
         {
@@ -112,5 +119,11 @@ namespace Service.Services
 
             _serviceRepository.Save();
         }
+
+        public List<MemberOurStaffGetDto> MemberGetAllOurStaff()
+        {
+            return _mapper.Map<List<MemberOurStaffGetDto>>(_serviceRepository.GetAll(x => !x.IsDeleted)).ToList();
+        }
+
     }
 }

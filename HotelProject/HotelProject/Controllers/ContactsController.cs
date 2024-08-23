@@ -20,7 +20,7 @@ namespace HotelProject.Controllers
         {
             _service = contact;
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPost("admin/message")]
         public async Task<ActionResult> SendMessageToUser(AdminAndIUserInteraction interaction)
         {
@@ -34,7 +34,7 @@ namespace HotelProject.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
-
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("")]
         public async Task<ActionResult> Create(ContactUserDto createDto)
         {
@@ -49,13 +49,14 @@ namespace HotelProject.Controllers
             }
         }
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("")]
         public ActionResult<PaginatedList<ContactGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
             return StatusCode(200, _service.GetAllByPage(search, page, size));
         }
 
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("all")]
         public ActionResult<List<ContactListItemGetDto>> GetAllContact()
         {

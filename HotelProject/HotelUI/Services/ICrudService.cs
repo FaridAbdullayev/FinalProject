@@ -33,6 +33,13 @@ namespace HotelUI.Services
 
         Task<double> GetTotalPriceReservationsAsync(string path);
 
+        Task<int> GetMemberRegisteredCountAsync(string path);
+
+
+        Task<int> GetOurStaffCount(string path);
+
+        Task<byte[]> ExportAsync();
+
 
     }
 }

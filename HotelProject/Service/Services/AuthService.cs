@@ -4,6 +4,8 @@ using Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
@@ -38,6 +40,12 @@ namespace Service.Services
             _signInManager = signInManager;
             _emailService = emailService;
         }
+        public async Task<int> GetRegisteredUsersCount()
+        {
+            var users = await _userManager.GetUsersInRoleAsync("Member");
+            return users.Count;
+        }
+
         public string Create(AdminCreateDto createDto)
         {
             var existingUser = _userManager.FindByNameAsync(createDto.UserName).Result;

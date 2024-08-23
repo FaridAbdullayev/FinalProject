@@ -7,12 +7,12 @@
                     <div class="clearfix">
                         <div class="float-left">
                             <h4 class="text-danger">
-                                <i class="fa fa-bar-chart-o highlight-icon" aria-hidden="true"></i>
+                                <i class="fa fa-user-circle-o highlight-icon" aria-hidden="true"></i>
                             </h4>
                         </div>
                         <div class="float-right">
-                            <p class="card-text text-dark">Visitors</p>
-                            <h4 class="bold-text">65,650</h4>
+                            <p class="card-text text-dark">Members</p>
+                            <h4 id="registered-count">0</h4>
                         </div>
                     </div>
                     <p class="text-muted">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <p class="text-muted">
-                        <i class="fa fa-calendar mr-1" aria-hidden="true"></i> Weekly Sales
+                        <i class="fa fa-calendar mr-1" aria-hidden="true"></i> All Sales
                     </p>
                 </div>
             </div>
@@ -69,12 +69,12 @@
                     <div class="clearfix">
                         <div class="float-left">
                             <h4 class="text-primary">
-                                <i class="fa fa-twitter highlight-icon" aria-hidden="true"></i>
+                                <i class="fa fa-male highlight-icon" aria-hidden="true"></i>
                             </h4>
                         </div>
                         <div class="float-right">
-                            <p class="card-text text-dark">Followers</p>
-                            <h4 class="bold-text">+62,500</h4>
+                            <p class="card-text text-dark">Staff</p>
+                            <h4 id="ourStaff">0</h4>
                         </div>
                     </div>
                     <p class="text-muted">
@@ -299,7 +299,6 @@
             if (response.ok) {
                 let data = await response.json();
 
-                console.log(data); // Veriyi konsola yazdırın ve kontrol edin
                 document.getElementById('bold-text').innerText = data.totalReservations;
             } else {
                 console.error('Failed to fetch total reservations');
@@ -316,8 +315,40 @@
             if (response.ok) {
                 let data = await response.json();
 
-                console.log(data); 
                 document.getElementById('revenue').innerText = data.totalPrice;
+            } else {
+                console.error('Failed to fetch total reservations');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        try {
+            let response = await fetch('/api/get-total-registered');
+            if (response.ok) {
+                let data = await response.json();
+
+                console.log(data);
+                document.getElementById('registered-count').innerText = data.count;
+            } else {
+                console.error('Failed to fetch total reservations');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        try {
+            let response = await fetch('/api/get-ourStaff-count');
+            if (response.ok) {
+                let data = await response.json();
+
+                console.log(data);
+                document.getElementById('ourStaff').innerText = data.count;
             } else {
                 console.error('Failed to fetch total reservations');
             }

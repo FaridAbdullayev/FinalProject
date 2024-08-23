@@ -30,6 +30,7 @@ namespace Service.Services.Interfaces
 
         Task<bool> VerifyEmailAndToken(string email, string token);
         Task UpdateProfile(MemberProfileEditDto profileEditDto);
+        Task<int> GetRegisteredUsersCount();
 
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Service.Dtos;
 using Service.Dtos.Branch;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Service.Services
         }
         public int Create(BranchCreateDto createDto)
         {
-            if(_branchRepository.Exists(x=>x.Name == createDto.Name && !x.IsDeleted))
+            if (_branchRepository.Exists(x => x.Name == createDto.Name && !x.IsDeleted))
                 throw new RestException(StatusCodes.Status400BadRequest, "Name", "Branch already taken");
 
             Branch branch = _mapper.Map<Branch>(createDto);
@@ -44,7 +45,7 @@ namespace Service.Services
 
         public void Delete(int id)
         {
-            Branch entity = _branchRepository.Get(x=>x.Id == id);
+            Branch entity = _branchRepository.Get(x => x.Id == id);
 
             if (entity == null) throw new RestException(StatusCodes.Status404NotFound, "Branch not found");
 
@@ -104,7 +105,7 @@ namespace Service.Services
             var branches = _branchRepository.GetAll(x => !x.IsDeleted)
                 .Include(b => b.Rooms)
                     .ThenInclude(r => r.Reservations)
-                .ToList(); 
+                .ToList();
 
             var branchGelirleri = branches.Select(branch => new BranchIncome
             {
@@ -124,6 +125,20 @@ namespace Service.Services
         }
 
 
-       
+
+        public BranchWithRoomsDto GetBranchWithRooms(int branchId)
+        {
+            var branch = _branchRepository
+                .GetAll(x => !x.IsDeleted && x.Id == branchId)
+                .Include(x => x.Rooms)
+                .ThenInclude(r => r.RoomServices)
+                .FirstOrDefault();
+
+            if (branch == null)
+                throw new RestException(StatusCodes.Status404NotFound, "Branch", "Branch not found");
+
+            return _mapper.Map<BranchWithRoomsDto>(branch);
+        }
+
     }
 }

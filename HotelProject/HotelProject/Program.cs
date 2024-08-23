@@ -51,9 +51,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    //c.SwaggerDoc("v1", new OpenApiInfo
+    //{
+    //    Title = "My API",
+    //    Version = "v1"
+    //});
+    c.SwaggerDoc("admin_v1", new OpenApiInfo
     {
-        Title = "My API",
+        Title = "Admin API",
+        Version = "v1"
+    });
+
+    c.SwaggerDoc("user_v1", new OpenApiInfo
+    {
+        Title = "User API",
         Version = "v1"
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -131,6 +142,7 @@ builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IRoomReviewRepository, RoomReviewRepository>();
 
+builder.Services.AddScoped<IExcelService, ExcelService>();
 
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -172,7 +184,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/admin_v1/swagger.json", "Admin API v1");
+        options.SwaggerEndpoint("/swagger/user_v1/swagger.json", "User API v1");
+    });
 }
 
 app.UseHttpsRedirection();

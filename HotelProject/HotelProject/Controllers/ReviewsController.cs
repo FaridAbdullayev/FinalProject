@@ -24,6 +24,8 @@ namespace HotelProject.Controllers
         {
             _service = reviewService;
         }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("member")]
         [Authorize(Roles ="Member")]
         public async Task<ActionResult> MemberReview(MemberRoomReviewDto memberRoomReviewDto)
@@ -36,25 +38,25 @@ namespace HotelProject.Controllers
             var reviewId = await _service.MemberReview(memberRoomReviewDto, userId);
             return Ok(new { ReviewId = reviewId });
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("")]
         public ActionResult<PaginatedList<ReviewGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
             return StatusCode(200, _service.GetAllByPage(search, page, size));
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("all")]
         public ActionResult<List<ReviewListItemGetDto>> GetAllReviews()
         {
             return Ok(_service.GetAll());
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("detail/{id}")]
         public IActionResult GetReviewById(int id)
         {
             return StatusCode(200, _service.GetById(id));
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPut("reviewsAccepted/{id}")]
         public IActionResult AcceptReview(int id)
         {
@@ -62,6 +64,7 @@ namespace HotelProject.Controllers
             _service.UpdateOrderStatus(id, ReviewStatus.Accepted);
             return NoContent();
         }
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPut("reviewsRejected/{id}")]
         public IActionResult RejectOrder(int id)
         {

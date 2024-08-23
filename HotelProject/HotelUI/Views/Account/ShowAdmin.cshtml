@@ -7,90 +7,97 @@
     ViewData["Title"] = "Admins";
     int order = 0;
 }
-
+<!-- Begin Page Content -->
 <div class="content-wrapper">
-    <h3 class="page-heading mb-4">Staff</h3>
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <a asp-action="admincreate" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            Create
-        </a>
-    </div>
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h3 class="page-heading mb-4">Admin Management</h3>
+                <a asp-action="adminCreate" class="btn btn-primary btn-lg shadow-sm">
+                    <i class="fas fa-plus-circle mr-2"></i> Create New Admin
+                </a>
+            </div>
+        </div>
 
-    <!-- Admin Table -->
-    <div class="row">
-        <div class="col-md-12 mx-auto">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Admin List</h6>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">User Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Items)
-                            {
-                                <tr>
-                                    <th scope="row">@(++order)</th>
-                                    <td>@item.UserName</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+        <!-- Admin Table -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="m-0 font-weight-bold">Admin List</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">User Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <tr>
+                                            <th scope="row">@(++order)</th>
+                                            <td>@item.UserName</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <!-- Pagination -->
-                    <nav aria-label="..." class="d-flex justify-content-center">
-                        <ul class="pagination">
-                            @if (Model.PageIndex == 1)
-                            {
-                                <li class="page-item disabled">
-                                    <span class="page-link">Previous</span>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" asp-route-page="@(Model.PageIndex-1)">Previous</a>
-                                </li>
-                            }
-
-                            @for (int i = 1; i <= Model.TotalPages; i++)
-                            {
-                                if (Model.PageIndex == i)
+                        <!-- Pagination -->
+                        <nav aria-label="Pagination" class="d-flex justify-content-center mt-4">
+                            <ul class="pagination">
+                                @if (Model.PageIndex == 1)
                                 {
-                                    <li class="page-item active" aria-current="page">
-                                        <span class="page-link">@i</span>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Previous</span>
                                     </li>
                                 }
                                 else
                                 {
-                                    <li class="page-item"><a class="page-link" asp-route-page="@i">@i</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-route-page="@(Model.PageIndex-1)">Previous</a>
+                                    </li>
                                 }
-                            }
-                            @if (Model.PageIndex == Model.TotalPages)
-                            {
-                                <li class="page-item disabled">
-                                    <span class="page-link">Next</span>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" asp-route-page="@(Model.PageIndex+1)">Next</a>
-                                </li>
-                            }
-                        </ul>
-                    </nav>
+
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    if (Model.PageIndex == i)
+                                    {
+                                        <li class="page-item active" aria-current="page">
+                                            <span class="page-link">@i</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                @if (Model.PageIndex == Model.TotalPages)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Next</span>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-route-page="@(Model.PageIndex+1)">Next</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

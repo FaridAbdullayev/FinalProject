@@ -28,5 +28,7 @@ namespace Service.Services.Interfaces
         //double CalculateRoomPrice(Room room, DateTime startDate, DateTime endDate);
 
         //Task<bool> ReserveRoomAsync(ReservationsDto reservationDto, string userId);
+
+        List<MemberReviewGetDto> GetRoomReviews(int roomId);
     }
 }

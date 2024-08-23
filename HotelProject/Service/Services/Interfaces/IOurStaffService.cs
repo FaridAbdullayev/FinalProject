@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Service.Dtos.OurStaff;
+using Service.Dtos.Users;
 
 namespace Service.Services.Interfaces
 {
@@ -17,5 +18,8 @@ namespace Service.Services.Interfaces
         void Delete(int id);
         List<OurStaffListItemGetDto> GetAll();
         PaginatedList<OurStaffGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10);
+        Task<int> OurStaffCount();
+
+        List<MemberOurStaffGetDto> MemberGetAllOurStaff();
     }
 }

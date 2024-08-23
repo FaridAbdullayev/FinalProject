@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hangfire.MemoryStorage.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
 using Service.Dtos.Branch;
 using Service.Services;
 using Service.Services.Interfaces;
+using static Service.Exceptions.ResetException;
 
 namespace HotelProject.Controllers
 {
@@ -19,48 +21,50 @@ namespace HotelProject.Controllers
         }
 
 
-      
 
 
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPost("")]
         public ActionResult Create(BranchCreateDto createDto)
         {
             return StatusCode(201, new { id = _service.Create(createDto) });
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {
             var data = _service.GetById(id);
             return StatusCode(200, data);
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("all")]
         public ActionResult<List<BranchListItemGetDto>> GetAllBranch()
         {
             return Ok(_service.GetAll());
         }
+
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("")]
         public ActionResult<PaginatedList<BranchGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
             return StatusCode(200, _service.GetAllByPage(search, page, size));
         }
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             _service.Delete(id);
             return NoContent();
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPut("{id}")]
-        public ActionResult Update(int id,BranchUpdateDto branchUpdateDto)
+        public ActionResult Update(int id, BranchUpdateDto branchUpdateDto)
         {
             _service.Update(branchUpdateDto, id);
             return NoContent();
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("incomes")]
         public async Task<ActionResult<List<BranchIncome>>> GetBranchIncomes()
         {
@@ -76,7 +80,7 @@ namespace HotelProject.Controllers
         }
 
 
-        // GET: api/branch/most-income
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("most-income")]
         public async Task<ActionResult<BranchIncome>> GetBranchWithMostIncome()
         {
@@ -96,8 +100,12 @@ namespace HotelProject.Controllers
         }
 
 
-
-     
-
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("{id}/room")]
+        public IActionResult GetBranchWithRooms(int id)
+        {
+            var branchWithRooms = _service.GetBranchWithRooms(id);
+            return StatusCode(200, branchWithRooms);
+        }
     }
 }

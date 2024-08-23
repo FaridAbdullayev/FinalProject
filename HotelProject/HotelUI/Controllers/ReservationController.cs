@@ -64,5 +64,30 @@ namespace HotelUI.Controllers
                 return StatusCode((int)e.Status);
             }
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            try
+            {
+                var fileContent = await _crudService.ExportAsync();
+                return File(fileContent, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Reservation.xlsx");
+            }
+            catch (HttpException ex)
+            {
+                if (ex.Status == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                return RedirectToAction("Error", "Home");
+            }
+            catch (System.Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
     }
 }

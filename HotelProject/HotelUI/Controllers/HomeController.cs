@@ -126,5 +126,58 @@ namespace HotelUI.Controllers
                 return RedirectToAction("error", "home");
             }
         }
+
+
+        [HttpGet("api/get-total-registered")]
+        public async Task<IActionResult> GetMemberRegisterCount()
+        {
+            try
+            {
+                int count = await _crudService.GetMemberRegisteredCountAsync("auth/registered-users-count");
+                return Ok(new { Count = count });
+            }
+            catch (HttpException e)
+            {
+                if (e.Status == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("login", "auth");
+                }
+                else
+                {
+                    return RedirectToAction("error", "home");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("error", "home");
+            }
+        }
+
+
+
+        [HttpGet("api/get-ourStaff-count")]
+        public async Task<IActionResult> OurStaffCount()
+        {
+            try
+            {
+                int count = await _crudService.GetOurStaffCount("ourStaff/count");
+                return Ok(new { Count = count });
+            }
+            catch (HttpException e)
+            {
+                if (e.Status == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("login", "auth");
+                }
+                else
+                {
+                    return RedirectToAction("error", "home");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("error", "home");
+            }
+        }
     }
 }

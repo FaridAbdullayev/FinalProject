@@ -274,6 +274,10 @@
               "target": "Package",
               "version": "[13.0.1, )"
             },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.3.0, )"
+            },
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.3.0, )"

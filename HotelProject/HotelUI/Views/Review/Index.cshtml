@@ -5,95 +5,109 @@
     ViewData["Title"] = "Index";
     int order = (Model.PageIndex - 1) * Model.PageSize;
 }
-
 <!-- Begin Page Content -->
 <div class="content-wrapper">
-    <h3 class="page-heading mb-4">Reviews</h3>
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12 mx-auto">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">RoomName</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">CreatedAt</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Items)
-                    {
-                        <tr>
-                            <th scope="row">@(++order)</th>
-                            <td>@item.UserName</td>
-                            <td>@item.RoomName</td>
-                            <td>@item.Rate</td>
-                            <td>@item.Status</td>
-                            <td>@item.CreatedAt</td>
-                            <td>
-                                @if (item.Status == "Pending")
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Reviews</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Room Name</th>
+                                    <th scope="col">Rate</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
                                 {
-                                    <form method="post" asp-action="accept">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-success">Accept</button>
-                                    </form>
-                                    <form method="post" asp-action="reject">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-danger">Reject</button>
-                                    </form>
+                                    <tr>
+                                        <th scope="row">@(++order)</th>
+                                        <td>@item.UserName</td>
+                                        <td>@item.RoomName</td>
+                                        <td>@item.Rate</td>
+                                        <td>@item.Status</td>
+                                        <td>@item.CreatedAt.ToString("dd MMM yyyy")</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                @if (item.Status == "Pending")
+                                                {
+                                                    <form method="post" asp-action="accept" class="mr-2">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <button type="submit" class="btn btn-success btn-sm">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </button>
+                                                    </form>
+                                                    <form method="post" asp-action="reject" class="mr-2">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-times"></i> Reject
+                                                        </button>
+                                                    </form>
+                                                }
+                                                <a class="btn btn-primary btn-sm" asp-action="detail" asp-route-id="@item.Id">
+                                                    <i class="fas fa-info-circle"></i> Detail
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 }
-                                <a class="btn btn-primary" asp-action="detail" asp-route-id="@item.Id">Detail</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <nav aria-label="..." class="d-flex justify-content-center">
-                <ul class="pagination">
-                    @if (Model.PageIndex == 1)
-                    {
-                        <li class="page-item disabled">
-                            <span class="page-link">Previous</span>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item">
-                            <a class="page-link" asp-route-page="@(Model.PageIndex-1)">Previous</a>
-                        </li>
-                    }
-
-                    @for (int i = 1; i <= Model.TotalPages; i++)
-                    {
-                        if (Model.PageIndex == i)
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+                    <ul class="pagination">
+                        @if (Model.PageIndex == 1)
                         {
-                            <li class="page-item active" aria-current="page">
-                                <span class="page-link">@i</span>
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
                             </li>
                         }
                         else
                         {
-                            <li class="page-item"><a class="page-link" asp-route-page="@i">@i</a></li>
+                            <li class="page-item">
+                                <a class="page-link" asp-route-page="@(Model.PageIndex-1)">Previous</a>
+                            </li>
                         }
-                    }
-                    @if (Model.PageIndex == Model.TotalPages)
-                    {
-                        <li class="page-item disabled">
-                            <span class="page-link">Next</span>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item">
-                            <a class="page-link" asp-route-page="@(Model.PageIndex+1)">Next</a>
-                        </li>
-                    }
-                </ul>
-            </nav>
+
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            if (Model.PageIndex == i)
+                            {
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">@i</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" asp-route-page="@i">@i</a></li>
+                            }
+                        }
+                        @if (Model.PageIndex == Model.TotalPages)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-route-page="@(Model.PageIndex+1)">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>

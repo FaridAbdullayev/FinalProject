@@ -26,7 +26,7 @@ namespace HotelProject.Controllers
             _reservation = reservationService;
             _context = httpContextAccessor;
         }
-
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("member")]
         [Authorize(Roles = "Member")]
         public async Task<IActionResult> CreateReservation([FromBody] ReservationsDto reservationsDto)
@@ -40,7 +40,7 @@ namespace HotelProject.Controllers
             return Ok(new { ReservationId = reservationId });
         }
 
-
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpGet("viewReserves/member")]
         public async Task<ActionResult<List<MemberReservationGetDto>>> GetUserReservations()
         {
@@ -55,7 +55,7 @@ namespace HotelProject.Controllers
 
             return Ok(reservations);
         }
-
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("cancelReservationMember/{reservationId}")]
         public async Task<ActionResult> CancelReservation(int reservationId)
         {
@@ -70,13 +70,13 @@ namespace HotelProject.Controllers
 
             return NoContent();
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("")]
         public ActionResult<PaginatedList<MemberReservationGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
             return StatusCode(200, _reservation.GetAllByPage(search, page, size));
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPut("reservationAccepted/{id}")]
         public IActionResult AcceptReview(int id)
         {
@@ -84,6 +84,8 @@ namespace HotelProject.Controllers
             _reservation.UpdateReservationStatus(id, OrderStatus.Accepted);
             return NoContent();
         }
+
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPut("reservationRejected/{id}")]
         public IActionResult RejectOrder(int id)
         {
@@ -94,7 +96,7 @@ namespace HotelProject.Controllers
         }
 
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("last-12-months-income")]
         public async Task<IActionResult> GetLast12MonthsIncome()
         {
@@ -104,7 +106,7 @@ namespace HotelProject.Controllers
             //return Ok(monthlyIncome);
         }
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("count")]
         public async Task<IActionResult> GetTotalReservationsCount()
         {
@@ -112,7 +114,7 @@ namespace HotelProject.Controllers
             return Ok(new { TotalReservations = count });
         }
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("total-price")]
         public async Task<IActionResult> GetTotalReservationPrice()
         {

@@ -1,5 +1,6 @@
 ﻿using Service.Dtos;
 using Service.Dtos.Branch;
+using Service.Dtos.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,7 @@ namespace Service.Services.Interfaces
         List<BranchIncome> GetBranchIncomes();
 
         BranchIncome GetBranchWithMostIncome();
+
+       BranchWithRoomsDto GetBranchWithRooms(int branchId);
     }
 }

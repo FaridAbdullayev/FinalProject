@@ -12,6 +12,7 @@ using System.Net.Http;
 using HotelUI.Models.Reservation;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.Options;
+using HotelUI.Models.OurStaff;
 
 
 
@@ -389,7 +390,61 @@ namespace HotelUI.Services
         }
 
 
-        
+        public async Task<int> GetMemberRegisteredCountAsync(string path)
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
 
+            using (var response = await _client.GetAsync(baseUrl + path))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<MemberRegisterCount>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return result?.Count ?? 0;
+
+                }
+                else { throw new HttpException(response.StatusCode); }
+            }
+        }
+
+        public async Task<int> GetOurStaffCount(string path)
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+            using (var response = await _client.GetAsync(baseUrl + path))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<OurStaffCountResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return result?.Count ?? 0;
+
+                }
+                else { throw new HttpException(response.StatusCode); }
+            }
+        }
+
+
+        public async Task<byte[]> ExportAsync()
+        {
+            _client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+            _client.DefaultRequestHeaders.Add(HeaderNames.Authorization, _httpContextAccessor.HttpContext.Request.Cookies["token"]);
+
+            using (HttpResponseMessage response = await _client.GetAsync(baseUrl + "excel/DownloadExcel"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsByteArrayAsync();
+                }
+                else
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    await Console.Out.WriteLineAsync("ExcelExport Error: " + errorMessage);
+                    throw new HttpException(response.StatusCode, errorMessage);
+                }
+            }
+        }
     }
 }

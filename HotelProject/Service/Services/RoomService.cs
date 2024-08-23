@@ -271,5 +271,19 @@ namespace Service.Services
 
             _repo.Save();
         }
+
+
+        public List<MemberReviewGetDto> GetRoomReviews(int roomId)
+        {
+            var room = _repo.Get(x => x.Id == roomId && !x.IsDeleted, "Reviews");
+
+            if (room == null)
+            {
+                throw new RestException(StatusCodes.Status404NotFound, "Room", "Room not found");
+            }
+            var reviews = room.Reviews.Where(x => x.Status == Core.Entities.Enum.ReviewStatus.Accepted);
+
+            return _mapper.Map<List<MemberReviewGetDto>>(reviews);
+        }
     }
 }

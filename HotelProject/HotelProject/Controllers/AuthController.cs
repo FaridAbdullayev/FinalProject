@@ -56,7 +56,7 @@ namespace HotelProject.Controllers
         //    return Ok(user1.Id);
         //}
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPost("login")]
         public ActionResult Login(AdminLoginDto loginDto)
         {
@@ -64,7 +64,7 @@ namespace HotelProject.Controllers
             return Ok(new { token });
         }
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("profile")]
         public ActionResult Profile()
@@ -88,7 +88,7 @@ namespace HotelProject.Controllers
         }
 
 
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [Authorize(Roles = "SuperAdmin")]
         [HttpPost("createAdmin")]
         public IActionResult Create(AdminCreateDto createDto)
@@ -96,7 +96,7 @@ namespace HotelProject.Controllers
 
             return StatusCode(201, new { Id = _authService.Create(createDto) });
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPut("update/{id}")]
         public IActionResult Update(string id, AdminUpdateDto updateDto)
@@ -104,7 +104,7 @@ namespace HotelProject.Controllers
             _authService.Update(id, updateDto);
             return NoContent();
         }
-
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPut("updatePassword")]
         public async Task<IActionResult> UpdatePassword(AdminUpdateDto updatePasswordDto)
         {
@@ -113,6 +113,7 @@ namespace HotelProject.Controllers
             return NoContent();
 
         }
+        [ApiExplorerSettings(GroupName = "admin_v1")]
         [Authorize(Roles = "SuperAdmin")] 
         [HttpGet("adminAllByPage")]
         public ActionResult<PaginatedList<AdminPaginatedGetDto>> GetAllByPage(string? search = null, int page = 1, int size = 10)
@@ -120,6 +121,8 @@ namespace HotelProject.Controllers
             var paginatedAdmins = _authService.GetAllByPage(search, page, size);
             return Ok(paginatedAdmins);
         }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("user/login")]
         public async Task<IActionResult> LoginForUser([FromBody] MemberLoginDto loginDto)
         {
@@ -130,6 +133,9 @@ namespace HotelProject.Controllers
             return Ok(new { Result = token });
 
         }
+
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("user/register")]
         public ActionResult RegisterForUser([FromBody] MemberRegisterDto registerDto)
         {
@@ -138,6 +144,8 @@ namespace HotelProject.Controllers
             return Ok(new { Result = Id });
 
         }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("user/verify")]
         public async Task<IActionResult> Verify([FromBody] MemberVerifyDto verifyDto)
         {
@@ -158,6 +166,8 @@ namespace HotelProject.Controllers
                 return StatusCode(ex.Code, ex.Message);
             }
         }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpGet("user/verifyemail")]
         public async Task<IActionResult> VerifyEmail(string userId, string token)
         {
@@ -180,6 +190,8 @@ namespace HotelProject.Controllers
 
             return BadRequest("Failed to confirm email.");
         }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [Authorize(Roles = "Member")]
         [HttpPost("user/profile/update")]
         public async Task<IActionResult> UpdateProfile([FromBody] MemberProfileEditDto profileEditDto)
@@ -187,6 +199,8 @@ namespace HotelProject.Controllers
             await _authService.UpdateProfile(profileEditDto);
             return Ok(new { message = "Profile updated successfully!" });
         }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("user/forgetpassword")]
         public async Task<IActionResult> ForgetPassword([FromBody] MemberForgetPasswordDto forgetPasswordDto)
         {
@@ -200,6 +214,9 @@ namespace HotelProject.Controllers
                 return StatusCode(ex.Code, ex.Message);
             }
         }
+
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("user/resetpassword")]
         public async Task<IActionResult> ResetPassword([FromBody] MemberResetPasswordDto resetPasswordDto)
         {
@@ -212,6 +229,14 @@ namespace HotelProject.Controllers
             {
                 return StatusCode(ex.Code, ex.Message);
             }
+        }
+
+        [ApiExplorerSettings(GroupName = "admin_v1")]
+        [HttpGet("registered-users-count")]
+        public async Task<IActionResult> GetRegisteredUsersCount()
+        {
+            var usersCount = await _authService.GetRegisteredUsersCount();
+            return Ok(new {Count = usersCount});
         }
     }
 }

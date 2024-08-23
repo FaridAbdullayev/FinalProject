@@ -19,8 +19,10 @@ namespace Core.Entities
         public BedType BedType { get; set; }
         public int BranchId {  get; set; }
         public Branch Branch { get; set; }
+        //public string PosterFile { get; set; }
         public List<RoomService> RoomServices { get; set; }
         public List<RoomImage> Images { get; set; }
         public List<Reservation> Reservations { get; set; }
+        public List<RoomReview> Reviews { get; set; }
     }
 }
