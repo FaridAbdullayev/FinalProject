@@ -22,7 +22,7 @@ namespace HotelUI.Models.Admin
         [MaxLength(50)]
         [MinLength(8)]
         [DataType(DataType.Password)]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword")]
         public string? ConfirmPassword { get; set; }
     }
 }

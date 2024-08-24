@@ -1,4 +1,6 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +9,11 @@ using Service.Dtos;
 using Service.Dtos.UserDtos;
 using Service.Dtos.Users;
 using Service.Services.Interfaces;
+using System.Security.Claims;
 using static Service.Exceptions.ResetException;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace HotelProject.Controllers
 {
@@ -18,12 +24,14 @@ namespace HotelProject.Controllers
         private readonly IAuthService _authService;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthService authService, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        public AuthController(IAuthService authService, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, IConfiguration configuration)
         {
             _authService = authService;
             _roleManager = roleManager;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         //[HttpGet("users")]
@@ -55,6 +63,117 @@ namespace HotelProject.Controllers
 
         //    return Ok(user1.Id);
         //}
+
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("signin-google")]
+        public async Task<IActionResult> GoogleLogin()
+        {
+
+            var response = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            if (response.Principal == null)
+                return BadRequest("Google authentication failed.");
+
+
+            var email = response.Principal.FindFirstValue(ClaimTypes.Email);
+            var fullName = response.Principal.FindFirstValue(ClaimTypes.Name);
+            var userName = email;
+
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(userName))
+                return BadRequest("Incomplete Google account information.");
+
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+
+                return BadRequest("A user with this email address already exists.");
+            }
+
+
+            user = new AppUser
+            {
+                Email = email,
+                UserName = userName,
+                FullName = fullName,
+                EmailConfirmed = true,
+            };
+            var createResult = await _userManager.CreateAsync(user);
+            if (!createResult.Succeeded)
+            {
+                return BadRequest("User creation failed.");
+            }
+
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest("Failed to assign role to user.");
+            }
+
+            var token = await GenerateJwtToken(user);
+            if (token == null)
+                return BadRequest("Login failed. Please try again.");
+
+
+            var redirectUrl = $"{_configuration["Client:URL"]}/account/ExternalLoginCallback?token={token}";
+            return Redirect(redirectUrl);
+        }
+
+
+
+
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("login-google")]
+        public IActionResult Login()
+        {
+            var props = new AuthenticationProperties { RedirectUri = "api/Auth/signin-google" };
+            return Challenge(props, GoogleDefaults.AuthenticationScheme);
+        }
+
+
+        private async Task<string> GenerateJwtToken(AppUser user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("FullName", user.FullName)
+             };
+
+
+            var roles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+
+            var secret = _configuration.GetSection("JWT:Secret").Value;
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration.GetSection("JWT:Issuer").Value,
+                audience: _configuration.GetSection("JWT:Audience").Value,
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPost("login")]

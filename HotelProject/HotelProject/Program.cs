@@ -22,6 +22,8 @@ using Microsoft.IdentityModel.Tokens;
 using Service.Dtos.Users;
 using Quartz;
 using Service.PrintJob;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -90,6 +92,31 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+builder.Services.AddAuthentication(options => {
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie(options => {
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+})
+.AddGoogle(options => {
+    options.ClientId = builder.Configuration.GetSection("Google:ClientId").Value!;
+    options.CallbackPath = "/signin-google";
+    options.ClientSecret = builder.Configuration.GetSection("Google:ClientSecret").Value!;
+    options.SaveTokens = true;
+    options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+    options.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
+    options.Events.OnRedirectToAuthorizationEndpoint = context => {
+        context.HttpContext.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
+});
+
+
+
+
+
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
 {
@@ -102,6 +129,16 @@ builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("https://localhost:7089")
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
 });
 
 
@@ -193,11 +230,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStaticFiles();
 
 app.MapControllers();
+
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 

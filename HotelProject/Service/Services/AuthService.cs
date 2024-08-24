@@ -40,11 +40,6 @@ namespace Service.Services
             _signInManager = signInManager;
             _emailService = emailService;
         }
-        public async Task<int> GetRegisteredUsersCount()
-        {
-            var users = await _userManager.GetUsersInRoleAsync("Member");
-            return users.Count;
-        }
 
         public string Create(AdminCreateDto createDto)
         {
@@ -93,7 +88,7 @@ namespace Service.Services
             {
                 throw new RestException(StatusCodes.Status400BadRequest, "Failed to delete Admin user.");
             }
-        }//
+        }///
         public PaginatedList<AdminPaginatedGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
             var users = _userManager.Users.ToList();
@@ -170,6 +165,15 @@ namespace Service.Services
 
             return new SendingLoginDto { Token = tokenStr, PasswordResetRequired = false };
         }//
+
+
+
+
+
+
+
+
+
         public void Update(string id, AdminUpdateDto updateDto)
         {
 
@@ -221,6 +225,9 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update user: {errors}");
             }
         }//
+
+
+
         public async Task UpdatePasswordAsync(AdminUpdateDto updatePasswordDto)
         {
             var user = await _userManager.FindByNameAsync(updatePasswordDto.UserName);
@@ -255,6 +262,20 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update user: {errors}");
             }
         }//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private async Task<string> GenerateJwtToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -283,7 +304,7 @@ namespace Service.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }//
+        }
         public async Task<string> MemberLogin(MemberLoginDto memberLoginDto)
         {
             var user = await _userManager.FindByEmailAsync(memberLoginDto.Email);
@@ -301,7 +322,7 @@ namespace Service.Services
             var token = await GenerateJwtToken(user);
 
             return token;
-        }//
+        }
         public async Task<string> MemberRegister(MemberRegisterDto register)
         {
             if (register.Password != register.ConfirmPassword)
@@ -361,7 +382,7 @@ namespace Service.Services
             _emailService.Send(appUser.Email, subject, emailbody);
 
             return appUser.Id;
-        }//
+        }
         public async Task<string> ForgetPassword(MemberForgetPasswordDto forgetPasswordDto)
         {
             var user = await _userManager.FindByEmailAsync(forgetPasswordDto.Email);
@@ -383,7 +404,7 @@ namespace Service.Services
             _emailService.Send(user.Email, subject, body);
 
             return resetUrl;
-        }//
+        }
         public async Task ResetPassword(MemberResetPasswordDto resetPasswordDto)
         {
             var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
@@ -404,7 +425,7 @@ namespace Service.Services
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to reset password: {errors}");
             }
-        }//
+        }
         public async Task<bool> VerifyEmailAndToken(string email, string token)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -420,7 +441,7 @@ namespace Service.Services
             }
 
             return true;
-        }// 
+        }
         public async Task UpdateProfile(MemberProfileEditDto profileEditDto)
         {
             var user = await _userManager.FindByEmailAsync(profileEditDto.Email);
@@ -463,6 +484,12 @@ namespace Service.Services
                 var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update profile: {errors}");
             }
-        }//
+        }
+        public async Task<int> GetRegisteredUsersCount()
+        {
+            var users = await _userManager.GetUsersInRoleAsync("Member");
+            return users.Count;
+        }
+
     }
 }

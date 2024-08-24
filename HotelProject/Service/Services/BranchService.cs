@@ -131,7 +131,7 @@ namespace Service.Services
             var branch = _branchRepository
                 .GetAll(x => !x.IsDeleted && x.Id == branchId)
                 .Include(x => x.Rooms)
-                .ThenInclude(r => r.RoomServices)
+                .ThenInclude(r => r.Images)
                 .FirstOrDefault();
 
             if (branch == null)
@@ -139,6 +139,9 @@ namespace Service.Services
 
             return _mapper.Map<BranchWithRoomsDto>(branch);
         }
-
+        public List<MemberBranchGetDto> UserGetAllBranch()
+        {
+            return _mapper.Map<List<MemberBranchGetDto>>(_branchRepository.GetAll(x => !x.IsDeleted)).ToList();
+        }
     }
 }

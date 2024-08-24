@@ -97,7 +97,7 @@ namespace Service.Services
             var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate);
 
             var filteredRooms = allRooms
-                .Where(r => !reservedRoomIds.Contains(r.Id)) // Rezervasyon yapılmamış odalar
+                .Where(r => !reservedRoomIds.Contains(r.Id)) 
                 .Where(r => !criteriaDto.BranchId.HasValue || r.BranchId == criteriaDto.BranchId.Value)
                 .Where(r => criteriaDto.ServiceIds == null || !criteriaDto.ServiceIds.Any() || r.RoomServices.Any(rs => criteriaDto.ServiceIds.Contains(rs.ServiceId)))
                 .Where(r => (!criteriaDto.MinPrice.HasValue || r.Price >= criteriaDto.MinPrice.Value) &&
@@ -271,8 +271,6 @@ namespace Service.Services
 
             _repo.Save();
         }
-
-
         public List<MemberReviewGetDto> GetRoomReviews(int roomId)
         {
             var room = _repo.Get(x => x.Id == roomId && !x.IsDeleted, "Reviews");
@@ -284,6 +282,21 @@ namespace Service.Services
             var reviews = room.Reviews.Where(x => x.Status == Core.Entities.Enum.ReviewStatus.Accepted);
 
             return _mapper.Map<List<MemberReviewGetDto>>(reviews);
+        }
+        public PaginatedList<MemberRoomGetDto> UserRoomGetAll(string? search = null, int page = 1, int size = 10)
+        {
+            var query = _repo.GetAll(x => !x.IsDeleted && (search == null || x.Name.Contains(search)),"Images");
+            var paginated = PaginatedList<Room>.Create(query, page, size);
+            return new PaginatedList<MemberRoomGetDto>(_mapper.Map<List<MemberRoomGetDto>>(paginated.Items), paginated.TotalPages, page, size);
+        }
+
+        public MemberRoomDetailGetDto UserGetById(int id)
+        {
+            Room entity = _repo.Get(x => x.Id == id && !x.IsDeleted, "Images", "RoomServices");
+
+            if (entity == null) throw new RestException(StatusCodes.Status404NotFound, "Room not found");
+
+            return _mapper.Map<MemberRoomDetailGetDto>(entity);
         }
     }
 }

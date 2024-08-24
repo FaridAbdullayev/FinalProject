@@ -43,6 +43,7 @@ namespace Service.Profiles
 
 
             CreateMap<Branch, BranchGetDto>();
+            CreateMap<Branch, MemberBranchGetDto>();
             CreateMap<BranchCreateDto, Branch>();
             CreateMap<Branch, BranchListItemGetDto>();
             CreateMap<Branch, BranchWithRoomsDto>()
@@ -86,20 +87,23 @@ namespace Service.Profiles
 
 
             CreateMap<Room, MemberRoomGetDto>()
-                        .ForMember(dest => dest.ServiceIds,
-                        opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()));
+                        //.ForMember(dest => dest.ServiceIds, opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()))
+                        .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Images != null && src.Images.Any() ? $"{baseUrl}/uploads/room/{src.Images.First().Image}" : $"{baseUrl}/uploads/room/default.jpg"));
+
             CreateMap<RoomImage, MemberRoomImageGetDto>()
                         .ForMember(dest => dest.Image, s => s.MapFrom(s => baseUrl + "uploads/room/" + s.Image));
             CreateMap<RoomReview, MemberReviewGetDto>()
-           .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName));
 
             CreateMap<RoomReview, ReviewGetDto>()
-        .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
-        .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
+                .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name));
             CreateMap<RoomReview, ReviewListItemGetDto>()
-             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
+                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
                  .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name)); ;
-
+            CreateMap<Room, MemberRoomDetailGetDto>()
+                .ForMember(dest => dest.ServiceIds,
+                opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()));
 
             CreateMap<RoomReview, ReviewDetailDto>();
 

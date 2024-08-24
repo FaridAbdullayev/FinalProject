@@ -179,5 +179,12 @@ namespace HotelUI.Controllers
                 return RedirectToAction("error", "home");
             }
         }
+
+
+
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

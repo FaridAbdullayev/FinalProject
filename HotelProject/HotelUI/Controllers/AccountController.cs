@@ -19,11 +19,23 @@ namespace HotelUI.Controllers
             _httpContextAccessor = httpContextAccessor;
             _crudService = crudService;
         }
+        public IActionResult GoogleLogin()
+        {
+            return View();
+        }
+        public IActionResult ExternalLoginCallback(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return Ok("You are logged in 👍");
+        }
         public IActionResult Login()
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
@@ -58,8 +70,6 @@ namespace HotelUI.Controllers
 
             return View();
         }
-
-
         public IActionResult ResetPassword()
          {
             //if (Request.Cookies.ContainsKey("token"))
@@ -107,13 +117,10 @@ namespace HotelUI.Controllers
                 return View(model);
             }
         }
-
         public IActionResult AdminCreate()
         {
             return View();
         }
-
-
         [HttpPost]
         public async Task<IActionResult> AdminCreate(AdminCreateRequest createRequest)
         {
@@ -132,8 +139,6 @@ namespace HotelUI.Controllers
                 return View(createRequest);
             }
         }
-
-
         public async Task<IActionResult> ShowAdmin(int page = 1)
         {
             try
@@ -159,18 +164,17 @@ namespace HotelUI.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
-
-    
-
         public async Task<IActionResult> Profile()
         {
             var user = await _crudService.Get<AdminGetResponse>("Auth/profile");
 
             AdminProfileEditRequest adminProfile = new AdminProfileEditRequest
             {
-                UserName = user.UserName
+                UserName = user.UserName,
+                
             };
-            ViewBag.Id = user.Id;
+            //TempData["UserId"] = user.Id;
+            ViewBag.UserId = user.Id;
 
             if (adminProfile == null)
             {
@@ -184,6 +188,7 @@ namespace HotelUI.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["ProfileUpdateError"] = "Please correct the errors and try again.";
+                ViewBag.UserId = id;
                 return View(editRequest);
             }
 
@@ -209,7 +214,6 @@ namespace HotelUI.Controllers
                 return View(editRequest);
             }
         }
-
         public async Task<IActionResult> Logout()
         {
 
@@ -220,9 +224,5 @@ namespace HotelUI.Controllers
 
             return RedirectToAction("Login", "Account");
         }
-
-
-
-
     }
 }

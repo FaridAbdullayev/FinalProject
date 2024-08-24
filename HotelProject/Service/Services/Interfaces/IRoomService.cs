@@ -30,5 +30,9 @@ namespace Service.Services.Interfaces
         //Task<bool> ReserveRoomAsync(ReservationsDto reservationDto, string userId);
 
         List<MemberReviewGetDto> GetRoomReviews(int roomId);
+
+        PaginatedList<MemberRoomGetDto> UserRoomGetAll(string? search = null, int page = 1, int size = 10);
+
+        MemberRoomDetailGetDto UserGetById(int id);
     }
 }

@@ -23,5 +23,7 @@ namespace Service.Services.Interfaces
         BranchIncome GetBranchWithMostIncome();
 
        BranchWithRoomsDto GetBranchWithRooms(int branchId);
+
+       List<MemberBranchGetDto> UserGetAllBranch();
     }
 }

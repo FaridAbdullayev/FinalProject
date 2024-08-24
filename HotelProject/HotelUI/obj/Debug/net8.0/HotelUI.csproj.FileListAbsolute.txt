@@ -239,3 +239,4 @@ C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelUI\bin\Debug\net8
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelUI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelUI\obj\Debug\net8.0\HotelUI.csproj.AssemblyReference.cache
 C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelUI\obj\Debug\net8.0\HotelUI.csproj.CopyComplete
+C:\Users\Farid\Desktop\homewotk\FinalProject\HotelProject\HotelUI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Google.dll

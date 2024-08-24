@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
 using Service.Dtos.Branch;
+using Service.Dtos.Users;
 using Service.Services;
 using Service.Services.Interfaces;
 using static Service.Exceptions.ResetException;
@@ -97,6 +98,14 @@ namespace HotelProject.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("user/all")]
+        public ActionResult<List<MemberBranchGetDto>> UserGetAllBranch()
+        {
+            return Ok(_service.UserGetAllBranch());
         }
 
 

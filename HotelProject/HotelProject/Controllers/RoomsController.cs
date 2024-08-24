@@ -61,7 +61,7 @@ namespace HotelProject.Controllers
             return NoContent();
         }
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpGet("filter/member")]
+        [HttpGet("filter/user")]
         public async Task<IActionResult> GetFilteredRooms([FromQuery] RoomFilterCriteriaDto criteriaDto)
         {
             var roomDtos = await _repo.GetFilteredRoomsAsync(criteriaDto);
@@ -69,7 +69,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpGet("PreReservationInfo/member")]
+        [HttpGet("PreReservationInfo/user")]
         public IActionResult GetRoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut)
         {
             RoomPreReservationInfoDto info = _repo.RoomPreReservationInfo(roomId, checkIn, checkOut);
@@ -83,6 +83,21 @@ namespace HotelProject.Controllers
             var reviews = _repo.GetRoomReviews(roomId);
             return Ok(reviews);
         }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("getAll/user")]
+        public ActionResult<PaginatedList<MemberRoomGetDto>> GetAllRoomMember(string? search = null, int page = 1, int size = 10)
+        {
+            return StatusCode(200, _repo.UserRoomGetAll(search, page, size));
+        }
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("getById/user/{id}")]
+        public ActionResult GetByIdRoomMember(int id)
+        {
+            var data = _repo.UserGetById(id);
+            return StatusCode(200, data);
+        }
+
     }
 
 
