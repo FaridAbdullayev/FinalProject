@@ -20,7 +20,7 @@ namespace Service.Services.Interfaces
         List<RoomListItemGetDto> GetAll();
         PaginatedList<RoomGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10);
 
-        Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto);
+        Task<List<MemberRoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto);
 
         List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate);
 

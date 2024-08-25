@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Service.Dtos.Users;
 
 namespace Service.Services.Interfaces
 {
@@ -15,5 +16,7 @@ namespace Service.Services.Interfaces
         SettingGetDto GetByKey(string key);
         void Update(string key, SettingUpdateDto updateDto);
         void Delete(string key);
+
+        List<MemberSettingGetDto> UserGetAll(string? search = null);
     }
 }

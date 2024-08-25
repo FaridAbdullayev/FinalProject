@@ -109,7 +109,7 @@ namespace Service.Profiles
 
             CreateMap<Setting, SettingGetDto>();
             CreateMap<Setting, SettingListItemGetDto>();
-
+            CreateMap<Setting, MemberSettingGetDto>();
 
             CreateMap<AppUser, AdminGetDto>();
 

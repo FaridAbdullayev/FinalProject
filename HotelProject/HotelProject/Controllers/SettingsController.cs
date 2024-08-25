@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Dtos.Setting;
 using Service.Dtos;
 using Service.Services.Interfaces;
+using Service.Dtos.Users;
 
 namespace HotelProject.Controllers
 {
@@ -48,5 +49,12 @@ namespace HotelProject.Controllers
             return NoContent();
         }
 
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("member/all")]
+        public ActionResult<List<MemberSettingGetDto>> UserGetAll()
+        {
+            return StatusCode(200, _settingService.UserGetAll());
+        }
     }
 }

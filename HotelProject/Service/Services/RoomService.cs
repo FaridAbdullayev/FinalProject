@@ -73,7 +73,7 @@ namespace Service.Services
 
             return info;
         }
-        public async Task<List<RoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
+        public async Task<List<MemberRoomGetDto>> GetFilteredRoomsAsync(RoomFilterCriteriaDto criteriaDto)
         {
             if (criteriaDto.StartDate < DateTime.Today)
             {
@@ -105,7 +105,7 @@ namespace Service.Services
                 .Where(r => r.MaxAdultsCount == criteriaDto.MaxAdultsCount && r.MaxChildrenCount == criteriaDto.MaxChildrenCount)
                 .ToList();
 
-            return _mapper.Map<List<RoomGetDto>>(filteredRooms);
+            return _mapper.Map<List<MemberRoomGetDto>>(filteredRooms);
         }
         public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
         {

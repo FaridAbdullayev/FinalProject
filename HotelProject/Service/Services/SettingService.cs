@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Service.Dtos;
 using Service.Dtos.Setting;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,14 @@ namespace Service.Services
             entity.Value = updateDto.Value;
 
             _settingRepository.Save();
+        }
+
+
+
+        public List<MemberSettingGetDto> UserGetAll(string? search = null)
+        {
+            var settings = _settingRepository.GetAll(x => search == null || x.Value.Contains(search)).ToList();
+            return _mapper.Map<List<MemberSettingGetDto>>(settings);
         }
     }
 }

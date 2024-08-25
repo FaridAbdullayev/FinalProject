@@ -24,6 +24,7 @@ using Quartz;
 using Service.PrintJob;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using HotelProject;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -184,6 +185,9 @@ builder.Services.AddScoped<IExcelService, ExcelService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+
+builder.Services.AddSignalR();
+
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -239,7 +243,10 @@ app.MapControllers();
 
 
 app.UseCors("AllowSpecificOrigin");
+app.MapHub<ReservationHub>("/reservationHub");
+
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 
 app.Run();

@@ -53,7 +53,7 @@ namespace HotelUI.Controllers
 
         [HttpGet("api/current-year-monthly-income")]
         public async Task<IActionResult> GetCurrentYearMonthlyIncome()
-        
+
         {
             try
             {

@@ -11,6 +11,7 @@ using Service.Dtos.Contact;
 using Service.Dtos;
 using Core.Entities.Enum;
 using Service.Dtos.Reservation;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HotelProject.Controllers
 {
@@ -20,11 +21,13 @@ namespace HotelProject.Controllers
     {
         private readonly IReservationService _reservation;
         private readonly IHttpContextAccessor _context;
+        private readonly IHubContext<ReservationHub> _hubContext;
 
-        public ReservationsController(IReservationService reservationService, IHttpContextAccessor httpContextAccessor)
+        public ReservationsController(IReservationService reservationService, IHttpContextAccessor httpContextAccessor, IHubContext<ReservationHub> hubContext)
         {
             _reservation = reservationService;
             _context = httpContextAccessor;
+            _hubContext = hubContext;
         }
         [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("member")]
@@ -36,6 +39,9 @@ namespace HotelProject.Controllers
             {
                 return Unauthorized();
             }
+            await _hubContext.Clients.All.SendAsync("ReceiveReservationAlert", "Yeni bir rezervasyon yapıldı.");
+
+
             var reservationId = await _reservation.CreateReservationAsync(reservationsDto, userId);
             return Ok(new { ReservationId = reservationId });
         }

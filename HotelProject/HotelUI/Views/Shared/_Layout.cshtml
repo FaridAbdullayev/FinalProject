@@ -152,6 +152,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="~/js/app-pie-chart.js"></script>
     <script src="~/js/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7119/reservationHub")
+            .build();
+
+        console.log(connection)
+
+        connection.on("ReceiveReservationAlert", (message) => {
+            alert(message);
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+    </script>
 </body>
 
 </html>
