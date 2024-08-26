@@ -164,48 +164,60 @@ namespace HotelUI.Controllers
         }
         public async Task<IActionResult> Profile()
         {
+            var token = HttpContext.Request.Cookies["token"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login");
+            }
+
             var user = await _crudService.Get<AdminGetResponse>("Auth/profile");
 
-            AdminProfileEditRequest adminProfile = new AdminProfileEditRequest
-            {
-                UserName = user.UserName,
-                
-            };
-            //TempData["UserId"] = user.Id;
-            ViewBag.UserId = user.Id;
-
-            if (adminProfile == null)
+            if (user == null)
             {
                 return NotFound();
             }
+
+            HttpContext.Session.SetString("UserId", user.Id.ToString());
+
+            var adminProfile = new AdminProfileEditRequest
+            {
+                UserName = user.UserName
+            };
+
             return View(adminProfile);
         }
+
         [HttpPost]
-        public async Task<IActionResult> Profile(AdminProfileEditRequest editRequest, string id)
+        public async Task<IActionResult> Profile(AdminProfileEditRequest editRequest)
         {
             if (!ModelState.IsValid)
             {
-                TempData["ProfileUpdateError"] = "Please correct the errors and try again.";
-                ViewBag.UserId = id;
+                var userId = HttpContext.Session.GetString("UserId");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    HttpContext.Session.SetString("UserId", userId);
+                }
                 return View(editRequest);
             }
 
             try
             {
-                await _crudService.Update<AdminProfileEditRequest>(editRequest, "Auth/update/" + id);
-
-                if (Request.Cookies.ContainsKey("token"))
-
+                // `UserId`'yi Session'dan alıyoruz
+                var userId = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId))
                 {
-                    Response.Cookies.Delete("token");
+                    return RedirectToAction("Login");
                 }
-                return RedirectToAction("login", "account");
+
+                await _crudService.Update<AdminProfileEditRequest>(editRequest, "Auth/update/" + userId);
+
+                
+                return RedirectToAction("Login", "Account");
             }
             catch (ModelException e)
             {
                 foreach (var item in e.Error.Errors)
                 {
-                    TempData["ProfileUpdateError"] = "Please correct the errors and try again.";
                     ModelState.AddModelError(item.Key, item.Message);
                 }
 

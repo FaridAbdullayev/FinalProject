@@ -121,7 +121,7 @@ namespace Service.Services
 
             Branch branch = _branchRepo.Get(x => x.Id == createDto.BranchId && !x.IsDeleted);
             if (branch == null)
-                throw new RestException(StatusCodes.Status404NotFound, "BranchId", "Branch not found by given BranchId");
+                throw new RestException(StatusCodes.Status404NotFound, "BranchId", "Branch not found");
 
             var serviceIds = createDto.ServiceIds?.ToList();
 

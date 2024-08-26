@@ -165,7 +165,6 @@ namespace HotelProject.Controllers
 
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        // [Authorize]
         [HttpGet("profileLayout")]
         public ActionResult ProfileForLayout()
         {
