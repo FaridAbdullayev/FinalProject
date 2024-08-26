@@ -52,6 +52,7 @@ namespace Service.Services
             var user = new AppUser
             {
                 UserName = createDto.UserName,
+                FullName=createDto.UserName,
                 IsPasswordResetRequired = true
             };
 
@@ -130,8 +131,16 @@ namespace Service.Services
             {
                 throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect!");
             }
+
+            var userRoles = _userManager.GetRolesAsync(user).Result;
+            if (!userRoles.Contains("SuperAdmin") && !userRoles.Contains("Admin"))
+            {
+                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect!");
+            }
+
             if (user.IsPasswordResetRequired)
             {
+
                 string resetToken = _userManager.GeneratePasswordResetTokenAsync(user).Result;
                 return new SendingLoginDto { Token = resetToken, PasswordResetRequired = true };
             }
@@ -198,7 +207,7 @@ namespace Service.Services
                 var passwordCheck = _userManager.CheckPasswordAsync(user, updateDto.CurrentPassword).Result;
                 if (!passwordCheck)
                 {
-                    throw new RestException(StatusCodes.Status400BadRequest, "Current password is incorrect.");
+                    throw new RestException(StatusCodes.Status400BadRequest,"CurrentPassword", "Current password is incorrect.");
                 }
 
 
@@ -333,7 +342,7 @@ namespace Service.Services
 
             if (_userManager.Users.Any(u => u.Email.ToLower() == register.Email.ToLower()))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Email is already taken.");
+                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is already taken.");
             }
 
 

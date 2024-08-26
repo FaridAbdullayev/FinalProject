@@ -30,7 +30,7 @@ namespace HotelProject.Controllers
             return StatusCode(200, _settingService.GetAll());
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        [HttpGet("settings/{key}")]
+        [HttpGet("{key}")]
         public ActionResult<SettingGetDto> GetByKey(string key)
         {
             return StatusCode(200, _settingService.GetByKey(key));

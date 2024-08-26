@@ -22,6 +22,7 @@ namespace HotelUI.Models.Room
         public int MaxAdultsCount { get; set; }
         public int BedTypeId { get; set; }
         public int BranchId { get; set; }
+        [Required]
         public List<IFormFile> Images { get; set; } = new List<IFormFile>();
         public List<int> ServiceIds { get; set; } = new List<int>();
     }

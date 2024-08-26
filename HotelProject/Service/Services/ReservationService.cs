@@ -58,7 +58,7 @@ namespace Service.Services
                                                          r.EndDate > reservationsDto.StartDate)
                                            .Any();
 
-            if (existingReservation) 
+            if (existingReservation)
             {
                 throw new RestException(StatusCodes.Status400BadRequest, "RoomId", "The room is already reserved for the selected dates.");
             }
@@ -84,10 +84,9 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status404NotFound, "UserId", "User not found by given UserId");
             }
 
-            var reservations = _repo.GetAll(r => r.AppUserId == userId)
+            var reservations = _repo.GetAll(r => r.AppUserId == userId).Where(x => x.Status == OrderStatus.Accepted)
                                     .Include(r => r.Room) // Oda bilgilerini de dahil etmek için
                                     .ToList();
-
             // Rezervasyonları Dto'ya dönüştürün
             var reservationDtos = reservations.Select(r => new MemberReservationGetDto
             {
@@ -96,8 +95,8 @@ namespace Service.Services
                 StartDate = r.StartDate,
                 EndDate = r.EndDate,
                 Status = r.Status,
-                //RoomName = r.Room.Name,
-                TotalPrice = CalculateTotalPrice(r.StartDate, r.EndDate, r.Room.Price) 
+                Night = (r.EndDate - r.StartDate).Days,
+                TotalPrice = CalculateTotalPrice(r.StartDate, r.EndDate, r.Room.Price)
             }).ToList();
 
             return reservationDtos;
@@ -121,13 +120,13 @@ namespace Service.Services
         }
         public PaginatedList<ReservationGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
-            var query = _repo.GetAll(x=>true,"AppUser","Room");
+            var query = _repo.GetAll(x => true, "AppUser", "Room");
             var paginated = PaginatedList<Reservation>.Create(query, page, size);
             return new PaginatedList<ReservationGetDto>(_mapper.Map<List<ReservationGetDto>>(paginated.Items), paginated.TotalPages, page, size);
         }
         public async Task UpdateReservationStatus(int id, OrderStatus newStatus)
         {
-            Reservation reserv = _repo.Get(o => o.Id == id,"AppUser");
+            Reservation reserv = _repo.Get(o => o.Id == id, "AppUser");
 
             if (reserv == null)
             {
@@ -151,7 +150,7 @@ namespace Service.Services
             DateTime startOfYear = new DateTime(currentDate.Year, 1, 1);
             DateTime endOfYear = new DateTime(currentDate.Year, 12, 31);
 
-            var reservations = await _repo.GetAll(r => r.StartDate >= startOfYear && r.EndDate <= endOfYear, "Room")
+            var reservations = await _repo.GetAll(r => r.StartDate >= startOfYear && r.EndDate <= endOfYear, "Room").Where(x => x.Status == OrderStatus.Accepted)
                                           .ToListAsync();
 
             var monthlyIncomes = Enumerable.Range(1, 12)
@@ -175,18 +174,29 @@ namespace Service.Services
 
         public async Task<int> GetTotalReservationsCountAsync()
         {
-            return await _repo.GetAll(x=> true).Where(x=>x.Status == OrderStatus.Accepted).CountAsync();
+            return await _repo.GetAll(x => true).Where(x => x.Status == OrderStatus.Accepted).CountAsync();
         }
+        //public async Task<double> GetTotalReservationPriceAsync()
+        //{
+        //    var reservations = await _repo.GetAll(r => true, "Room").ToListAsync();
+
+        //    double totalPrice = reservations.Sum(r => (r.EndDate - r.StartDate).TotalDays * r.Room.Price);
+
+        //    return totalPrice;
+        //}
+
         public async Task<double> GetTotalReservationPriceAsync()
         {
-            var reservations = await _repo.GetAll(r => true, "Room").ToListAsync();
+            var currentDate = DateTime.Now;
 
-            double totalPrice = reservations.Sum(r => (r.EndDate - r.StartDate).TotalDays * r.Room.Price);
+            var lastWeekDate = currentDate.AddDays(-7);
 
-            return totalPrice;
+            var reservations = await _repo.GetAll(r => r.EndDate >= lastWeekDate && r.StartDate <= currentDate, "Room").Where(x => x.Status == OrderStatus.Accepted).ToListAsync();
+
+            double totalWeeklyPrice = reservations.Sum(r => (r.EndDate - r.StartDate).TotalDays * r.Room.Price);
+
+            return totalWeeklyPrice;
         }
-
-
 
     }
 }

@@ -164,11 +164,16 @@ namespace HotelProject.Controllers
 
 
 
+        [ApiExplorerSettings(GroupName = "admin_v1")]
+        // [Authorize]
+        [HttpGet("profileLayout")]
+        public ActionResult ProfileForLayout()
+        {
+            var userName = User.Identity.Name;
+            var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-
-
-
-
+            return Ok(new UserProfileDto { UserName = userName, Role = role });
+        }
 
 
 

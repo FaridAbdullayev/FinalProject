@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿﻿@using System.Security.Claims
+@using HotelUI.Services
+@inject ILayoutService layoutService
+@{
+    var profile = await layoutService.GetProfile();
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,7 +37,7 @@
                 </form>
                 <ul class="navbar-nav ml-lg-auto d-flex align-items-center flex-row">
                     <li class="nav-item">
-                        <a class="nav-link" asp-action="profile" asp-controller="account">Profile</a>
+                        <a class="nav-link" asp-action="profile" asp-controller="account">@profile.UserName</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-action="logout" asp-controller="account">Logout</a>
@@ -85,12 +91,18 @@
                                 <span class="menu-title">Room</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="showadmin" asp-controller="account">
-                                <img src="~/images/icons/002-edit-text.png" alt="">
-                                <span class="menu-title">Admin</span>
-                            </a>
-                        </li>
+
+                        @if (profile.Role == "SuperAdmin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="showadmin" asp-controller="account">
+                                    <img src="~/images/icons/002-edit-text.png" alt="">
+                                    <span class="menu-title">Admin</span>
+                                </a>
+                            </li>
+
+                        }
+                       
                         <li class="nav-item">
                             <a class="nav-link" asp-action="index" asp-controller="bedtype">
                                 <img src="~/images/icons/8.png" alt="">
@@ -132,6 +144,8 @@
 
 
                 <!-- partial -->
+
+
             </div>
         </div>
 
@@ -166,6 +180,8 @@
 
         connection.start().catch(err => console.error(err.toString()));
     </script>
+
+   
 </body>
 
 </html>

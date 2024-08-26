@@ -8,6 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<AuthFilter>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICrudService, CrudService>();
+builder.Services.AddScoped<ILayoutService, LayoutService>();
 
 
 builder.Services.AddHttpClient();

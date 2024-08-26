@@ -1,4 +1,5 @@
 ﻿using HotelUI.Exceptions;
+using HotelUI.Extentions;
 using HotelUI.Models;
 using HotelUI.Models.Admin;
 using HotelUI.Services;
@@ -50,11 +51,13 @@ namespace HotelUI.Controllers
                     {
                         TempData["ResetUserName"] = loginRequest.UserName;
                         Response.Cookies.Append("token", "Bearer " + loginResponse.Token.Token);
-                        TempData["Token"] = loginResponse.Token.Token;
+
+                        _httpContextAccessor.HttpContext.Session.SetBool("PasswordResetRequired", true);
 
                         return RedirectToAction("ResetPassword");
                     }
                     Response.Cookies.Append("token", "Bearer " + loginResponse.Token.Token);
+                    _httpContextAccessor.HttpContext.Session.SetBool("PasswordResetRequired", false);
                     return RedirectToAction("index", "home");
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -72,13 +75,9 @@ namespace HotelUI.Controllers
         }
         public IActionResult ResetPassword()
          {
-            //if (Request.Cookies.ContainsKey("token"))
-            //{
-            //    Response.Cookies.Delete("token");
-            //}
-
             var userName = TempData["ResetUserName"] as string;
-            var token = TempData["Token"] as string;
+
+
             if (userName == null)
             {
                 return RedirectToAction("Login");
@@ -87,7 +86,6 @@ namespace HotelUI.Controllers
             var model = new ResetPasswordAdmin
             {
                 UserName = userName,
-                Token = token
             };
 
             return View(model);

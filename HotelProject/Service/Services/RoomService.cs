@@ -110,7 +110,8 @@ namespace Service.Services
         public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
         {
             return _reservationRepo.GetAll(reservation =>
-                reservation.StartDate < endDate && reservation.EndDate > startDate)
+                 reservation.StartDate < endDate && reservation.EndDate >= startDate)
+
                 .Select(reservation => reservation.RoomId)
                 .ToList();
         }

@@ -17,9 +17,5 @@ namespace HotelUI.Models.Admin
         [Required(ErrorMessage = "Confirm password is required")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
-
-        [JsonIgnore]
-        public string Token { get; set; }
-
     }
 }

@@ -61,16 +61,16 @@ namespace HotelUI.Controllers
 
         public async Task<IActionResult> Edit(string key)
         {
-            var setting = await _crudService.Get<SettingUpdateRequest>("settings/" + key);
+            var setting = await _crudService.Get<SettingListItemDetailGetResponse>("settings/" + key);
 
-            if (setting == null)
+            var data = new SettingUpdateRequest
             {
-                return NotFound();
-            }
+                Value = setting.Value,
+            };
 
             ViewBag.Key = key;
 
-            return View(setting);
+            return View(data);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(SettingUpdateRequest editRequest, string key)
