@@ -248,12 +248,12 @@ namespace Service.Services
             var passwordCheck = await _userManager.CheckPasswordAsync(user, updatePasswordDto.CurrentPassword);
             if (!passwordCheck)
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Current password is incorrect.");
+                throw new RestException(StatusCodes.Status400BadRequest,"CurrentPassword", "Current password is incorrect.");
             }
 
             if (updatePasswordDto.NewPassword != updatePasswordDto.ConfirmPassword)
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "New password and confirm password do not match.");
+                throw new RestException(StatusCodes.Status400BadRequest, "ConfirmPassword", "New password and confirm password do not match.");
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, updatePasswordDto.CurrentPassword, updatePasswordDto.NewPassword);
@@ -424,7 +424,7 @@ namespace Service.Services
 
             if (resetPasswordDto.NewPassword != resetPasswordDto.ConfirmNewPassword)
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "New password and confirm password do not match.");
+                throw new RestException(StatusCodes.Status400BadRequest,"NewPassword", "New password and confirm password do not match.");
             }
 
             var decodedToken = Uri.UnescapeDataString(resetPasswordDto.Token);

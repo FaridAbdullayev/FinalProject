@@ -51,7 +51,7 @@ namespace HotelProject.Controllers
 
 
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpGet("member/all")]
+        [HttpGet("all/user")]
         public ActionResult<List<MemberSettingGetDto>> UserGetAll()
         {
             return StatusCode(200, _settingService.UserGetAll());

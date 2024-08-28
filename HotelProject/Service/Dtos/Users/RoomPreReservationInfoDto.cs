@@ -1,4 +1,5 @@
-﻿using Service.Dtos.Room;
+﻿using FluentValidation;
+using Service.Dtos.Room;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,5 @@ namespace Service.Dtos.Users
         public int ChildrenCount { get; set; }
         public int AdultsCount { get; set; }
         public double TotalPrice { get; set; }
-        //public string Image { get; set; }
     }
 }

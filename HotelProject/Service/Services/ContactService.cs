@@ -37,11 +37,11 @@ namespace Service.Services
 
         }
 
-        public async Task<Contact> ContactMessage(ContactUserDto contact)
+        public async Task<Contact> ContactMessage(ContactUserDto contact, string? appUserId)
         {
             Contact contactEntity;
 
-            if (string.IsNullOrEmpty(contact.AppUserId))
+            if (string.IsNullOrEmpty(appUserId))
             {
                 // For non-logged-in users
                 if (string.IsNullOrEmpty(contact.FullName) || string.IsNullOrEmpty(contact.Email))
@@ -61,7 +61,7 @@ namespace Service.Services
             else
             {
                 // For logged-in users
-                var user = await _userManager.FindByIdAsync(contact.AppUserId);
+                var user = await _userManager.FindByIdAsync(appUserId);
 
                 if (user != null && await _userManager.IsInRoleAsync(user, "member"))
                 {
@@ -69,7 +69,7 @@ namespace Service.Services
                     {
                         FullName = user.FullName,
                         Email = user.Email,
-                        AppUserId = contact.AppUserId,
+                        AppUserId = appUserId,
                         Message = contact.Message,
                         Subject = contact.Subject,
                         CreatedAt = DateTime.UtcNow

@@ -21,13 +21,13 @@ namespace Service.Dtos.UserDtos
     {
         public AdminUpdateDtoValidator()
         {
-            RuleFor(x => x.UserName).MaximumLength(50).MinimumLength(3);
+            RuleFor(x => x.UserName).NotNull().MaximumLength(50).MinimumLength(3);
 
-            RuleFor(x => x.CurrentPassword).MaximumLength(50).MinimumLength(8);
+            RuleFor(x => x.CurrentPassword).NotNull().MaximumLength(50).MinimumLength(8);
 
-            RuleFor(x => x.NewPassword).MaximumLength(50).MinimumLength(8);
+            RuleFor(x => x.NewPassword).NotNull().MaximumLength(50).MinimumLength(8);
 
-            RuleFor(x => x.ConfirmPassword).MaximumLength(50).MinimumLength(8);
+            RuleFor(x => x.ConfirmPassword).NotNull().MaximumLength(50).MinimumLength(8);
 
             RuleFor(x => x)
                .Must(x => x.NewPassword == x.ConfirmPassword)

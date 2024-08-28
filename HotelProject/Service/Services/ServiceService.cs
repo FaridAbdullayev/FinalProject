@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Service.Dtos;
 using Service.Dtos.Branch;
 using Service.Dtos.Service;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using static Service.Exceptions.ResetException;
 
@@ -83,5 +84,12 @@ namespace Services.Services
             entity.UpdateAt = DateTime.Now;
             _serviceRepository.Save();
         }
+
+
+        public List<ServiceGetDtoForUser> GetAllUser()
+        {
+            return _mapper.Map<List<ServiceGetDtoForUser>>(_serviceRepository.GetAll(x => !x.IsDeleted)).ToList();
+        }
+
     }
 }

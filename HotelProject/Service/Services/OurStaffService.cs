@@ -125,5 +125,10 @@ namespace Service.Services
             return _mapper.Map<List<MemberOurStaffGetDto>>(_serviceRepository.GetAll(x => !x.IsDeleted)).ToList();
         }
 
+        public List<OurStaffGetForAboutDto> MemberGetAllOurStaffForUser()
+        {
+            return _mapper.Map<List<OurStaffGetForAboutDto>>(_serviceRepository.GetAll(x => !x.IsDeleted)).Take(4).ToList();
+        }
+
     }
 }

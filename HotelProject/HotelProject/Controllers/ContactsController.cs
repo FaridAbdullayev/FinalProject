@@ -7,6 +7,7 @@ using Service.Services.Interfaces;
 using System.Threading.Tasks;
 using static Service.Exceptions.ResetException;
 using Service.Dtos.Contact;
+using System.Security.Claims;
 
 namespace HotelProject.Controllers
 {
@@ -40,7 +41,9 @@ namespace HotelProject.Controllers
         {
             try
             {
-                var contact = await _service.ContactMessage(createDto);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+             
+                var contact = await _service.ContactMessage(createDto,userId);
                 return StatusCode(201, new { id = contact.Id });
             }
             catch (RestException ex)

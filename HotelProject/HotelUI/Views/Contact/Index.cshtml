@@ -24,6 +24,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Message</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -34,6 +36,8 @@
                                     <th scope="row">@(++order)</th>
                                     <td>@item.FullName</td>
                                     <td>@item.Email</td>
+                                    <td>@item.Subject</td>
+                                    <td>@item.Message</td>
                                     <td>
                                         <a class="btn btn-warning btn-sm" asp-action="contactMessageAdmin" asp-route-id="@item.Id">
                                             <i class="fas fa-envelope mr-2"></i> Message

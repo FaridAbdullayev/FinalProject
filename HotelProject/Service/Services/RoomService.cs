@@ -42,6 +42,17 @@ namespace Service.Services
             _userManager = userManager;
             _reservationRepo = reservationRepo;
         }
+
+
+
+
+
+
+
+
+
+
+
         public RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut)
         {
             Room room = _repo.Get(x => x.Id == roomId && !x.IsDeleted);
@@ -51,13 +62,17 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status404NotFound, "Room not found");
             }
 
+            if (checkOut <= checkIn)
+            {
+                throw new RestException(StatusCodes.Status400BadRequest, "CheckOut", "Check-out date must be later than check-in date.");
+            }
+
             int nights = (checkOut - checkIn).Days;
 
             double totalPrice = room.Price * nights;
 
             int branchId = room.BranchId;
 
-            //var selectedImage = room.Images.FirstOrDefault(x=>x.IsMain == true);
 
             RoomPreReservationInfoDto info = new RoomPreReservationInfoDto
             {
@@ -68,7 +83,6 @@ namespace Service.Services
                 TotalPrice = totalPrice,
                 AdultsCount = room.MaxAdultsCount,
                 ChildrenCount = room.MaxChildrenCount,
-                //Image = selectedImage.Image
             };
 
             return info;
@@ -92,6 +106,10 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status400BadRequest, "ChildrenCount", "ChildrenCount cannot be negative.");
             }
 
+            //int nights = (criteriaDto.EndDate - criteriaDto.StartDate).Days;
+
+            //double totalPrice = criteriaDto.Price * nights;
+
             var allRooms = _repo.GetAll(x => true, "RoomServices", "Branch", "Images").ToList();
 
             var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate);
@@ -111,10 +129,27 @@ namespace Service.Services
         {
             return _reservationRepo.GetAll(reservation =>
                  reservation.StartDate < endDate && reservation.EndDate >= startDate)
-
                 .Select(reservation => reservation.RoomId)
                 .ToList();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public int Create(RoomCreateDto createDto)
         {
             List<Core.Entities.Service> services = new List<Core.Entities.Service>();
@@ -274,7 +309,7 @@ namespace Service.Services
         }
         public List<MemberReviewGetDto> GetRoomReviews(int roomId)
         {
-            var room = _repo.Get(x => x.Id == roomId && !x.IsDeleted, "Reviews");
+            var room = _repo.Get(x => x.Id == roomId && !x.IsDeleted,"Reviews.AppUser");
 
             if (room == null)
             {
@@ -286,7 +321,7 @@ namespace Service.Services
         }
         public PaginatedList<MemberRoomGetDto> UserRoomGetAll(string? search = null, int page = 1, int size = 10)
         {
-            var query = _repo.GetAll(x => !x.IsDeleted && (search == null || x.Name.Contains(search)),"Images");
+            var query = _repo.GetAll(x => !x.IsDeleted && (search == null || x.Name.Contains(search)),"Images", "RoomServices");
             var paginated = PaginatedList<Room>.Create(query, page, size);
             return new PaginatedList<MemberRoomGetDto>(_mapper.Map<List<MemberRoomGetDto>>(paginated.Items), paginated.TotalPages, page, size);
         }

@@ -60,6 +60,7 @@ namespace Service.Profiles
             CreateMap<Core.Entities.Service, ServiceGetDto>();
             CreateMap<ServiceCreateDto, Core.Entities.Service>();
             CreateMap<Core.Entities.Service, ServiceListItemGetDto>();
+            CreateMap<Core.Entities.Service, ServiceGetDtoForUser>();
 
             CreateMap<OurStaff, OurStaffListItemGetDto>()
              .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/staff/" + s.Image));
@@ -67,7 +68,8 @@ namespace Service.Profiles
                .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/staff/" + s.Image));
             CreateMap<OurStaff, MemberOurStaffGetDto>()
              .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/staff/" + s.Image));
-
+            CreateMap<OurStaff, OurStaffGetForAboutDto>()
+          .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/staff/" + s.Image));
 
             CreateMap<Slider, SliderListItemGetDto>()
           .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/slider/" + s.Image));
@@ -87,8 +89,9 @@ namespace Service.Profiles
 
 
             CreateMap<Room, MemberRoomGetDto>()
-                        //.ForMember(dest => dest.ServiceIds, opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()))
-                        .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Images != null && src.Images.Any() ? $"{baseUrl}/uploads/room/{src.Images.First().Image}" : $"{baseUrl}/uploads/room/default.jpg"));
+                        .ForMember(dest => dest.ServiceIds, opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()))
+                        .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Images != null && src.Images.Any() ? $"{baseUrl}/uploads/room/{src.Images.First().Image}" : null));
+
 
             CreateMap<RoomImage, MemberRoomImageGetDto>()
                         .ForMember(dest => dest.Image, s => s.MapFrom(s => baseUrl + "uploads/room/" + s.Image));
@@ -100,7 +103,9 @@ namespace Service.Profiles
                 .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name));
             CreateMap<RoomReview, ReviewListItemGetDto>()
                  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AppUser.UserName))
-                 .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name)); ;
+                 .ForMember(dest => dest.RoomName, opt => opt.MapFrom(src => src.Room.Name));
+            
+
             CreateMap<Room, MemberRoomDetailGetDto>()
                 .ForMember(dest => dest.ServiceIds,
                 opt => opt.MapFrom(src => src.RoomServices.Select(rc => rc.ServiceId).ToList()));

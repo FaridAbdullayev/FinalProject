@@ -14,7 +14,7 @@ namespace Service.Services.Interfaces
 {
     public interface IContactService
     {
-        Task<Contact> ContactMessage(ContactUserDto contact);
+        Task<Contact> ContactMessage(ContactUserDto contact, string? appUserId);
 
         List<ContactListItemGetDto> GetAll();
         PaginatedList<ContactGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10);

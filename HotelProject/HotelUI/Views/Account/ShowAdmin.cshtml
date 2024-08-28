@@ -34,6 +34,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">User Name</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,6 +43,11 @@
                                         <tr>
                                             <th scope="row">@(++order)</th>
                                             <td>@item.UserName</td>
+                                            <td>
+                                                <a class="btn btn-danger btn-sm delete-btn" asp-action="delete" asp-route-id="@item.Id">
+                                                    <i class="fas fa-trash-alt mr-2"></i> Delete
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

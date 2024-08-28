@@ -4,6 +4,7 @@ using Service.Services.Interfaces;
 using Service.Dtos.OurStaff;
 using Service.Dtos;
 using Core.Entities;
+using Service.Dtos.Users;
 
 namespace HotelProject.Controllers
 {
@@ -67,8 +68,15 @@ namespace HotelProject.Controllers
 
 
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpGet("member/all")]
+        [HttpGet("all/user")]
         public ActionResult<List<OurStaffListItemGetDto>> MemberGetAllStaff()
+        {
+            return Ok(_service.MemberGetAllOurStaff());
+        }
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("all/user/about")]
+        public ActionResult<List<OurStaffGetForAboutDto>> MemberGetAllStaffForAbout()
         {
             return Ok(_service.MemberGetAllOurStaff());
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
 using Service.Services.Interfaces;
 using Service.Dtos.Service;
+using Service.Dtos.Users;
 
 namespace HotelProject.Controllers
 {
@@ -56,6 +57,14 @@ namespace HotelProject.Controllers
         {
             _service.Update(serviceUpdateDto, id);
             return NoContent();
+        }
+
+
+        [ApiExplorerSettings(GroupName = "user_v1")]
+        [HttpGet("all/user")]
+        public ActionResult<List<ServiceGetDtoForUser>> GetAllServiceUser()
+        {
+            return Ok(_service.GetAll());
         }
     }
 }

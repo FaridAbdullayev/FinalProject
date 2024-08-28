@@ -208,7 +208,7 @@ builder.Services.AddQuartz(options =>
 {
     var key = JobKey.Create(nameof(PrintJob));
     options.AddJob<PrintJob>(key)
-           .AddTrigger(x => x.ForJob(key).WithCronSchedule("0 35 18 * * ?").StartNow());
+           .AddTrigger(x => x.ForJob(key).WithCronSchedule("0 0 8 * * ?").StartNow());
 });
 
 builder.Services.AddQuartzHostedService(options =>
