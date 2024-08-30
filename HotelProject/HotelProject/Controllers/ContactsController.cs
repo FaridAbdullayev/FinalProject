@@ -27,31 +27,19 @@ namespace HotelProject.Controllers
         [HttpPost("admin/message")]
         public async Task<ActionResult> SendMessageToUser(AdminAndIUserInteraction interaction)
         {
-            try
-            {
+           
                 await _service.ContactMessageAdmin(interaction);
                 return Ok(new { message = "Email sent successfully" });
-            }
-            catch (RestException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
         }
         [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("")]
         public async Task<ActionResult> Create(ContactUserDto createDto)
         {
-            try
-            {
+           
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
              
                 var contact = await _service.ContactMessage(createDto,userId);
                 return StatusCode(201, new { id = contact.Id });
-            }
-            catch (RestException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]

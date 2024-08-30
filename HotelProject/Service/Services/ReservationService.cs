@@ -84,7 +84,7 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status404NotFound, "UserId", "User not found by given UserId");
             }
 
-            var reservations = _repo.GetAll(r => r.AppUserId == userId).Where(x => x.Status == OrderStatus.Accepted)
+            var reservations = _repo.GetAll(r => r.AppUserId == userId)
                                     .Include(r => r.Room) // Oda bilgilerini de dahil etmek için
                                     .ToList();
             // Rezervasyonları Dto'ya dönüştürün
@@ -94,13 +94,15 @@ namespace Service.Services
                 RoomName = r.Room.Name,
                 StartDate = r.StartDate,
                 EndDate = r.EndDate,
-                Status = r.Status,
+                Status = r.Status.ToString(),
                 Night = (r.EndDate - r.StartDate).Days,
                 TotalPrice = CalculateTotalPrice(r.StartDate, r.EndDate, r.Room.Price)
             }).ToList();
 
             return reservationDtos;
         }
+
+
         private double CalculateTotalPrice(DateTime startDate, DateTime endDate, double roomPrice)
         {
             int nights = (endDate - startDate).Days;

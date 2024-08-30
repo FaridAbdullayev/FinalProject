@@ -88,7 +88,7 @@ namespace Service.Services
             {
                 throw new RestException(StatusCodes.Status400BadRequest, "Failed to delete Admin user.");
             }
-        }///
+        }//
         public PaginatedList<AdminPaginatedGetDto> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
             var users = _userManager.Users.ToList();
@@ -297,7 +297,7 @@ namespace Service.Services
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new RestException(StatusCodes.Status401Unauthorized, "Email", "Email not confirmed");
+                throw new RestException(StatusCodes.Status401Unauthorized, "Email", "Email has not been confirmed");
             }
 
 
@@ -315,13 +315,13 @@ namespace Service.Services
 
             if (_userManager.Users.Any(u => u.Email.ToLower() == register.Email.ToLower()))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is already taken.");
+                throw new RestException(StatusCodes.Status400BadRequest, "Email", "This email is already in use.");
             }
 
 
             if (_userManager.Users.Any(u => u.UserName.ToLower() == register.UserName.ToLower()))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "UserName","UserName is already taken.");
+                throw new RestException(StatusCodes.Status400BadRequest, "UserName", "This username is already in use");
             }
 
 
@@ -338,7 +338,7 @@ namespace Service.Services
             if (!result.Succeeded)
             {
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to register: {errors}");
+                throw new RestException(StatusCodes.Status400BadRequest, $"Registration failed: {errors}");
             }
 
 
@@ -346,7 +346,7 @@ namespace Service.Services
             if (!roleResult.Succeeded)
             {
                 var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
-                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to assign role: {errors}");
+                throw new RestException(StatusCodes.Status400BadRequest, $"Role assignment failed: {errors}");
             }
 
 
@@ -358,7 +358,7 @@ namespace Service.Services
             var subject = "Email Verification";
 
 
-            var emailbody = $"<h1><a href=\"{url}\"> Emailinizi tesdiqleyin</a></h1>";
+            var emailbody = $"<h1><a href=\"{url}\"> Confirm your email</a></h1>";
 
 
             _emailService.Send(appUser.Email, subject, emailbody);
@@ -374,7 +374,7 @@ namespace Service.Services
             }
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Email is not confirmed.");
+                throw new RestException(StatusCodes.Status400BadRequest, "Email has not been confirmed");
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -405,7 +405,7 @@ namespace Service.Services
             if (!result.Succeeded)
             {
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to reset password: {errors}");
+                throw new RestException(StatusCodes.Status400BadRequest, $"Failed reset password: {errors}");
             }
         }
         public async Task<bool> VerifyEmailToken(string email, string token)
@@ -413,7 +413,7 @@ namespace Service.Services
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Email is not confirmed.");
+                throw new RestException(StatusCodes.Status400BadRequest, "Email has not been confirmed");
             }
             var decodedToken = Uri.UnescapeDataString(token);
             var result = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword", decodedToken);
@@ -434,7 +434,7 @@ namespace Service.Services
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is not confirmed");
+                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email not confirmed");
             }
 
             user.UserName = profileEditDto.UserName;

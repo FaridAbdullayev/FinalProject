@@ -254,7 +254,7 @@ namespace HotelProject.Controllers
             var token = await _authService.MemberLogin(loginDto);
 
 
-            return Ok(new { Result = token });
+            return Ok(new { Token = token });
 
         }
 
@@ -265,8 +265,7 @@ namespace HotelProject.Controllers
         {
 
             var Id = await _authService.MemberRegister(registerDto);
-            return Ok(new { Result = Id });
-
+            return Ok(new { Id = Id });
         }
 
         [ApiExplorerSettings(GroupName = "user_v1")]

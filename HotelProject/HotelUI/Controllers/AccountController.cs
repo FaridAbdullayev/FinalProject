@@ -186,7 +186,6 @@ namespace HotelUI.Controllers
 
             return View(adminProfile);
         }
-
         [HttpPost]
         public async Task<IActionResult> Profile(AdminProfileEditRequest editRequest)
         {
@@ -202,7 +201,6 @@ namespace HotelUI.Controllers
 
             try
             {
-                // `UserId`'yi Session'dan alıyoruz
                 var userId = HttpContext.Session.GetString("UserId");
                 if (string.IsNullOrEmpty(userId))
                 {
