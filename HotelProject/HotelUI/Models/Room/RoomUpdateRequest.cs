@@ -16,7 +16,7 @@ namespace HotelUI.Models.Room
         public string Description { get; set; }
         public double? Price { get; set; }
         public double? Area { get; set; }
-        [Range(1, 5)]
+        [Range(0, 5)]
         public int? MaxChildrenCount { get; set; }
 
         [Range(1, 5)]
