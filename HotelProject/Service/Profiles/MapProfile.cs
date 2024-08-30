@@ -75,7 +75,8 @@ namespace Service.Profiles
           .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/slider/" + s.Image));
             CreateMap<Slider, SliderGetDto>()
                .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/slider/" + s.Image));
-
+            CreateMap<Slider, SliderGetDtoForUser>()
+           .ForMember(dest => dest.ImageUrl, s => s.MapFrom(s => baseUrl + "uploads/slider/" + s.Image));
 
 
 

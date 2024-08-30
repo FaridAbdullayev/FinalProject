@@ -30,7 +30,7 @@ namespace HotelProject.Controllers
             _hubContext = hubContext;
         }
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpPost("member")]
+        [HttpPost("user")]
         [Authorize(Roles = "Member")]
         public async Task<IActionResult> CreateReservation([FromBody] ReservationsDto reservationsDto)
         {
@@ -39,7 +39,7 @@ namespace HotelProject.Controllers
             {
                 return Unauthorized();
             }
-            await _hubContext.Clients.All.SendAsync("ReceiveReservationAlert", "Yeni bir rezervasyon yapıldı.");
+            await _hubContext.Clients.All.SendAsync("ReceiveReservationAlert", "A new reservation has been made.");
 
 
             var reservationId = await _reservation.CreateReservationAsync(reservationsDto, userId);
@@ -47,7 +47,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpGet("viewReserves/member")]
+        [HttpGet("viewReserves/user")]
         public async Task<ActionResult<List<MemberReservationGetDto>>> GetUserReservations()
         {
             var userId = _context.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -62,7 +62,7 @@ namespace HotelProject.Controllers
             return Ok(reservations);
         }
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpPost("cancelReservationMember/{reservationId}")]
+        [HttpPost("cancelReservationUser/{reservationId}")]
         public async Task<ActionResult> CancelReservation(int reservationId)
         {
             var userId = _context.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

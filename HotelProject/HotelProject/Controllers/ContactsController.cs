@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using static Service.Exceptions.ResetException;
 using Service.Dtos.Contact;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelProject.Controllers
 {
@@ -22,6 +23,7 @@ namespace HotelProject.Controllers
             _service = contact;
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPost("admin/message")]
         public async Task<ActionResult> SendMessageToUser(AdminAndIUserInteraction interaction)
         {

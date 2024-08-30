@@ -91,7 +91,7 @@ namespace Service.Services
             var reservationDtos = reservations.Select(r => new MemberReservationGetDto
             {
                 Id = r.Id,
-                RoomId = r.RoomId,
+                RoomName = r.Room.Name,
                 StartDate = r.StartDate,
                 EndDate = r.EndDate,
                 Status = r.Status,

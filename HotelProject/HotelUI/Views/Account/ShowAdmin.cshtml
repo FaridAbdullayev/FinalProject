@@ -13,7 +13,7 @@
         <!-- Page Heading -->
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <h3 class="page-heading mb-4">Admin Management</h3>
+                <h3 class="page-heading mb-4">Admins</h3>
                 <a asp-action="adminCreate" class="btn btn-primary btn-lg shadow-sm">
                     <i class="fas fa-plus-circle mr-2"></i> Create New Admin
                 </a>
@@ -34,7 +34,6 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">User Name</th>
-                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,11 +42,11 @@
                                         <tr>
                                             <th scope="row">@(++order)</th>
                                             <td>@item.UserName</td>
-                                            <td>
+                                           @*  <td>
                                                 <a class="btn btn-danger btn-sm delete-btn" asp-action="delete" asp-route-id="@item.Id">
                                                     <i class="fas fa-trash-alt mr-2"></i> Delete
                                                 </a>
-                                            </td>
+                                            </td> *@
                                         </tr>
                                     }
                                 </tbody>

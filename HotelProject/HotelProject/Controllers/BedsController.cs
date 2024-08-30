@@ -4,6 +4,7 @@ using Service.Dtos.BedType;
 using Service.Dtos.Branch;
 using Service.Dtos;
 using Service.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelProject.Controllers
 {
@@ -18,18 +19,21 @@ namespace HotelProject.Controllers
             _service = bedService;
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPost("")]
         public ActionResult Create(BedTypeCreateDto createDto)
         {
             return StatusCode(201, new { id = _service.Create(createDto) });
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("")]
         public ActionResult<PaginatedList<BedTypeGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
             return StatusCode(200, _service.GetAllByPage(search, page, size));
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("all")]
         public ActionResult<List<BedTypeListItemGetDto>> GetAllBedType()
         {
@@ -37,6 +41,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {

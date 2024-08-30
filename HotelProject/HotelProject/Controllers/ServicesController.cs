@@ -4,6 +4,7 @@ using Service.Dtos;
 using Service.Services.Interfaces;
 using Service.Dtos.Service;
 using Service.Dtos.Users;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelProject.Controllers
 {
@@ -18,12 +19,14 @@ namespace HotelProject.Controllers
             _service = serviceService;
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPost("")]
         public ActionResult Create(ServiceCreateDto createDto)
         {
             return StatusCode(201, new { id = _service.Create(createDto) });
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {
@@ -31,6 +34,7 @@ namespace HotelProject.Controllers
             return StatusCode(200, data);
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("all")]
         public ActionResult<List<ServiceListItemGetDto>> GetAllService()
         {
@@ -38,6 +42,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("")]
         public ActionResult<PaginatedList<ServiceGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
@@ -45,6 +50,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
@@ -52,6 +58,7 @@ namespace HotelProject.Controllers
             return NoContent();
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPut("{id}")]
         public ActionResult Update(ServiceUpdateDto serviceUpdateDto, int id)
         {

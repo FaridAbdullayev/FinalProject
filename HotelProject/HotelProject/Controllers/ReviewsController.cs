@@ -26,7 +26,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "user_v1")]
-        [HttpPost("member")]
+        [HttpPost("user")]
         [Authorize(Roles ="Member")]
         public async Task<ActionResult> MemberReview(MemberRoomReviewDto memberRoomReviewDto)
         {

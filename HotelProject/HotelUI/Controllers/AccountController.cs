@@ -211,6 +211,11 @@ namespace HotelUI.Controllers
 
                 await _crudService.Update<AdminProfileEditRequest>(editRequest, "Auth/update/" + userId);
 
+                if(Request.Cookies.ContainsKey("token"))
+                {
+                    Response.Cookies.Delete("token");
+                }
+
                 
                 return RedirectToAction("Login", "Account");
             }
@@ -234,5 +239,7 @@ namespace HotelUI.Controllers
 
             return RedirectToAction("Login", "Account");
         }
+
+        
     }
 }

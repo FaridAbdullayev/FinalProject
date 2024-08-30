@@ -55,7 +55,7 @@ namespace Service.Services
 
         public RoomPreReservationInfoDto RoomPreReservationInfo(int roomId, DateTime checkIn, DateTime checkOut)
         {
-            Room room = _repo.Get(x => x.Id == roomId && !x.IsDeleted);
+            Room room = _repo.Get(x => x.Id == roomId && !x.IsDeleted,"Images","Branch");
 
             if (room == null)
             {
@@ -73,16 +73,19 @@ namespace Service.Services
 
             int branchId = room.BranchId;
 
+            string firstImageUrl = room.Images?.FirstOrDefault()?.Image ?? string.Empty;
 
             RoomPreReservationInfoDto info = new RoomPreReservationInfoDto
             {
-                BranchId = branchId,
+                RoomName = room.Name,
+                BrnachName = room.Branch.Name,
                 CheckIn = checkIn,
                 CheckOut = checkOut,
                 Nights = nights,
                 TotalPrice = totalPrice,
                 AdultsCount = room.MaxAdultsCount,
                 ChildrenCount = room.MaxChildrenCount,
+                ImageUrl = $"https://localhost:7119//uploads/room/"+firstImageUrl,
             };
 
             return info;
@@ -110,7 +113,7 @@ namespace Service.Services
 
             //double totalPrice = criteriaDto.Price * nights;
 
-            var allRooms = _repo.GetAll(x => true, "RoomServices", "Branch", "Images").ToList();
+            var allRooms = _repo.GetAll(x => !x.IsDeleted, "RoomServices", "Branch", "Images").ToList();
 
             var reservedRoomIds = GetReservedRoomIds(criteriaDto.StartDate, criteriaDto.EndDate);
 
@@ -128,7 +131,7 @@ namespace Service.Services
         public List<int> GetReservedRoomIds(DateTime startDate, DateTime endDate)
         {
             return _reservationRepo.GetAll(reservation =>
-                 reservation.StartDate < endDate && reservation.EndDate >= startDate)
+                 reservation.StartDate <= endDate && reservation.EndDate >= startDate)
                 .Select(reservation => reservation.RoomId)
                 .ToList();
         }

@@ -33,7 +33,7 @@ namespace Service.Services
 
         public async Task<int> OurStaffCount()
         {
-            return await _serviceRepository.GetAll(x => x.IsDeleted == false).CountAsync();
+            return await _serviceRepository.GetAll(x => !x.IsDeleted).CountAsync();
         }
         public int Create(OurStaffCreateDto createDto)
         {

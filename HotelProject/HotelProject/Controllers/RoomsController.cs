@@ -1,4 +1,5 @@
 ﻿using Hangfire.MemoryStorage.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Dtos;
@@ -20,6 +21,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPost("")]
         public ActionResult Create(RoomCreateDto createDto)
         {
@@ -27,6 +29,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("all")]
         public ActionResult<List<RoomListItemGetDto>> GetAll()
         {
@@ -34,12 +37,14 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("")]
         public ActionResult<PaginatedList<RoomGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {
             return StatusCode(200, _repo.GetAllByPage(search, page, size));
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {
@@ -47,6 +52,7 @@ namespace HotelProject.Controllers
             return StatusCode(200, data);
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
@@ -54,6 +60,7 @@ namespace HotelProject.Controllers
             return NoContent();
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPut("{id}")]
         public ActionResult Update(int id, [FromForm] RoomUpdateDto UpdateDto)
         {

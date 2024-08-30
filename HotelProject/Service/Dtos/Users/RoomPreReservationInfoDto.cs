@@ -10,12 +10,14 @@ namespace Service.Dtos.Users
 {
     public class RoomPreReservationInfoDto
     {
-        public int BranchId { get; set; }
+        public string RoomName { get; set; }
+        public string BrnachName { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public int Nights { get; set; }
         public int ChildrenCount { get; set; }
         public int AdultsCount { get; set; }
         public double TotalPrice { get; set; }
+        public string ImageUrl {  get; set; }
     }
 }

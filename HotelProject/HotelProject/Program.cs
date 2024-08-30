@@ -44,7 +44,8 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
 {
     opt.Password.RequireNonAlphanumeric = false;
-    opt.Password.RequiredLength = 6;
+    opt.Password.RequiredLength = 8;
+    opt.Password.RequireUppercase = false;
 }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
 
 // Add services to the container.

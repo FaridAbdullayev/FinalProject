@@ -68,10 +68,12 @@ namespace HotelProject.Test
                 Price = 100,
                 MaxAdultsCount = 2,
                 MaxChildrenCount = 1,
-                BranchId = 1
+                Name = "salam",
+                Branch = new Branch { Name = "salam" },
+                Images = new List<RoomImage> { new RoomImage { Image = "testimage.jpg" } }
             };
 
-            _mockRoomRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<Room, bool>>>()))
+            _mockRoomRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<Room, bool>>>(), "Images", "Branch"))
                 .Returns(room);
 
             var checkIn = DateTime.Today;
@@ -82,10 +84,12 @@ namespace HotelProject.Test
 
             // Assert
             Assert.Equal(2, result.Nights);
-            Assert.Equal(200, result.TotalPrice);
+            Assert.Equal(200, result.TotalPrice);  
             Assert.Equal(2, result.AdultsCount);
             Assert.Equal(1, result.ChildrenCount);
-            Assert.Equal(1, result.BranchId);
+            Assert.Equal("salam", result.RoomName);
+            Assert.Equal("salam", result.BrnachName);
+            Assert.Equal("https://localhost:7119//uploads/room/testimage.jpg", result.ImageUrl);
         }
 
         [Fact]

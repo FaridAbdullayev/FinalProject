@@ -10,7 +10,7 @@ namespace Service.Dtos.Users
     public class MemberReservationGetDto
     {
         public int Id { get; set; }
-        public int RoomId { get; set; }
+        public string RoomName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double TotalPrice { get; set; }

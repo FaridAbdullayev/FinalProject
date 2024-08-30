@@ -40,7 +40,6 @@ namespace Service.Services
             _signInManager = signInManager;
             _emailService = emailService;
         }
-
         public string Create(AdminCreateDto createDto)
         {
             var existingUser = _userManager.FindByNameAsync(createDto.UserName).Result;
@@ -129,13 +128,13 @@ namespace Service.Services
 
             if (user == null || !_userManager.CheckPasswordAsync(user, loginDto.Password).Result)
             {
-                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect!");
+                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect");
             }
 
             var userRoles = _userManager.GetRolesAsync(user).Result;
             if (!userRoles.Contains("SuperAdmin") && !userRoles.Contains("Admin"))
             {
-                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect!");
+                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Password incorrect");
             }
 
             if (user.IsPasswordResetRequired)
@@ -174,15 +173,6 @@ namespace Service.Services
 
             return new SendingLoginDto { Token = tokenStr, PasswordResetRequired = false };
         }//
-
-
-
-
-
-
-
-
-
         public void Update(string id, AdminUpdateDto updateDto)
         {
 
@@ -234,9 +224,6 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update user: {errors}");
             }
         }//
-
-
-
         public async Task UpdatePasswordAsync(AdminUpdateDto updatePasswordDto)
         {
             var user = await _userManager.FindByNameAsync(updatePasswordDto.UserName);
@@ -271,20 +258,6 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to update user: {errors}");
             }
         }//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private async Task<string> GenerateJwtToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -319,12 +292,12 @@ namespace Service.Services
             var user = await _userManager.FindByEmailAsync(memberLoginDto.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, memberLoginDto.Password))
             {
-                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Email incorrect!");
+                throw new RestException(StatusCodes.Status401Unauthorized, "UserName or Email incorrect");
             }
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new RestException(StatusCodes.Status401Unauthorized, "Email", "Email not confirmed.");
+                throw new RestException(StatusCodes.Status401Unauthorized, "Email", "Email not confirmed");
             }
 
 
@@ -336,7 +309,7 @@ namespace Service.Services
         {
             if (register.Password != register.ConfirmPassword)
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Password and ConfirmPassword do not match.");
+                throw new RestException(StatusCodes.Status400BadRequest, "ConfirmPassword", "Password and ConfirmPassword do not match.");
             }
 
 
@@ -348,7 +321,7 @@ namespace Service.Services
 
             if (_userManager.Users.Any(u => u.UserName.ToLower() == register.UserName.ToLower()))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "UserName is already taken.");
+                throw new RestException(StatusCodes.Status400BadRequest, "UserName","UserName is already taken.");
             }
 
 
@@ -365,7 +338,7 @@ namespace Service.Services
             if (!result.Succeeded)
             {
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to register user: {errors}");
+                throw new RestException(StatusCodes.Status400BadRequest, $"Failed to register: {errors}");
             }
 
 
@@ -412,7 +385,7 @@ namespace Service.Services
             var body = $"<h1>Reset <a href=\"{resetUrl}\">password</a></h1>";
             _emailService.Send(user.Email, subject, body);
 
-            return resetUrl;
+            return "Link sent to gmail";
         }
         public async Task ResetPassword(MemberResetPasswordDto resetPasswordDto)
         {
@@ -435,7 +408,7 @@ namespace Service.Services
                 throw new RestException(StatusCodes.Status400BadRequest, $"Failed to reset password: {errors}");
             }
         }
-        public async Task<bool> VerifyEmailAndToken(string email, string token)
+        public async Task<bool> VerifyEmailToken(string email, string token)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
@@ -461,7 +434,7 @@ namespace Service.Services
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is not confirmed.");
+                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is not confirmed");
             }
 
             user.UserName = profileEditDto.UserName;
@@ -469,14 +442,14 @@ namespace Service.Services
 
             if (_userManager.Users.Any(x => x.Id != user.Id && x.NormalizedEmail == profileEditDto.Email.ToUpper()))
             {
-                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is already taken.");
+                throw new RestException(StatusCodes.Status400BadRequest, "Email", "Email is already taken");
             }
 
             if (!string.IsNullOrEmpty(profileEditDto.NewPassword))
             {
                 if (string.IsNullOrEmpty(profileEditDto.CurrentPassword))
                 {
-                    throw new RestException(StatusCodes.Status400BadRequest, "CurrentPassword", "Current password is required.");
+                    throw new RestException(StatusCodes.Status400BadRequest, "CurrentPassword", "Current password is required");
                 }
 
                 var changePasswordResult = await _userManager.ChangePasswordAsync(user, profileEditDto.CurrentPassword, profileEditDto.NewPassword);
@@ -499,6 +472,5 @@ namespace Service.Services
             var users = await _userManager.GetUsersInRoleAsync("Member");
             return users.Count;
         }
-
     }
 }

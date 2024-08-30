@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Pustok.Helpers;
 using Service.Dtos;
 using Service.Dtos.Slider;
+using Service.Dtos.Users;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -103,6 +104,12 @@ namespace Service.Services
 
 
             _slider.Save();
+        }
+
+
+        public List<SliderGetDtoForUser> GetAllSliderForUser()
+        {
+            return _mapper.Map<List<SliderGetDtoForUser>>(_slider.GetAll(x => !x.IsDeleted).ToList());
         }
     }
 }

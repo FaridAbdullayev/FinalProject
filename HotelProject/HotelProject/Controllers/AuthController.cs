@@ -220,7 +220,7 @@ namespace HotelProject.Controllers
             return StatusCode(201, new { Id = _authService.Create(createDto) });
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPut("update/{id}")]
         public IActionResult Update(string id, AdminUpdateDto updateDto)
         {
@@ -228,6 +228,7 @@ namespace HotelProject.Controllers
             return NoContent();
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPut("updatePassword")]
         public async Task<IActionResult> UpdatePassword(AdminUpdateDto updatePasswordDto)
         {
@@ -237,7 +238,7 @@ namespace HotelProject.Controllers
 
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        [Authorize(Roles = "SuperAdmin")] 
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("adminAllByPage")]
         public ActionResult<PaginatedList<AdminPaginatedGetDto>> GetAllByPage(string? search = null, int page = 1, int size = 10)
         {
@@ -260,10 +261,10 @@ namespace HotelProject.Controllers
 
         [ApiExplorerSettings(GroupName = "user_v1")]
         [HttpPost("user/register")]
-        public ActionResult RegisterForUser([FromBody] MemberRegisterDto registerDto)
+        public async Task<ActionResult> RegisterForUser([FromBody] MemberRegisterDto registerDto)
         {
 
-            var Id = _authService.MemberRegister(registerDto);
+            var Id = await _authService.MemberRegister(registerDto);
             return Ok(new { Result = Id });
 
         }
@@ -274,7 +275,7 @@ namespace HotelProject.Controllers
         {
             try
             {
-                bool isValid = await _authService.VerifyEmailAndToken(verifyDto.Email, verifyDto.Token);
+                bool isValid = await _authService.VerifyEmailToken(verifyDto.Email, verifyDto.Token);
                 if (isValid)
                 {
                     return Ok("Email and token are valid. You can now reset your password.");
@@ -308,7 +309,7 @@ namespace HotelProject.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                return Ok("Email confirmed successfully!");
+                return Ok("Email confirmed");
             }
 
             return BadRequest("Failed to confirm email.");
@@ -327,15 +328,8 @@ namespace HotelProject.Controllers
         [HttpPost("user/forgetpassword")]
         public async Task<IActionResult> ForgetPassword([FromBody] MemberForgetPasswordDto forgetPasswordDto)
         {
-            try
-            {
-                var resetUrl = await _authService.ForgetPassword(forgetPasswordDto);
-                return Ok(new { Message = "Password reset link has been sent to your email.", ResetUrl = resetUrl });
-            }
-            catch (RestException ex)
-            {
-                return StatusCode(ex.Code, ex.Message);
-            }
+            var message = await _authService.ForgetPassword(forgetPasswordDto);
+            return Ok(new { Message = message });
         }
 
 
@@ -343,15 +337,8 @@ namespace HotelProject.Controllers
         [HttpPost("user/resetpassword")]
         public async Task<IActionResult> ResetPassword([FromBody] MemberResetPasswordDto resetPasswordDto)
         {
-            try
-            {
-                await _authService.ResetPassword(resetPasswordDto);
-                return Ok("Password has been reset successfully. Please log in with your new password.");
-            }
-            catch (RestException ex)
-            {
-                return StatusCode(ex.Code, ex.Message);
-            }
+            await _authService.ResetPassword(resetPasswordDto);
+            return Ok("Password has been reset");
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
@@ -359,7 +346,7 @@ namespace HotelProject.Controllers
         public async Task<IActionResult> GetRegisteredUsersCount()
         {
             var usersCount = await _authService.GetRegisteredUsersCount();
-            return Ok(new {Count = usersCount});
+            return Ok(new { Count = usersCount });
         }
     }
 }
