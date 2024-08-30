@@ -34,7 +34,7 @@ namespace HotelProject.Controllers
             return StatusCode(200, data);
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        //[Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("all")]
         public ActionResult<List<ServiceListItemGetDto>> GetAllService()
         {
@@ -42,7 +42,7 @@ namespace HotelProject.Controllers
         }
 
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        //[Authorize(Roles = "Admin,SuperAdmin")]
         [HttpGet("")]
         public ActionResult<PaginatedList<ServiceGetDto>> GetAll(string? search = null, int page = 1, int size = 10)
         {

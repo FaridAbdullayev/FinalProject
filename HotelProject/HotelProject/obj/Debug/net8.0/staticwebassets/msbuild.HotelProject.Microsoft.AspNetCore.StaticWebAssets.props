@@ -208,6 +208,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\67fa6976-b51f-43a4-a112-8f4f42a93807blog7.jpg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\682ce829-6d57-4459-a9f9-fd98a6596c54Ekran Resmi 2024-06-27 21.25.58.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>HotelProject</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HotelProject</BasePath>
+      <RelativePath>uploads/room/682ce829-6d57-4459-a9f9-fd98a6596c54Ekran Resmi 2024-06-27 21.25.58.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\682ce829-6d57-4459-a9f9-fd98a6596c54Ekran Resmi 2024-06-27 21.25.58.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\685549c0-ffc8-45df-8745-72b0b8c995d0blog1.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>HotelProject</SourceId>
@@ -400,6 +416,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\ca843bfa-fcb1-4d1a-ac18-b9777619b3bcteam-3.jpg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\cdb087ab-aeec-4863-831f-595bf35a761bEkran Resmi 2024-02-22 15.13.49.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>HotelProject</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HotelProject</BasePath>
+      <RelativePath>uploads/room/cdb087ab-aeec-4863-831f-595bf35a761bEkran Resmi 2024-02-22 15.13.49.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\cdb087ab-aeec-4863-831f-595bf35a761bEkran Resmi 2024-02-22 15.13.49.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\fa701f3a-833e-44f6-b67c-5baa5dc2ebedteam-3.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>HotelProject</SourceId>
@@ -415,6 +447,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\room\fa701f3a-833e-44f6-b67c-5baa5dc2ebedteam-3.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\slider\4ef081c2-6d32-4b92-9ba2-ebde62d4e1dcEkran Resmi 2024-02-22 15.13.49.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>HotelProject</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HotelProject</BasePath>
+      <RelativePath>uploads/slider/4ef081c2-6d32-4b92-9ba2-ebde62d4e1dcEkran Resmi 2024-02-22 15.13.49.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\slider\4ef081c2-6d32-4b92-9ba2-ebde62d4e1dcEkran Resmi 2024-02-22 15.13.49.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\slider\81535435-3924-45f0-a8d9-c101be5e89e3blog9.jpg))">
       <SourceType>Package</SourceType>
@@ -464,6 +512,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\slider\bba09670-ceaf-43ea-983c-b35c2802c10fWhatsApp Image 2024-02-18 at 05.55.28.jpeg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\staff\1d960e82-5589-4422-87c3-2fa358e2e8efEkran Resmi 2024-02-22 15.13.49.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>HotelProject</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HotelProject</BasePath>
+      <RelativePath>uploads/staff/1d960e82-5589-4422-87c3-2fa358e2e8efEkran Resmi 2024-02-22 15.13.49.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\staff\1d960e82-5589-4422-87c3-2fa358e2e8efEkran Resmi 2024-02-22 15.13.49.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\staff\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>HotelProject</SourceId>
@@ -479,6 +543,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\staff\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\staff\4e003f0a-6d82-4fa0-a289-41d7645e7a29Ekran Resmi 2024-02-22 15.13.49.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>HotelProject</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HotelProject</BasePath>
+      <RelativePath>uploads/staff/4e003f0a-6d82-4fa0-a289-41d7645e7a29Ekran Resmi 2024-02-22 15.13.49.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\staff\4e003f0a-6d82-4fa0-a289-41d7645e7a29Ekran Resmi 2024-02-22 15.13.49.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\staff\7a498e91-320a-46e2-a538-7b8af7d1b161Ekran Resmi 2024-02-22 15.13.49.png))">
       <SourceType>Package</SourceType>

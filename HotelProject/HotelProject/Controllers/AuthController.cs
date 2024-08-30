@@ -132,8 +132,6 @@ namespace HotelProject.Controllers
             var props = new AuthenticationProperties { RedirectUri = "api/Auth/signin-google" };
             return Challenge(props, GoogleDefaults.AuthenticationScheme);
         }
-
-
         private async Task<string> GenerateJwtToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -161,9 +159,6 @@ namespace HotelProject.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-
-
         [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpGet("profileLayout")]
         public ActionResult ProfileForLayout()
@@ -173,12 +168,6 @@ namespace HotelProject.Controllers
 
             return Ok(new UserProfileDto { UserName = userName, Role = role });
         }
-
-
-
-
-
-
         [ApiExplorerSettings(GroupName = "admin_v1")]
         [HttpPost("login")]
         public ActionResult Login(AdminLoginDto loginDto)
@@ -220,7 +209,6 @@ namespace HotelProject.Controllers
             return StatusCode(201, new { Id = _authService.Create(createDto) });
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPut("update/{id}")]
         public IActionResult Update(string id, AdminUpdateDto updateDto)
         {
@@ -228,7 +216,6 @@ namespace HotelProject.Controllers
             return NoContent();
         }
         [ApiExplorerSettings(GroupName = "admin_v1")]
-        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPut("updatePassword")]
         public async Task<IActionResult> UpdatePassword(AdminUpdateDto updatePasswordDto)
         {

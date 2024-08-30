@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RoVZbZBODzRkFnLHwn2xs2ruNp+PlZXyGHXNhpluMuQ=",
+  "Hash": "hDFccqVq/8z5oPW5/sV8ljbX+qG9GSL4IqJq3f/ANPs=",
   "Source": "HotelProject",
   "BasePath": "_content/HotelProject",
   "Mode": "Default",
@@ -264,6 +264,25 @@
       "OriginalItemSpec": "wwwroot\\uploads\\room\\67fa6976-b51f-43a4-a112-8f4f42a93807blog7.jpg"
     },
     {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\room\\682ce829-6d57-4459-a9f9-fd98a6596c54Ekran Resmi 2024-06-27 21.25.58.png",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/room/682ce829-6d57-4459-a9f9-fd98a6596c54Ekran Resmi 2024-06-27 21.25.58.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\room\\682ce829-6d57-4459-a9f9-fd98a6596c54Ekran Resmi 2024-06-27 21.25.58.png"
+    },
+    {
       "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\room\\685549c0-ffc8-45df-8745-72b0b8c995d0blog1.jpg",
       "SourceId": "HotelProject",
       "SourceType": "Discovered",
@@ -492,6 +511,25 @@
       "OriginalItemSpec": "wwwroot\\uploads\\room\\ca843bfa-fcb1-4d1a-ac18-b9777619b3bcteam-3.jpg"
     },
     {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\room\\cdb087ab-aeec-4863-831f-595bf35a761bEkran Resmi 2024-02-22 15.13.49.png",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/room/cdb087ab-aeec-4863-831f-595bf35a761bEkran Resmi 2024-02-22 15.13.49.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\room\\cdb087ab-aeec-4863-831f-595bf35a761bEkran Resmi 2024-02-22 15.13.49.png"
+    },
+    {
       "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\room\\fa701f3a-833e-44f6-b67c-5baa5dc2ebedteam-3.jpg",
       "SourceId": "HotelProject",
       "SourceType": "Discovered",
@@ -509,6 +547,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\room\\fa701f3a-833e-44f6-b67c-5baa5dc2ebedteam-3.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\slider\\4ef081c2-6d32-4b92-9ba2-ebde62d4e1dcEkran Resmi 2024-02-22 15.13.49.png",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/slider/4ef081c2-6d32-4b92-9ba2-ebde62d4e1dcEkran Resmi 2024-02-22 15.13.49.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\slider\\4ef081c2-6d32-4b92-9ba2-ebde62d4e1dcEkran Resmi 2024-02-22 15.13.49.png"
     },
     {
       "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\slider\\81535435-3924-45f0-a8d9-c101be5e89e3blog9.jpg",
@@ -568,6 +625,25 @@
       "OriginalItemSpec": "wwwroot\\uploads\\slider\\bba09670-ceaf-43ea-983c-b35c2802c10fWhatsApp Image 2024-02-18 at 05.55.28.jpeg"
     },
     {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\1d960e82-5589-4422-87c3-2fa358e2e8efEkran Resmi 2024-02-22 15.13.49.png",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/staff/1d960e82-5589-4422-87c3-2fa358e2e8efEkran Resmi 2024-02-22 15.13.49.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\staff\\1d960e82-5589-4422-87c3-2fa358e2e8efEkran Resmi 2024-02-22 15.13.49.png"
+    },
+    {
       "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg",
       "SourceId": "HotelProject",
       "SourceType": "Discovered",
@@ -585,6 +661,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\staff\\3c71b96e-ded6-4fa4-bb78-cbaa9a405073team-1 - Copy.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\4e003f0a-6d82-4fa0-a289-41d7645e7a29Ekran Resmi 2024-02-22 15.13.49.png",
+      "SourceId": "HotelProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\",
+      "BasePath": "_content/HotelProject",
+      "RelativePath": "uploads/staff/4e003f0a-6d82-4fa0-a289-41d7645e7a29Ekran Resmi 2024-02-22 15.13.49.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\staff\\4e003f0a-6d82-4fa0-a289-41d7645e7a29Ekran Resmi 2024-02-22 15.13.49.png"
     },
     {
       "Identity": "C:\\Users\\Farid\\Desktop\\homewotk\\FinalProject\\HotelProject\\HotelProject\\wwwroot\\uploads\\staff\\7a498e91-320a-46e2-a538-7b8af7d1b161Ekran Resmi 2024-02-22 15.13.49.png",
